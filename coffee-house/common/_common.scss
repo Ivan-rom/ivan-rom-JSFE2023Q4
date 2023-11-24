@@ -1,0 +1,19 @@
+body {
+  font-family: Inter, sans-serif;
+  background-color: $background-body;
+  color: $text-dark;
+}
+
+.container {
+  width: 1400px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0 auto;
+}
+
+.title {
+  &__cursive {
+    font-style: italic;
+    color: $text-accent;
+  }
+}
