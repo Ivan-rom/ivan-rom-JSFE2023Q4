@@ -41,7 +41,10 @@
 }
 
 %link {
-  margin-bottom: 2px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 
   &::after {
     content: '';

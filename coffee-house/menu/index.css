@@ -336,7 +336,10 @@ body {
 }
 
 .contact__link, .menu__button, .menu__link {
-  margin-bottom: 2px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 .contact__link::after, .menu__button::after, .menu__link::after {
   content: "";

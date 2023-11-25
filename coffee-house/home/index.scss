@@ -24,12 +24,42 @@
   }
 
   &__button {
+    @extend %text-button;
+
     border-radius: 100px;
     width: 200px;
     padding-top: 20px;
     padding-bottom: 20px;
     color: $text-dark;
     background-color: $background-body;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+
+    transition: 0.2s;
+
+    &::after {
+      content: '';
+      display: block;
+      background: url('../images/common/coffee-cup.svg') 50% / cover no-repeat;
+
+      width: 0;
+      height: 0;
+      opacity: 0;
+
+      transition: 0.2s;
+    }
+
+    &:hover {
+      gap: 8px;
+
+      &::after {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+      }
+    }
   }
 }
 
