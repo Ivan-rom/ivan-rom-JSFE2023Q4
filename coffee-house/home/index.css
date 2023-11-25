@@ -373,6 +373,9 @@ body {
 .contact__link:hover::after, .header__button:hover::after, .header__link:hover::after, .active.contact__link::after, .active.header__button::after, .active.header__link::after {
   width: 100%;
 }
+.active.contact__link, .active.header__button, .active.header__link {
+  pointer-events: none;
+}
 
 .mobile__link, .slider__button {
   background-color: transparent;
@@ -402,6 +405,9 @@ body {
 }
 .active.mobile__link .icon, .active.slider__button .icon, .mobile__link:hover .icon, .slider__button:hover .icon {
   background-color: #e1d4c9;
+}
+.active.mobile__link, .active.slider__button {
+  pointer-events: none;
 }
 
 * {

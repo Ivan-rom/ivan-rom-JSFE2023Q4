@@ -361,6 +361,9 @@ body {
 .contact__link:hover::after, .header__button:hover::after, .header__link:hover::after, .active.contact__link::after, .active.header__button::after, .active.header__link::after {
   width: 100%;
 }
+.active.contact__link, .active.header__button, .active.header__link {
+  pointer-events: none;
+}
 
 .offer__button {
   background-color: transparent;
@@ -389,6 +392,9 @@ body {
 }
 .active.offer__button .icon, .offer__button:hover .icon {
   background-color: #e1d4c9;
+}
+.active.offer__button {
+  pointer-events: none;
 }
 
 * {
@@ -573,6 +579,7 @@ button {
   grid-template-columns: repeat(4, 1fr);
 }
 .products__item {
+  cursor: pointer;
   overflow: hidden;
   width: 310px;
   border-radius: 40px;
