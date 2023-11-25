@@ -1,9 +1,14 @@
-.menu {
+.header {
+  margin: 20px 0;
+
   &__content {
-    margin: 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__home {
+    height: 60px;
   }
 
   &__list {
@@ -29,7 +34,7 @@
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      align-items: baseline;
+      align-items: start;
     }
   }
 }

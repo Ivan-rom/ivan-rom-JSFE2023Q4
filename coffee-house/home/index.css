@@ -341,19 +341,19 @@ body {
   line-height: 140%;
 }
 
-.hero__button, .contact__element, .menu__button, .menu__element, .mobile__link, .slider__button {
+.hero__button, .contact__element, .header__button, .header__element, .mobile__link, .slider__button {
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
 }
 
-.contact__link, .menu__button, .menu__link {
+.contact__link, .header__button, .header__link {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
 }
-.contact__link::after, .menu__button::after, .menu__link::after {
+.contact__link::after, .header__button::after, .header__link::after {
   content: "";
   display: block;
   height: 2px;
@@ -362,7 +362,7 @@ body {
   margin: 0 auto;
   transition: 0.2s;
 }
-.contact__link:hover::after, .menu__button:hover::after, .menu__link:hover::after, .active.contact__link::after, .active.menu__button::after, .active.menu__link::after {
+.contact__link:hover::after, .header__button:hover::after, .header__link:hover::after, .active.contact__link::after, .active.header__button::after, .active.header__link::after {
   width: 100%;
 }
 
@@ -435,23 +435,28 @@ button {
   color: #b0907a;
 }
 
-.menu__content {
+.header {
   margin: 20px 0;
+}
+.header__content {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.menu__list {
+.header__home {
+  height: 60px;
+}
+.header__list {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 40px;
 }
-.menu__button span {
+.header__button span {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  align-items: baseline;
+  align-items: start;
 }
 
 .footer {
