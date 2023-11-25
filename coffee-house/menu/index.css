@@ -329,7 +329,7 @@ body {
   line-height: 150%;
 }
 
-.offer__button, .menu__button, .menu__element {
+.menu__button, .menu__element, .offer__button {
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
@@ -343,8 +343,40 @@ body {
   display: block;
   height: 2px;
   background-color: #403f3d;
-  width: 100%;
+  width: 0;
   margin: 0 auto;
+  transition: 0.2s;
+}
+.contact__link:hover::after, .menu__button:hover::after, .menu__link:hover::after, .active.contact__link::after, .active.menu__button::after, .active.menu__link::after {
+  width: 100%;
+}
+
+.offer__button {
+  background-color: transparent;
+  color: #403f3d;
+  border: 1px solid #665f55;
+  transition: 0.2s;
+}
+.offer__button svg,
+.offer__button svg * {
+  transition: 0.2s;
+  stroke: #403f3d;
+  fill: #403f3d;
+}
+.offer__button .icon {
+  transition: 0.2s;
+  background-color: #c1b6ad;
+}
+.active.offer__button, .offer__button:hover {
+  background-color: #665f55;
+  color: #e1d4c9;
+}
+.active.offer__button svg *, .offer__button:hover svg * {
+  stroke: #e1d4c9;
+  fill: #e1d4c9;
+}
+.active.offer__button .icon, .offer__button:hover .icon {
+  background-color: #e1d4c9;
 }
 
 * {
@@ -435,11 +467,22 @@ button {
   display: block;
   width: 60px;
   height: 60px;
-  border: 1px solid #c1b6ad;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #c1b6ad;
+  transition: 0.2s;
+}
+.media__link svg path {
+  stroke: #c1b6ad;
+  transition: 0.2s;
+}
+.media__link:hover {
+  background-color: #e1d4c9;
+}
+.media__link:hover svg path {
+  stroke: #403f3d;
 }
 
 .contact {
@@ -479,21 +522,13 @@ button {
   gap: 8px;
   padding: 8px 16px 8px 8px;
   border-radius: 100px;
-  border: 1px solid #c1b6ad;
+  border-color: #c1b6ad;
 }
-.offer__button-active {
-  background-color: #665f55;
-  color: #e1d4c9;
-}
-.offer__button-active .offer__icon {
-  background-color: #e1d4c9;
-}
-.offer__icon {
+.offer__button .icon {
   width: 30px;
   height: 30px;
   padding: 3px 7px;
   border-radius: 50%;
-  background-color: #c1b6ad;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -512,6 +547,9 @@ button {
   border-radius: 40px;
   border: 1px solid #c1b6ad;
 }
+.products__item:hover img {
+  transform: scale(1);
+}
 .products__image {
   border-radius: 40px;
   width: 310px;
@@ -522,7 +560,8 @@ button {
   justify-content: center;
 }
 .products__image img {
-  transform: scale(0.95);
+  transition: 0.2s;
+  transform: scale(1.05);
 }
 .products__content {
   padding: 20px;

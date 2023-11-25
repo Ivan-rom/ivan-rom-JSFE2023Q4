@@ -48,7 +48,51 @@
     display: block;
     height: 2px;
     background-color: $text-dark;
-    width: 100%;
+    width: 0;
     margin: 0 auto;
+    transition: 0.2s;
+  }
+
+  &:hover,
+  &.active {
+    &::after {
+      width: 100%;
+    }
+  }
+}
+
+%button {
+  @extend %text-button;
+
+  background-color: transparent;
+  color: $text-dark;
+  border: 1px solid $border-dark;
+  transition: 0.2s;
+
+  svg,
+  svg * {
+    transition: 0.2s;
+    stroke: $text-dark;
+    fill: $text-dark;
+  }
+
+  & .icon {
+    transition: 0.2s;
+    background-color: $border-light;
+  }
+
+  &.active,
+  &:hover {
+    background-color: $background-container;
+    color: $text-light;
+
+    svg * {
+      stroke: $text-light;
+      fill: $text-light;
+    }
+
+    & .icon {
+      background-color: $background-body;
+    }
   }
 }
