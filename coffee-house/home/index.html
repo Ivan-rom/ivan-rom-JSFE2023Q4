@@ -14,55 +14,57 @@
   <body>
     <header class="header">
       <div class="container">
-        <div class="header__menu menu">
-          <div class="menu__content">
-            <img
-              src="../images/common/logo.svg"
-              alt="Resource coffee house"
-              class="menu__logo"
-            />
-            <nav class="menu__nav">
-              <ul class="menu__list">
-                <li class="menu__element">
-                  <a href="#favorite" class="menu__link">Favorite coffee</a>
-                </li>
-                <li class="menu__element">
-                  <a href="#about" class="menu__link">About</a>
-                </li>
-                <li class="menu__element">
-                  <a href="#mobile" class="menu__link">Mobile app</a>
-                </li>
-                <li class="menu__element">
-                  <a href="#contact" class="menu__link">Contact us</a>
-                </li>
-              </ul>
-            </nav>
-            <button class="menu__button">
-              <span>
-                Menu
-                <img src="../images/common/coffee-cup.svg" alt="coffee cup" />
-              </span>
-            </button>
-          </div>
+        <div class="menu__content">
+          <img
+            src="../images/common/logo.svg"
+            alt="Resource coffee house"
+            class="menu__logo"
+          />
+          <nav class="menu__nav">
+            <ul class="menu__list">
+              <li class="menu__element">
+                <a href="#favorite" class="menu__link">Favorite coffee</a>
+              </li>
+              <li class="menu__element">
+                <a href="#about" class="menu__link">About</a>
+              </li>
+              <li class="menu__element">
+                <a href="#mobile" class="menu__link">Mobile app</a>
+              </li>
+              <li class="menu__element">
+                <a href="#contact" class="menu__link">Contact us</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="menu__button">
+            <span>
+              Menu
+              <img src="../images/common/coffee-cup.svg" alt="coffee cup" />
+            </span>
+          </button>
         </div>
-        <section class="header__hero hero">
-          <div class="hero__content">
-            <h1 class="hero__title title">
-              <span class="title__cursive">Enjoy</span>
-              premium coffee at our charming cafe
-            </h1>
-            <p class="hero__text">
-              With its inviting atmosphere and delicious coffee options, the
-              Coffee House Resource is a popular destination for coffee lovers
-              and those seeking a warm and inviting space to enjoy their
-              favorite beverage.
-            </p>
-            <button class="hero__button">Menu</button>
-          </div>
-        </section>
       </div>
     </header>
     <main class="main">
+      <section class="hero">
+        <div class="container">
+          <div class="hero__wrapper">
+            <div class="hero__content">
+              <h1 class="hero__title title">
+                <span class="title__cursive">Enjoy</span>
+                premium coffee at our charming cafe
+              </h1>
+              <p class="hero__text">
+                With its inviting atmosphere and delicious coffee options, the
+                Coffee House Resource is a popular destination for coffee lovers
+                and those seeking a warm and inviting space to enjoy their
+                favorite beverage.
+              </p>
+              <button class="hero__button">Menu</button>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="favorite" id="favorite">
         <div class="container">
           <h2 class="favorite__title title">
@@ -233,8 +235,8 @@
                       />
                     </svg>
                     <span>
-                      <div class="mobile__description">Available on the</div>
-                      <div class="mobile__store">App Store</div>
+                      <span class="mobile__description">Available on the</span>
+                      <span class="mobile__store">App Store</span>
                     </span>
                   </a>
                 </li>
@@ -270,8 +272,8 @@
                       />
                     </svg>
                     <span>
-                      <div class="mobile__description">Available on</div>
-                      <div class="mobile__store">Google Play</div>
+                      <span class="mobile__description">Available on</span>
+                      <span class="mobile__store">Google Play</span>
                     </span>
                   </a>
                 </li>
@@ -397,12 +399,14 @@
                 </a>
               </li>
               <li class="contact__element">
-                <img
-                  src="../images/common/clock.svg"
-                  alt="clock"
-                  class="contact__icon"
-                />
-                Mon-Sat: 9:00 AM – 23:00 PM
+                <span>
+                  <img
+                    src="../images/common/clock.svg"
+                    alt="clock"
+                    class="contact__icon"
+                  />
+                  Mon-Sat: 9:00 AM – 23:00 PM
+                </span>
               </li>
             </ul>
           </div>

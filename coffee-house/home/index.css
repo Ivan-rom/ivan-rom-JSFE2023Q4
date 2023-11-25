@@ -341,7 +341,7 @@ body {
   line-height: 140%;
 }
 
-.hero__button, .menu__button, .menu__element, .mobile__link, .slider__button {
+.hero__button, .contact__element, .menu__button, .menu__element, .mobile__link, .slider__button {
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
@@ -510,19 +510,30 @@ button {
 .contact__element:not(:last-child) {
   margin-bottom: 16px;
 }
+.contact__element:last-child {
+  margin-bottom: 4px;
+}
+.contact__element span {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
 .contact__link::after {
   background-color: #e1d4c9;
 }
 .contact__icon {
-  margin-right: 8px;
+  width: 20px;
+  height: 20px;
 }
 
 .hero {
+  margin-bottom: 100px;
+}
+.hero__wrapper {
   border-radius: 40px;
   padding: 100px;
   background: url("../images/home/img-hero.jpg") lightgray 50%/cover no-repeat;
   color: #e1d4c9;
-  margin-bottom: 100px;
 }
 .hero__content {
   width: 530px;
@@ -610,6 +621,8 @@ button {
 }
 .slider__image {
   margin-bottom: 20px;
+  width: 480px;
+  height: 480px;
 }
 .slider__title {
   margin-bottom: 16px;
@@ -668,8 +681,12 @@ button {
 .about__photo:nth-child(4) {
   grid-area: d;
 }
+.about__photo:hover .about__image {
+  transform: scale(0.91);
+}
 .about__image {
-  transform: scale(1.09);
+  transition: 0.2s;
+  transform: scale(1);
 }
 
 .mobile {
@@ -696,11 +713,18 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-  justify-content: space-between;
   padding: 12px 20px;
   border: 1px solid #665f55;
   border-radius: 100px;
+  width: 200px;
+}
+.mobile > span {
+  display: block;
 }
 .mobile__description {
   margin-bottom: 2px;
+  display: block;
+}
+.mobile__store {
+  display: block;
 }

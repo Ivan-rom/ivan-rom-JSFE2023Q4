@@ -4,11 +4,15 @@
 @import '../components/footer/';
 
 .hero {
-  border-radius: 40px;
-  padding: 100px;
-  background: url('../images/home/img-hero.jpg') lightgray 50% / cover no-repeat;
-  color: $text-light;
   margin-bottom: 100px;
+
+  &__wrapper {
+    border-radius: 40px;
+    padding: 100px;
+    background: url('../images/home/img-hero.jpg') lightgray 50% / cover
+      no-repeat;
+    color: $text-light;
+  }
 
   &__content {
     width: 530px;
@@ -120,6 +124,8 @@
 
   &__image {
     margin-bottom: 20px;
+    width: 480px;
+    height: 480px;
   }
 
   &__title {
@@ -198,10 +204,17 @@
     &:nth-child(4) {
       grid-area: d;
     }
+
+    &:hover {
+      .about__image {
+        transform: scale(0.91);
+      }
+    }
   }
 
   &__image {
-    transform: scale(1.09);
+    transition: 0.2s;
+    transform: scale(1);
   }
 }
 
@@ -236,14 +249,23 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    justify-content: space-between;
     padding: 12px 20px;
     border: 1px solid $border-dark;
     border-radius: 100px;
+    width: 200px;
+  }
+
+  > span {
+    display: block;
   }
 
   &__description {
     @extend %text-description;
     margin-bottom: 2px;
+    display: block;
+  }
+
+  &__store {
+    display: block;
   }
 }
