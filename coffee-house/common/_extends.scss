@@ -12,14 +12,14 @@
 
 %heading-3 {
   font-size: 24px;
-  width: 600px;
-  height: 125%;
+  font-weight: 600;
+  line-height: 125%;
 }
 
 %text-medium {
   font-size: 16px;
   font-weight: 400;
-  line-height: 140%;
+  line-height: 150%;
 }
 
 %text-description {
@@ -38,4 +38,17 @@
   font-size: 32px;
   font-weight: 600;
   line-height: 125%;
+}
+
+%link {
+  margin-bottom: 2px;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: $text-dark;
+    width: 100%;
+    margin: 0 auto;
+  }
 }

@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
     <title>Coffee House | Menu</title>
   </head>
   <body>
     <header class="header">
-      <div class="header__menu menu">
-        <div class="container">
-          <img src="/" alt="Resource coffee house" class="menu__logo">
-          <nav class="menu__nav">
-            <ul class="menu__list">
-              <li class="menu__element">
-                <a href="#favorite" class="menu__link">Favorite coffee</a>
-              </li>
-              <li class="menu__element">
-                <a href="#about" class="menu__link">About</a>
-              </li>
-              <li class="menu__element">
-                <a href="#mobile" class="menu__link">Mobile app</a>
-              </li>
-              <li class="menu__element">
-                <a href="#contact" class="menu__link">Contact us</a>
-              </li>
-            </ul>
-          </nav>
-          <button class="header__button">Menu</button>
+      <div class="container">
+        <div class="header__menu menu">
+          <div class="menu__content">
+            <img
+              src="../images/common/logo.svg"
+              alt="Resource coffee house"
+              class="menu__logo"
+            />
+            <nav class="menu__nav">
+              <ul class="menu__list">
+                <li class="menu__element">
+                  <a href="#favorite" class="menu__link">Favorite coffee</a>
+                </li>
+                <li class="menu__element">
+                  <a href="#about" class="menu__link">About</a>
+                </li>
+                <li class="menu__element">
+                  <a href="#mobile" class="menu__link">Mobile app</a>
+                </li>
+                <li class="menu__element">
+                  <a href="#contact" class="menu__link">Contact us</a>
+                </li>
+              </ul>
+            </nav>
+            <button class="menu__button">
+              <span>
+                Menu
+                <img src="../images/common/coffee-cup.svg" alt="coffee cup" />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -35,24 +46,31 @@
       <section class="main__offer offer">
         <div class="container">
           <h1 class="offer__title title">
-            <span class="title__cursive"></span>
+            Behind each of our cups hides an
+            <span class="title__cursive">amazing surprise</span>
           </h1>
           <ul class="offer__tabs">
             <li class="offer__tab">
-              <button class="offer__button">
-                <img src="#" alt="coffee" class="offer__icon">
+              <button class="offer__button offer__button-active">
+                <div class="offer__icon">
+                  <img src="../images/menu/coffee.png" alt="coffee" />
+                </div>
                 <span>Coffee</span>
               </button>
             </li>
             <li class="offer__tab">
               <button class="offer__button">
-                <img src="#" alt="tea" class="offer__icon">
+                <div class="offer__icon">
+                  <img src="../images/menu/tea.png" alt="tea" />
+                </div>
                 <span>Tea</span>
               </button>
             </li>
             <li class="offer__tab">
               <button class="offer__button">
-                <img src="#" alt="dessert" class="offer__icon">
+                <div class="offer__icon">
+                  <img src="../images/menu/dessert.png" alt="dessert" />
+                </div>
                 <span>Dessert</span>
               </button>
             </li>
@@ -63,10 +81,101 @@
         <div class="container">
           <ul class="products__list">
             <li class="products__item">
-              <img src="#" alt="product" class="products__image">
-              <p class="products__name"></p>
-              <p class="products__text"></p>
-              <p class="products__price"></p>
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-1.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Irish coffee</p>
+                <p class="products__text">
+                  Fragrant black coffee with Jameson Irish whiskey and whipped
+                  milk
+                </p>
+                <p class="products__price">$7.00</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-2.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Kahlua coffee</p>
+                <p class="products__text">
+                  Classic coffee with milk and Kahlua liqueur under a cap of
+                  frothed milk
+                </p>
+                <p class="products__price">$7.00</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-3.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Honey raf</p>
+                <p class="products__text">
+                  Espresso with frothed milk, cream and aromatic honey
+                </p>
+                <p class="products__price">$5.50</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-4.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Ice cappuccino</p>
+                <p class="products__text">
+                  Cappuccino with soft thick foam in summer version with ice
+                </p>
+                <p class="products__price">$5.00</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-5.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Espresso</p>
+                <p class="products__text">Classic black coffee</p>
+                <p class="products__price">$4.50</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-6.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Latte</p>
+                <p class="products__text">
+                  Espresso coffee with the addition of steamed milk and dense
+                  milk foam
+                </p>
+                <p class="products__price">$5.50</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-7.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Latte macchiato</p>
+                <p class="products__text">
+                  Espresso with frothed milk and chocolate
+                </p>
+                <p class="products__price">$5.50</p>
+              </div>
+            </li>
+            <li class="products__item">
+              <div class="products__image">
+                <img src="../images/proudcts/coffee-8.jpg" alt="product" />
+              </div>
+              <div class="products__content">
+                <p class="products__name">Coffee with cognac</p>
+                <p class="products__text">
+                  Fragrant black coffee with cognac and whipped cream
+                </p>
+                <p class="products__price">$6.50</p>
+              </div>
             </li>
           </ul>
         </div>
@@ -75,20 +184,75 @@
     <footer class="footer">
       <div class="container">
         <div class="footer__content">
-          <div class="footer__offer offer">
-            <h2 class="foffer__title title">
+          <div class="footer__media media">
+            <h2 class="media__title title">
               Sip, Savor, Smile.
               <span class="title__cursive">It’s coffee time!</span>
             </h2>
-            <ul class="foffer__list">
-              <li class="foffer__element">
-                <a href="#" class="foffer__link" target="_blank"><svg></svg></a>
+            <ul class="media__list">
+              <li class="media__element">
+                <a href="#" class="media__link" target="_blank">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M23 3.01006C23 3.01006 20.9821 4.20217 19.86 4.54006C19.2577 3.84757 18.4573 3.35675 17.567 3.13398C16.6767 2.91122 15.7395 2.96725 14.8821 3.29451C14.0247 3.62177 13.2884 4.20446 12.773 4.96377C12.2575 5.72309 11.9877 6.62239 12 7.54006V8.54006C10.2426 8.58562 8.50127 8.19587 6.93101 7.4055C5.36074 6.61513 4.01032 5.44869 3 4.01006C3 4.01006 -1 13.0101 8 17.0101C5.94053 18.408 3.48716 19.109 1 19.0101C10 24.0101 21 19.0101 21 7.51006C20.9991 7.23151 20.9723 6.95365 20.92 6.68006C21.9406 5.67355 23 3.01006 23 3.01006Z"
+                      stroke="#E1D4C9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
               </li>
-              <li class="foffer__element">
-                <a href="#" class="foffer__link" target="_blank"><svg></svg></a>
+              <li class="media__element">
+                <a href="#" class="media__link" target="_blank">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                      stroke="#E1D4C9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16Z"
+                      stroke="#E1D4C9"
+                    />
+                    <path
+                      d="M17.5 6.51L17.51 6.49889"
+                      stroke="#E1D4C9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
               </li>
-              <li class="foffer__element">
-                <a href="#" class="foffer__link" target="_blank"><svg></svg></a>
+              <li class="media__element">
+                <a href="#" class="media__link" target="_blank">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17 2H14C12.6739 2 11.4021 2.52678 10.4645 3.46447C9.52678 4.40215 9 5.67392 9 7V10H6V14H9V22H13V14H16L17 10H13V7C13 6.73478 13.1054 6.48043 13.2929 6.29289C13.4804 6.10536 13.7348 6 14 6H17V2Z"
+                      stroke="#E1D4C9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
               </li>
             </ul>
           </div>
@@ -101,7 +265,11 @@
                   class="contact__link"
                   target="_blank"
                 >
-                  <img src="#" alt="address" class="contact__icon">
+                  <img
+                    src="../images/common/pin-alt.svg"
+                    alt="pin"
+                    class="contact__icon"
+                  />
                   8558 Green Rd., LA
                 </a>
               </li>
@@ -111,12 +279,20 @@
                   class="contact__link"
                   target="_blank"
                 >
-                  <img src="#" alt="telephone" class="contact__icon">
+                  <img
+                    src="../images/common/phone.svg"
+                    alt="phone"
+                    class="contact__icon"
+                  />
                   +1 (603) 555-0123
                 </a>
               </li>
               <li class="contact__element">
-                <img src="#" alt="time" class="contact__icon">
+                <img
+                  src="../images/common/clock.svg"
+                  alt="clock"
+                  class="contact__icon"
+                />
                 Mon-Sat: 9:00 AM – 23:00 PM
               </li>
             </ul>

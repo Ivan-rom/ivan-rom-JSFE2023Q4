@@ -1,0 +1,35 @@
+.menu {
+  &__content {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+  }
+
+  &__element {
+    @extend %text-button;
+  }
+
+  &__link {
+    @extend %link;
+  }
+
+  &__button {
+    @extend %text-button;
+    @extend %link;
+
+    span {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+  }
+}

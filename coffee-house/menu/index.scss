@@ -1,1 +1,101 @@
 @import '../common/';
+
+@import '../components/menu/';
+@import '../components/footer/';
+
+.offer {
+  text-align: center;
+  margin-bottom: 40px;
+
+  &__title {
+    @extend %heading-2;
+    width: 800px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  &__button {
+    @extend %text-button;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px 8px 8px;
+    border-radius: 100px;
+    border: 1px solid $border-light;
+
+    &-active {
+      background-color: $background-container;
+      color: $text-light;
+
+      .offer__icon {
+        background-color: $background-body;
+      }
+    }
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+    padding: 3px 7px;
+    border-radius: 50%;
+    background-color: $border-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.products {
+  margin-bottom: 100px;
+
+  &__list {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__item {
+    width: 310px;
+    border-radius: 40px;
+    border: 1px solid $border-light;
+  }
+
+  &__image {
+    border-radius: 40px;
+    width: 310px;
+    height: 310px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      transform: scale(0.95);
+    }
+  }
+
+  &__content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    height: 196px;
+  }
+
+  &__name {
+    @extend %heading-3;
+  }
+
+  &__price {
+    @extend %heading-3;
+    margin-top: auto;
+  }
+}
