@@ -1,0 +1,271 @@
+@import '../common/';
+
+@import '../components/header/';
+@import '../components/footer/';
+
+.hero {
+  margin-bottom: 100px;
+
+  &__wrapper {
+    border-radius: 40px;
+    padding: 100px;
+    background: url('../images/home/img-hero.jpg') lightgray 50% / cover
+      no-repeat;
+    color: $text-light;
+  }
+
+  &__content {
+    width: 530px;
+  }
+
+  &__title {
+    @extend %heading-1;
+    margin-bottom: 40px;
+  }
+
+  &__text {
+    margin-bottom: 40px;
+  }
+
+  &__button {
+    @extend %text-button;
+
+    border-radius: 100px;
+    width: 200px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: $text-dark;
+    background-color: $background-body;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+
+    transition: 0.2s;
+
+    &::after {
+      content: '';
+      display: block;
+      background: url('../images/common/coffee-cup.svg') 50% / cover no-repeat;
+
+      width: 0;
+      height: 0;
+      opacity: 0;
+
+      transition: 0.2s;
+    }
+
+    &:hover {
+      gap: 8px;
+
+      &::after {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.favorite {
+  text-align: center;
+  margin-bottom: 100px;
+
+  &__title {
+    @extend %heading-2;
+    margin-bottom: 40px;
+  }
+}
+
+.slider {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  &__button {
+    @extend %button;
+
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-prev {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__items {
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1152px;
+  }
+
+  &__content {
+    width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__item {
+    flex-shrink: 0;
+    width: 1152px;
+  }
+
+  &__image {
+    margin-bottom: 20px;
+    width: 480px;
+    height: 480px;
+  }
+
+  &__title {
+    @extend %heading-3;
+    margin-bottom: 16px;
+  }
+
+  &__text {
+    margin-bottom: 16px;
+  }
+
+  &__price {
+    @extend %heading-3;
+  }
+
+  &__indicators {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__indicator {
+    width: 40px;
+    height: 4px;
+    border-radius: 100px;
+    background-color: $border-light;
+  }
+
+  &__status {
+    background-color: $border-dark;
+    border-radius: 100px;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.about {
+  margin-bottom: 100px;
+
+  &__title {
+    @extend %heading-2;
+    margin-bottom: 40px;
+  }
+
+  &__photos {
+    display: grid;
+    grid-template-areas:
+      'a c'
+      'a d'
+      'b d';
+    gap: 40px;
+    grid-template-columns: 660px 660px;
+    grid-template-rows: 430px 120px 430px;
+  }
+
+  &__photo {
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:nth-child(1) {
+      grid-area: a;
+    }
+
+    &:nth-child(2) {
+      grid-area: b;
+    }
+
+    &:nth-child(3) {
+      grid-area: c;
+    }
+
+    &:nth-child(4) {
+      grid-area: d;
+    }
+
+    &:hover {
+      .about__image {
+        transform: scale(0.91);
+      }
+    }
+  }
+
+  &__image {
+    transition: 0.2s;
+    transform: scale(1);
+  }
+}
+
+.mobile {
+  margin-bottom: 100px;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 100px;
+  }
+
+  &__title {
+    @extend %heading-2;
+    margin-bottom: 40px;
+  }
+
+  &__text {
+    margin-bottom: 40px;
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__link {
+    @extend %button;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 1px solid $border-dark;
+    border-radius: 100px;
+    width: 200px;
+  }
+
+  > span {
+    display: block;
+  }
+
+  &__description {
+    @extend %text-description;
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  &__store {
+    display: block;
+  }
+}
