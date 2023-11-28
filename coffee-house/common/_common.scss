@@ -32,10 +32,17 @@ button {
 }
 
 .container {
-  width: 1400px;
-  padding-left: 20px;
-  padding-right: 20px;
+  max-width: 1440px;
+  padding-left: 40px;
+  padding-right: 40px;
   margin: 0 auto;
+}
+
+@media (width < 720px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 .title {

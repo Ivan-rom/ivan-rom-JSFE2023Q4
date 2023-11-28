@@ -1,0 +1,36 @@
+@media (max-width: 768px) {
+  .header {
+    &__nav {
+      transition: 0.2s;
+      transform: translateY(-200%);
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 125%;
+
+      position: absolute;
+      z-index: 999;
+      top: 100px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      flex-direction: column;
+      padding: 60px 40px;
+      gap: 100px;
+
+      img {
+        margin-left: 16px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    &__list {
+      flex-direction: column;
+      gap: 60px;
+    }
+
+    &__burger {
+      display: block;
+    }
+  }
+}
