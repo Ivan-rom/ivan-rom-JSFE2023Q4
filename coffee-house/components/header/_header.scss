@@ -58,6 +58,15 @@
       &::after {
         display: none;
       }
+
+      &.active {
+        pointer-events: none;
+
+        &::after {
+          display: block;
+          width: 100%;
+        }
+      }
     }
   }
 
