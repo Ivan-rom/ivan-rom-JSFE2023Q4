@@ -113,6 +113,9 @@
     justify-content: center;
     gap: 40px;
     margin-bottom: 40px;
+    max-width: 1352px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &__button {
@@ -312,7 +315,7 @@
   }
 
   &__content {
-    flex-basis: 630px;
+    flex: 1 1 630px;
   }
 
   &__title {
@@ -358,6 +361,7 @@
   }
 
   &__image {
+    flex: 2 1 630px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -370,6 +374,10 @@
 @media (max-width: 1100px) {
   .mobile {
     &__content {
+      flex-basis: 0;
+    }
+
+    &__image {
       flex-basis: 0;
     }
 
