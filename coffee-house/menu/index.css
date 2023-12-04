@@ -781,7 +781,7 @@ button {
   justify-content: center;
 }
 
-@media (min-height: 500px) {
+@media (width < 1440px) {
   .products__list {
     grid-template-columns: 310px 310px 310px;
   }
