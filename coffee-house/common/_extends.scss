@@ -2,12 +2,19 @@
   font-size: 72px;
   font-weight: 600;
   line-height: 105%;
+  @media (width < 720px) {
+    line-height: 115%;
+    font-size: 42px;
+  }
 }
 
 %heading-2 {
   font-size: 60px;
   font-weight: 600;
   line-height: 125%;
+  @media (width < 720px) {
+    font-size: 32px;
+  }
 }
 
 %heading-3 {
@@ -56,15 +63,21 @@
     transition: 0.2s;
   }
 
-  &:hover,
   &.active {
+    pointer-events: none;
+
     &::after {
       width: 100%;
     }
   }
 
-  &.active {
-    pointer-events: none;
+  @media (hover: hover) {
+    &:hover,
+    &.active {
+      &::after {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -88,11 +101,11 @@
     background-color: $border-light;
   }
 
-  &.active,
-  &:hover {
+  &.active {
     background-color: $background-container;
     border-color: $border-dark;
     color: $text-light;
+    pointer-events: none;
 
     svg * {
       stroke: $text-light;
@@ -104,7 +117,20 @@
     }
   }
 
-  &.active {
-    pointer-events: none;
+  @media (hover: hover) {
+    &:hover {
+      background-color: $background-container;
+      border-color: $border-dark;
+      color: $text-light;
+
+      svg * {
+        stroke: $text-light;
+        fill: $text-light;
+      }
+
+      & .icon {
+        background-color: $background-body;
+      }
+    }
   }
 }
