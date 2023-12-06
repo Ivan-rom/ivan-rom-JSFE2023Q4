@@ -706,7 +706,7 @@ button {
 }
 .hero__wrapper {
   border-radius: 40px;
-  z-index: -2;
+  z-index: 0;
   padding: 100px;
   background: url("../images/home/img-hero.jpg") lightgray 50%/cover no-repeat;
   color: #e1d4c9;
@@ -715,7 +715,7 @@ button {
 }
 .hero__content {
   position: relative;
-  z-index: -1;
+  z-index: 0;
   max-width: 530px;
 }
 .hero__title {
