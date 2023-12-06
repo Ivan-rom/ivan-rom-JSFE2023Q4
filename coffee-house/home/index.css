@@ -706,11 +706,16 @@ button {
 }
 .hero__wrapper {
   border-radius: 40px;
+  z-index: -2;
   padding: 100px;
   background: url("../images/home/img-hero.jpg") lightgray 50%/cover no-repeat;
   color: #e1d4c9;
+  position: relative;
+  overflow: hidden;
 }
 .hero__content {
+  position: relative;
+  z-index: -1;
   max-width: 530px;
 }
 .hero__title {
@@ -761,7 +766,20 @@ button {
     opacity: 1;
   }
 }
+.hero video {
+  z-index: -999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
+@media (max-width: 1300px) {
+  .hero video {
+    width: auto;
+    height: 100%;
+  }
+}
 @media (max-width: 768px) {
   .hero__wrapper {
     padding-left: 60px;
