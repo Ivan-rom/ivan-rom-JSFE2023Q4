@@ -1,5 +1,9 @@
 .header {
-  margin: 20px 0;
+  z-index: 999;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  background-color: $background-body;
 
   &__content {
     display: flex;
@@ -43,8 +47,8 @@
     @extend %link;
 
     span {
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
+      justify-content: center;
       align-items: start;
     }
 
@@ -60,7 +64,8 @@
       }
 
       &.active {
-        pointer-events: none;
+        cursor: default;
+        pointer-events: all;
 
         &::after {
           display: block;

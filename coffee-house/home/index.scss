@@ -8,13 +8,18 @@
 
   &__wrapper {
     border-radius: 40px;
+    z-index: -2;
     padding: 100px;
     background: url('../images/home/img-hero.jpg') lightgray 50% / cover
       no-repeat;
     color: $text-light;
+    position: relative;
+    overflow: hidden;
   }
 
   &__content {
+    position: relative;
+    z-index: -1;
     max-width: 530px;
   }
 
@@ -75,6 +80,23 @@
         height: 20px;
         opacity: 1;
       }
+    }
+  }
+
+  video {
+    z-index: -999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 1300px) {
+  .hero {
+    video {
+      width: auto;
+      height: 100%;
     }
   }
 }
