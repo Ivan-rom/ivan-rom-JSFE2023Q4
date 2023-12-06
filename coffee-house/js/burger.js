@@ -13,7 +13,9 @@ navigation.addEventListener('click', (e) => {
     if (e.target.classList.contains('active')) {
       e.preventDefault()
     }
-    toggleBurger()
+    if (window.matchMedia('( max-width: 768px )').matches) {
+      toggleBurger()
+    }
   }
 })
 
