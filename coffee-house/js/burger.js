@@ -1,19 +1,29 @@
 const burgerButton = document.querySelector('.header__burger')
 const navigation = document.querySelector('.header__nav')
-const headerLinks = document.querySelectorAll('.header__link')
 
 burgerButton.addEventListener('click', () => {
-  if (burgerButton.classList.contains('active')) {
-    navigation.style.transform = 'translateY(-200%)'
-  } else {
-    navigation.style.transform = 'translateY(0)'
-  }
-  burgerButton.classList.toggle('active')
+  toggleBurger()
 })
 
-headerLinks.forEach((link) =>
-  link.addEventListener('click', () => {
+navigation.addEventListener('click', (e) => {
+  if (
+    e.target.classList.contains('header__link') ||
+    e.target.classList.contains('header__button')
+  ) {
+    if (e.target.classList.contains('active')) {
+      e.preventDefault()
+    }
+    toggleBurger()
+  }
+})
+
+function toggleBurger() {
+  if (burgerButton.classList.contains('active')) {
     navigation.style.transform = 'translateY(-200%)'
-    burgerButton.classList.toggle('active')
-  })
-)
+    document.body.style.overflow = ''
+  } else {
+    navigation.style.transform = 'translateY(0)'
+    document.body.style.overflow = 'hidden'
+  }
+  burgerButton.classList.toggle('active')
+}

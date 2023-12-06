@@ -489,7 +489,11 @@ button {
 }
 
 .header {
-  margin: 20px 0;
+  z-index: 999;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  background-color: #e1d4c9;
 }
 .header__content {
   display: flex;
@@ -520,8 +524,8 @@ button {
   }
 }
 .header__button span {
-  display: flex;
-  justify-content: space-between;
+  display: inline-flex;
+  justify-content: center;
   align-items: start;
 }
 .header__button img {
@@ -535,7 +539,8 @@ button {
     display: none;
   }
   .header__button.active {
-    pointer-events: none;
+    cursor: default;
+    pointer-events: all;
   }
   .header__button.active::after {
     display: block;
@@ -581,13 +586,14 @@ button {
     font-size: 32px;
     font-weight: 600;
     line-height: 125%;
-    position: absolute;
-    z-index: 999;
+    position: fixed;
+    z-index: -1;
     top: 100px;
     left: 0;
     bottom: 0;
     right: 0;
     flex-direction: column;
+    align-items: center;
     padding: 60px 40px;
     gap: 100px;
   }
