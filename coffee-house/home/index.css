@@ -706,16 +706,14 @@ button {
 }
 .hero__wrapper {
   border-radius: 40px;
-  z-index: 0;
   padding: 100px;
-  background: url("../images/home/img-hero.jpg") lightgray 50%/cover no-repeat;
   color: #e1d4c9;
   position: relative;
   overflow: hidden;
 }
 .hero__content {
   position: relative;
-  z-index: 0;
+  z-index: 2;
   max-width: 530px;
 }
 .hero__title {
@@ -767,10 +765,13 @@ button {
   }
 }
 .hero video {
-  z-index: -999;
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
   transform: translate(-50%, -50%);
 }
 
