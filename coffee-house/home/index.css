@@ -596,6 +596,7 @@ button {
     align-items: center;
     padding: 60px 40px;
     gap: 100px;
+    overflow-y: auto;
   }
   .header__nav img {
     margin-left: 16px;
