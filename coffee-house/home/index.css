@@ -839,7 +839,7 @@ button {
   align-items: center;
   flex-shrink: 1;
   z-index: -1;
-  transform: translateX(-1152px);
+  transition: 0.7s;
 }
 .slider__item {
   width: 1152px;
@@ -875,11 +875,12 @@ button {
   border-radius: 100px;
   background-color: #c1b6ad;
 }
-.slider__status {
+.slider__indicator div {
   background-color: #665f55;
   border-radius: 100px;
-  width: 100%;
+  width: 0;
   height: 100%;
+  transition: 0.2s;
 }
 
 @media (width < 768px) {
