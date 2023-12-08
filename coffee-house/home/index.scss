@@ -8,7 +8,6 @@
 
   &__wrapper {
     border-radius: 40px;
-    z-index: 0;
     padding: 100px;
     background: url('../images/home/img-hero.jpg') lightgray 50% / cover
       no-repeat;
@@ -19,7 +18,7 @@
 
   &__content {
     position: relative;
-    z-index: 0;
+    z-index: 2;
     max-width: 530px;
   }
 
@@ -84,10 +83,12 @@
   }
 
   video {
-    z-index: -999;
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transform: translate(-50%, -50%);
   }
 }
@@ -157,37 +158,38 @@
   }
 
   &__window {
-    flex-basis: 1152px;
-    flex-shrink: 1;
+    max-width: 1152px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__body {
+    width: 1152px;
   }
 
   &__items {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
-    // width: 1152px;
-    // overflow: hidden;
     flex-shrink: 1;
     z-index: -1;
+    transition: 0.7s;
   }
 
   &__item {
-    // margin: 0 336px;
-    max-width: 480px;
+    width: 1152px;
+    flex-shrink: 0;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0 auto;
+    max-width: 480px;
   }
-
-  // &__item {
-  //   flex-shrink: 0;
-  //   width: 1152px;
-  // }
 
   &__image {
     margin-bottom: 20px;
@@ -220,13 +222,15 @@
     height: 4px;
     border-radius: 100px;
     background-color: $border-light;
-  }
 
-  &__status {
-    background-color: $border-dark;
-    border-radius: 100px;
-    width: 100%;
-    height: 100%;
+    div {
+      background-color: $border-dark;
+      border-radius: 100px;
+      width: 0;
+      height: 100%;
+
+      transition: 0.2s;
+    }
   }
 }
 
@@ -240,6 +244,10 @@
 
 @media (max-width: 678px) {
   .slider {
+    &__content {
+      max-width: 348px;
+    }
+
     &__image {
       max-width: 348px;
       max-height: 348px;
