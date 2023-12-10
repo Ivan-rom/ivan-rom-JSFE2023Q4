@@ -102,10 +102,14 @@
   }
 
   &.active {
+    pointer-events: none;
+  }
+
+  &.active,
+  &:has(input:checked) {
     background-color: $background-container;
     border-color: $border-dark;
     color: $text-light;
-    pointer-events: none;
 
     svg * {
       stroke: $text-light;
