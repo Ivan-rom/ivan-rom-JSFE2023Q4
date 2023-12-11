@@ -1,43 +1,29 @@
+// slider width constant
 const WIDTH = 1152
 
+// get all required elements
 const buttons = document.querySelectorAll('.slider__button')
 const slider = document.querySelector('.slider__items')
 const indicators = document.querySelectorAll('.slider__indicator')
 
+//create required variables
 let touchStart = 0
 let currentStep = 0
 let milliseconds = 0
 let percent = 0
 
+// set initial indicator
 let currentIndicator = indicators[currentStep]
 
+// create interval for automatic switch slide
 let interval = setInterval(() => intervalFn(), 1)
 
+// add event listeners
 buttons.forEach((button) => {
-  button.addEventListener('click', () => {
-    milliseconds = 0
-    percent = 0
-    currentIndicator.children[0].style.width = `${percent}%`
-
-    clearInterval(interval)
-
-    changeStep(button.classList.contains('slider__button-prev'))
-
-    changeIndicator()
-    moveSlider()
-
-    interval = setInterval(() => intervalFn(), 1)
-  })
+  button.addEventListener('click', clickEvent)
 })
 
-slider.addEventListener('touchstart', (e) => {
-  clearInterval(interval)
-
-  touchStart = e.touches[0].pageX
-
-  slider.addEventListener('touchend', touchEnd)
-  slider.addEventListener('touchcancel', touchCancel)
-})
+slider.addEventListener('touchstart', touchStartEvent)
 
 slider.addEventListener('mouseout', () => {
   interval = setInterval(() => intervalFn(), 1)
@@ -47,9 +33,37 @@ slider.addEventListener('mouseover', () => {
   clearInterval(interval)
 })
 
-function touchEnd({ changedTouches }) {
-  slider.removeEventListener('touchend', touchEnd)
-  slider.removeEventListener('touchcancel', touchCancel)
+slider.addEventListener('transitionend', () => {
+  buttons.forEach((button) => {
+    button.addEventListener('click', clickEvent)
+  })
+  slider.addEventListener('touchstart', touchStartEvent)
+})
+
+// event functions
+function clickEvent({ target }) {
+  buttons.forEach((button) => {
+    button.removeEventListener('click', clickEvent)
+  })
+  slider.removeEventListener('touchstart', touchStartEvent)
+
+  milliseconds = 0
+  percent = 0
+  currentIndicator.children[0].style.width = `${percent}%`
+
+  clearInterval(interval)
+
+  changeStepFn(target.classList.contains('slider__button-prev'))
+
+  changeIndicatorFn()
+  moveSlider()
+
+  interval = setInterval(() => intervalFn(), 1)
+}
+
+function touchEndEvent({ changedTouches }) {
+  slider.removeEventListener('touchend', touchEndEvent)
+  slider.removeEventListener('touchcancel', touchCancelEvent)
 
   const difference = changedTouches[0].pageX - touchStart
 
@@ -58,31 +72,46 @@ function touchEnd({ changedTouches }) {
     percent = 0
     currentIndicator.children[0].style.width = `${percent}%`
 
-    changeStep(difference > 0)
+    changeStepFn(difference > 0)
 
-    changeIndicator()
+    changeIndicatorFn()
     moveSlider()
   }
 
   interval = setInterval(() => intervalFn(), 1)
 }
 
-function touchCancel() {
-  slider.removeEventListener('touchend', touchEnd)
-  slider.removeEventListener('touchcancel', touchCancel)
+function touchCancelEvent() {
+  slider.removeEventListener('touchend', touchEndEvent)
+  slider.removeEventListener('touchcancel', touchCancelEvent)
 
   interval = setInterval(() => intervalFn(), 1)
 }
 
+function touchStartEvent(e) {
+  buttons.forEach((button) => {
+    button.removeEventListener('click', clickEvent)
+  })
+  slider.removeEventListener('touchstart', touchStartEvent)
+
+  clearInterval(interval)
+
+  touchStart = e.touches[0].pageX
+
+  slider.addEventListener('touchend', touchEndEvent)
+  slider.addEventListener('touchcancel', touchCancelEvent)
+}
+
+// technical functions
 function moveSlider() {
   slider.style.transform = `translateX(-${WIDTH * currentStep}px)`
 }
 
-function changeIndicator() {
+function changeIndicatorFn() {
   currentIndicator = indicators[currentStep]
 }
 
-function changeStep(back = false) {
+function changeStepFn(back = false) {
   if (back) {
     currentStep--
     if (currentStep < 0) currentStep = 2
@@ -104,8 +133,8 @@ function intervalFn() {
     milliseconds = 0
     currentIndicator.children[0].style.width = percent
 
-    changeStep()
-    changeIndicator()
+    changeStepFn()
+    changeIndicatorFn()
     moveSlider()
   }
 }

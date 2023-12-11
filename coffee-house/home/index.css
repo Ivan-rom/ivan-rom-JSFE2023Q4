@@ -411,16 +411,18 @@ body {
   background-color: #c1b6ad;
 }
 .active.mobile__link, .active.slider__button {
+  pointer-events: none;
+}
+.active.mobile__link, .active.slider__button, .mobile__link:has(input:checked), .slider__button:has(input:checked) {
   background-color: #665f55;
   border-color: #665f55;
   color: #e1d4c9;
-  pointer-events: none;
 }
-.active.mobile__link svg *, .active.slider__button svg * {
+.active.mobile__link svg *, .active.slider__button svg *, .mobile__link:has(input:checked) svg *, .slider__button:has(input:checked) svg * {
   stroke: #e1d4c9;
   fill: #e1d4c9;
 }
-.active.mobile__link .icon, .active.slider__button .icon {
+.active.mobile__link .icon, .active.slider__button .icon, .mobile__link:has(input:checked) .icon, .slider__button:has(input:checked) .icon {
   background-color: #e1d4c9;
 }
 @media (hover: hover) {
@@ -596,6 +598,7 @@ button {
     align-items: center;
     padding: 60px 40px;
     gap: 100px;
+    overflow-y: auto;
   }
   .header__nav img {
     margin-left: 16px;
