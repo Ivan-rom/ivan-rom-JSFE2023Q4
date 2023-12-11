@@ -1,5 +1,6 @@
 const tabs = document.querySelectorAll('.offer__input')
 const productList = document.querySelector('.products__list')
+const productButton = document.querySelector('.products__button')
 
 let products
 let currentProducts
@@ -9,12 +10,62 @@ let addictivesPrice = 0
 let sizePrice = 0
 let currentProduct
 
+let step = -1
+let steppedProducts = []
+
+let prevProducts
+
 tabs.forEach((tab) => tab.addEventListener('change', changeTabEvent))
+
+window.addEventListener('resize', () => {
+  step = -1
+  steppedProducts = []
+
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    steppedProducts = [...currentProducts]
+  } else {
+    updateProductsForMobiles()
+  }
+
+  if (currentProducts.length === steppedProducts.length) {
+    productButton.style.display = 'none'
+  } else {
+    productButton.style.display = 'flex'
+  }
+
+  if (JSON.stringify(prevProducts) !== JSON.stringify(steppedProducts))
+    renderProductsFn()
+})
+
+productButton.addEventListener('click', () => {
+  step++
+  updateProductsForMobiles()
+  renderProductsFn()
+  if (currentProducts.length === steppedProducts.length) {
+    productButton.style.display = 'none'
+  }
+})
 
 function changeTabEvent({ target }) {
   currentProducts = products.filter(
     (product) => product.category === target.value
   )
+
+  step = -1
+  steppedProducts = []
+
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    steppedProducts = [...currentProducts]
+  } else {
+    updateProductsForMobiles()
+  }
+
+  if (currentProducts.length === steppedProducts.length) {
+    productButton.style.display = 'none'
+  } else {
+    productButton.style.display = 'flex'
+  }
+
   renderProductsFn()
 }
 
@@ -41,7 +92,9 @@ function updatePriceFn() {
 function renderProductsFn() {
   productList.innerHTML = ``
 
-  currentProducts.map((product) => {
+  prevProducts = steppedProducts
+
+  steppedProducts.map((product) => {
     const li = document.createElement('li')
     li.className = 'products__item'
     li.innerHTML = `
@@ -210,7 +263,27 @@ function showModalFn() {
     .then((req) => req.json())
     .then((data) => data)
 
-  currentProducts = products.filter((product) => product.category === 'coffee')
+  currentProducts = await products.filter(
+    (product) => product.category === 'coffee'
+  )
+
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    steppedProducts = [...currentProducts]
+  } else {
+    updateProductsForMobiles()
+  }
+
+  if (currentProducts.length === steppedProducts.length) {
+    productButton.style.display = 'none'
+  } else {
+    productButton.style.display = 'flex'
+  }
 
   renderProductsFn()
 })()
+
+function updateProductsForMobiles() {
+  steppedProducts.push(
+    ...[...currentProducts].slice(step * 4 + 4, step * 4 + 8)
+  )
+}
