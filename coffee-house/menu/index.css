@@ -348,7 +348,7 @@ body {
   line-height: 140%;
 }
 
-.contact__element, .header__nav, .modal__button, .modal__tab, .products__button, .offer__button {
+.contact__element, .header__nav, .modal__button, .modal__tab, .products__button, .offer__label {
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
@@ -381,51 +381,51 @@ body {
   }
 }
 
-.modal__button, .modal__tab, .products__button, .offer__button {
+.modal__button, .modal__tab, .products__button, .offer__label {
   background-color: transparent;
   color: #403f3d;
   border: 1px solid #665f55;
   transition: 0.2s;
 }
-.modal__button svg, .modal__tab svg, .products__button svg, .offer__button svg,
+.modal__button svg, .modal__tab svg, .products__button svg, .offer__label svg,
 .modal__button svg *,
 .modal__tab svg *,
 .products__button svg *,
-.offer__button svg * {
+.offer__label svg * {
   transition: 0.2s;
   stroke: #403f3d;
   fill: #403f3d;
 }
-.modal__button .icon, .modal__tab .icon, .products__button .icon, .offer__button .icon {
+.modal__button .icon, .modal__tab .icon, .products__button .icon, .offer__label .icon {
   transition: 0.2s;
   background-color: #c1b6ad;
 }
-.active.modal__button, .active.modal__tab, .active.products__button, .active.offer__button {
+.active.modal__button, .active.modal__tab, .active.products__button, .active.offer__label {
   pointer-events: none;
 }
-.active.modal__button, .active.modal__tab, .active.products__button, .active.offer__button, .modal__button:has(input:checked), .modal__tab:has(input:checked), .products__button:has(input:checked), .offer__button:has(input:checked) {
+.active.modal__button, .active.modal__tab, .active.products__button, .active.offer__label, .modal__button:has(input:checked), .modal__tab:has(input:checked), .products__button:has(input:checked), .offer__label:has(input:checked) {
   background-color: #665f55;
   border-color: #665f55;
   color: #e1d4c9;
 }
-.active.modal__button svg *, .active.modal__tab svg *, .active.products__button svg *, .active.offer__button svg *, .modal__button:has(input:checked) svg *, .modal__tab:has(input:checked) svg *, .products__button:has(input:checked) svg *, .offer__button:has(input:checked) svg * {
+.active.modal__button svg *, .active.modal__tab svg *, .active.products__button svg *, .active.offer__label svg *, .modal__button:has(input:checked) svg *, .modal__tab:has(input:checked) svg *, .products__button:has(input:checked) svg *, .offer__label:has(input:checked) svg * {
   stroke: #e1d4c9;
   fill: #e1d4c9;
 }
-.active.modal__button .icon, .active.modal__tab .icon, .active.products__button .icon, .active.offer__button .icon, .modal__button:has(input:checked) .icon, .modal__tab:has(input:checked) .icon, .products__button:has(input:checked) .icon, .offer__button:has(input:checked) .icon {
+.active.modal__button .icon, .active.modal__tab .icon, .active.products__button .icon, .active.offer__label .icon, .modal__button:has(input:checked) .icon, .modal__tab:has(input:checked) .icon, .products__button:has(input:checked) .icon, .offer__label:has(input:checked) .icon {
   background-color: #e1d4c9;
 }
 @media (hover: hover) {
-  .modal__button:hover, .modal__tab:hover, .products__button:hover, .offer__button:hover {
+  .modal__button:hover, .modal__tab:hover, .products__button:hover, .offer__label:hover {
     background-color: #665f55;
     border-color: #665f55;
     color: #e1d4c9;
   }
-  .modal__button:hover svg *, .modal__tab:hover svg *, .products__button:hover svg *, .offer__button:hover svg * {
+  .modal__button:hover svg *, .modal__tab:hover svg *, .products__button:hover svg *, .offer__label:hover svg * {
     stroke: #e1d4c9;
     fill: #e1d4c9;
   }
-  .modal__button:hover .icon, .modal__tab:hover .icon, .products__button:hover .icon, .offer__button:hover .icon {
+  .modal__button:hover .icon, .modal__tab:hover .icon, .products__button:hover .icon, .offer__label:hover .icon {
     background-color: #e1d4c9;
   }
 }
@@ -709,21 +709,28 @@ button {
   justify-content: center;
   gap: 16px;
 }
-.offer__button {
+.offer__label {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px 8px 8px;
   border-radius: 100px;
   border-color: #c1b6ad;
+  cursor: pointer;
 }
-.offer__button .icon {
+.offer__label:has(input:checked) {
+  cursor: default;
+}
+.offer__label .icon {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.offer__input {
+  display: none;
 }
 
 @media (width < 740px) {
@@ -845,6 +852,7 @@ button {
   bottom: 0;
   z-index: -1;
   background-color: rgba(64, 63, 61, 0.8);
+  cursor: pointer;
 }
 .modal__wrapper {
   max-width: 800px;
@@ -883,6 +891,10 @@ button {
 .modal__tab {
   padding: 8px 16px 8px 8px;
   border-radius: 40px;
+  border-color: #c1b6ad;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
 }
 .modal__tab .icon {
