@@ -53,7 +53,17 @@ function clickEvent({ target }) {
 
   clearInterval(interval)
 
-  changeStepFn(target.classList.contains('slider__button-prev'))
+  let back = false
+  if (target.tagName === 'path') {
+    back = target.parentElement.parentElement.classList.contains(
+      'slider__button-prev'
+    )
+  } else if (target.tagName === 'svg') {
+    back = target.parentElement.classList.contains('slider__button-prev')
+  } else {
+    back = target.classList.contains('slider__button-prev')
+  }
+  changeStepFn(back)
 
   changeIndicatorFn()
   moveSlider()

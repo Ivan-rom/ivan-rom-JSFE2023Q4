@@ -21,10 +21,10 @@ navigation.addEventListener('click', (e) => {
 
 function toggleBurger() {
   if (burgerButton.classList.contains('active')) {
-    navigation.style.transform = 'translateY(-200%)'
+    navigation.style.transform = 'translateX(100%)'
     document.body.style.overflow = ''
   } else {
-    navigation.style.transform = 'translateY(0)'
+    navigation.style.transform = 'translateX(0)'
     document.body.style.overflow = 'hidden'
   }
   burgerButton.classList.toggle('active')
