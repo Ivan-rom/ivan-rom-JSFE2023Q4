@@ -100,6 +100,16 @@
               </p>
               <a href="../menu/" class="hero__button">Menu</a>
             </div>
+            <video
+              autoplay
+              loop
+              muted
+              preload="auto"
+              poster="../images/home/img-hero.jpg"
+            >
+              <source src="../video/enjoy-video-720px.webm" type="video/webm">
+              <source src="../video/enjoy-video-720px.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </section>
@@ -128,54 +138,58 @@
                   />
                 </svg>
               </button>
-              <ul class="slider__items">
-                <li class="slider__item">
-                  <div class="slider__content">
-                    <img
-                      src="../images/home/coffee-slider-1.png"
-                      alt="slider image"
-                      class="slider__image"
-                    >
-                    <h3 class="slider__title">S’mores Frappuccino</h3>
-                    <p class="slider__text">
-                      This new drink takes an espresso and mixes it with brown
-                      sugar and cinnamon before being topped with oat milk.
-                    </p>
-                    <p class="slider__price">$5.50</p>
-                  </div>
-                </li>
-                <!-- <li class="slider__item">
-                    <div class="slider__content">
-                      <img
-                        src="../images/home/coffee-slider-2.png"
-                        alt="slider image"
-                        class="slider__image"
-                      >
-                      <h3 class="slider__title">Caramel Macchiato</h3>
-                      <p class="slider__text">
-                        Fragrant and unique classic espresso with rich
-                        caramel-peanut syrup, with cream under whipped thick
-                        foam.
-                      </p>
-                      <p class="slider__price">$5.00</p>
-                    </div>
-                  </li>
-                  <li class="slider__item">
-                    <div class="slider__content">
-                      <img
-                        src="../images/home/coffee-slider-3.png"
-                        alt="slider image"
-                        class="slider__image"
-                      >
-                      <h3 class="slider__title">Ice coffee</h3>
-                      <p class="slider__text">
-                        A popular summer drink that tones and invigorates.
-                        Prepared from coffee, milk and ice.
-                      </p>
-                      <p class="slider__price">$4.50</p>
-                    </div>
-                  </li> -->
-              </ul>
+              <div class="slider__window">
+                <div class="slider__body">
+                  <ul class="slider__items">
+                    <li class="slider__item">
+                      <div class="slider__content">
+                        <img
+                          src="../images/home/coffee-slider-1.png"
+                          alt="slider image"
+                          class="slider__image"
+                        >
+                        <h3 class="slider__title">S’mores Frappuccino</h3>
+                        <p class="slider__text">
+                          This new drink takes an espresso and mixes it with brown
+                          sugar and cinnamon before being topped with oat milk.
+                        </p>
+                        <p class="slider__price">$5.50</p>
+                      </div>
+                    </li>
+                    <li class="slider__item">
+                        <div class="slider__content">
+                          <img
+                            src="../images/home/coffee-slider-2.png"
+                            alt="slider image"
+                            class="slider__image"
+                          >
+                          <h3 class="slider__title">Caramel Macchiato</h3>
+                          <p class="slider__text">
+                            Fragrant and unique classic espresso with rich
+                            caramel-peanut syrup, with cream under whipped thick
+                            foam.
+                          </p>
+                          <p class="slider__price">$5.00</p>
+                        </div>
+                    </li>
+                    <li class="slider__item">
+                      <div class="slider__content">
+                        <img
+                          src="../images/home/coffee-slider-3.png"
+                          alt="slider image"
+                          class="slider__image"
+                        >
+                        <h3 class="slider__title">Ice coffee</h3>
+                        <p class="slider__text">
+                          A popular summer drink that tones and invigorates.
+                          Prepared from coffee, milk and ice.
+                        </p>
+                        <p class="slider__price">$4.50</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               <button class="slider__button slider__button-next">
                 <svg
                   width="14"
@@ -196,10 +210,14 @@
           </div>
           <ul class="slider__indicators">
             <li class="slider__indicator">
-              <div class="slider__status"></div>
+              <div></div>
             </li>
-            <li class="slider__indicator"></li>
-            <li class="slider__indicator"></li>
+            <li class="slider__indicator">
+              <div></div>
+            </li>
+            <li class="slider__indicator">
+              <div></div>
+            </li>
           </ul>
         </div>
       </section>
@@ -444,5 +462,7 @@
         </div>
       </div>
     </footer>
+    <script src="../js/burger.js"></script>
+    <script src="../js/slider.js"></script>
   </body>
 </html>

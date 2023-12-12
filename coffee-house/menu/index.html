@@ -93,30 +93,31 @@
             </h1>
             <ul class="offer__tabs">
               <li class="offer__tab">
-                <button class="offer__button active">
+                <label class="offer__label">
+                  <input type="radio" value="coffee" class="offer__input" checked name="tab">
                   <i class="icon">
                     <img src="../images/menu/coffee.png" alt="coffee">
                   </i>
                   <span>Coffee</span>
-                </button>
+                </label>
               </li>
               <li class="offer__tab">
-                <button class="offer__button">
+                <label class="offer__label">
+                  <input type="radio" value="tea" class="offer__input" name="tab">
                   <i class="icon">
                     <img src="../images/menu/tea.png" alt="tea">
                   </i>
                   <span>Tea</span>
-                </button>
+                </label>
               </li>
               <li class="offer__tab">
-                <button class="offer__button">
+                <label class="offer__label">
+                  <input type="radio" value="dessert" class="offer__input" name="tab">
                   <i class="icon">
                     <img src="../images/menu/dessert.png" alt="dessert">
                   </i>
-                  <span>
-                    Dessert
-                  </span>
-                </button>
+                  <span>Dessert</span>
+                </label>
               </li>
             </ul>
           </div>
@@ -124,105 +125,7 @@
         <div class="menu__products products">
           <div class="container">
             <div class="products__wrapper">
-              <ul class="products__list">
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-1.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Irish coffee</p>
-                    <p class="products__text">
-                      Fragrant black coffee with Jameson Irish whiskey and
-                      whipped milk
-                    </p>
-                    <p class="products__price">$7.00</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-2.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Kahlua coffee</p>
-                    <p class="products__text">
-                      Classic coffee with milk and Kahlua liqueur under a cap of
-                      frothed milk
-                    </p>
-                    <p class="products__price">$7.00</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-3.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Honey raf</p>
-                    <p class="products__text">
-                      Espresso with frothed milk, cream and aromatic honey
-                    </p>
-                    <p class="products__price">$5.50</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-4.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Ice cappuccino</p>
-                    <p class="products__text">
-                      Cappuccino with soft thick foam in summer version with ice
-                    </p>
-                    <p class="products__price">$5.00</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-5.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Espresso</p>
-                    <p class="products__text">Classic black coffee</p>
-                    <p class="products__price">$4.50</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-6.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Latte</p>
-                    <p class="products__text">
-                      Espresso coffee with the addition of steamed milk and
-                      dense milk foam
-                    </p>
-                    <p class="products__price">$5.50</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-7.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Latte macchiato</p>
-                    <p class="products__text">
-                      Espresso with frothed milk and chocolate
-                    </p>
-                    <p class="products__price">$5.50</p>
-                  </div>
-                </li>
-                <li class="products__item">
-                  <div class="products__image">
-                    <img src="../images/proudcts/coffee-8.jpg" alt="product">
-                  </div>
-                  <div class="products__content">
-                    <p class="products__name">Coffee with cognac</p>
-                    <p class="products__text">
-                      Fragrant black coffee with cognac and whipped cream
-                    </p>
-                    <p class="products__price">$6.50</p>
-                  </div>
-                </li>
-              </ul>
+              <ul class="products__list"></ul>
               <button class="products__button">
                 <svg
                   width="24"
@@ -372,5 +275,7 @@
         </div>
       </div>
     </footer>
+    <script src="../js/burger.js"></script>
+    <script src="../js/menu.js"></script>
   </body>
 </html>
