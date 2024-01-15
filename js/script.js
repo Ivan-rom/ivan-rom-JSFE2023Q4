@@ -9,6 +9,7 @@ const word = document.querySelector("#word");
 let incorrectGuessesCount = 0;
 let currentWord;
 let letters = [];
+let guessedLetters = [];
 
 (function () {
   keys.forEach((key) =>
@@ -16,6 +17,14 @@ let letters = [];
       guessLetter(target.textContent)
     )
   );
+
+  window.addEventListener("keydown", (e) => {
+    if (e.keyCode >= 65 && e.keyCode <= 90) {
+      if (!guessedLetters.includes(e.key)) {
+        guessLetter(e.key.toLowerCase());
+      }
+    }
+  });
 
   initGame();
 })();
@@ -27,6 +36,7 @@ function getRandomInt(max) {
 function initGame() {
   currentWord = words[getRandomInt(words.length)];
   letters = [];
+  guessedLetters = [];
 
   incorrectGuessesCount = 0;
   hangmanParts.forEach((part) => {
@@ -60,6 +70,8 @@ function guessLetter(letter) {
 
   const key = findKey(letter);
   key.classList.add("button_disabled");
+
+  guessedLetters.push(letter);
 
   if (indexes.length === 0) {
     hangmanParts[incorrectGuessesCount].classList.remove(
