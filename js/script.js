@@ -8,6 +8,7 @@ const word = document.querySelector("#word");
 
 let incorrectGuessesCount = 0;
 let currentWord;
+let letters = [];
 
 (function () {
   keys.forEach((key) =>
@@ -25,6 +26,7 @@ function getRandomInt(max) {
 
 function initGame() {
   currentWord = words[getRandomInt(words.length)];
+  letters = [];
 
   incorrectGuessesCount = 0;
   hangmanParts.forEach((part) => {
@@ -40,7 +42,6 @@ function initGame() {
 }
 
 function createWord() {
-  const letters = [];
   for (let i = 0; i < currentWord.word.length; i++) {
     const letter = document.createElement("div");
     letter.className = "interface__letter interface__letter_hidden";
@@ -66,6 +67,11 @@ function guessLetter(letter) {
     );
     incorrectGuessesCount++;
     updateGuessesCount();
+  } else {
+    indexes.forEach((index) => {
+      letters[index].textContent = letter;
+      letters[index].classList.remove("interface__letter_hidden");
+    });
   }
 }
 
