@@ -29,6 +29,10 @@ button {
 .main {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 5px 10px;
+  flex-wrap: wrap;
 }
 
 .hangman {
@@ -94,7 +98,7 @@ button {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
 }
 
 .interface__word {
@@ -105,9 +109,9 @@ button {
 }
 
 .interface__letter {
-  min-width: 50px;
-  min-height: 80px;
-  font-size: 70px;
+  min-width: 32px;
+  min-height: 50px;
+  font-size: 44px;
   text-transform: uppercase;
   text-align: center;
 }
