@@ -32,7 +32,8 @@ let previousWord = "";
         !correctGuesses.includes(e.key) &&
         !incorrectGuesses.includes(e.key)
       ) {
-        guessLetter(e.key.toLowerCase());
+        const letter = String.fromCharCode(e.keyCode);
+        guessLetter(letter.toLowerCase());
       }
     }
   });
