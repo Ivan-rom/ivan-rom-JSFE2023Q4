@@ -61,6 +61,10 @@ button {
   position: absolute;
 }
 
+.hangman__part_invisible {
+  visibility: hidden;
+}
+
 #head {
   left: 50%;
 }
