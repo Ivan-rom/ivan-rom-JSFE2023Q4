@@ -17,6 +17,7 @@ let incorrectGuesses = [];
 let currentWord;
 let letters = [];
 let correctGuesses = [];
+let previousWord = "";
 
 (function () {
   keys.forEach((key) =>
@@ -51,6 +52,10 @@ function initGame() {
   word.innerHTML = "";
 
   currentWord = words[getRandomInt(words.length)];
+
+  while (previousWord === currentWord.word) {
+    currentWord = words[getRandomInt(words.length)];
+  }
   letters = [];
   correctGuesses = [];
 
@@ -107,6 +112,7 @@ function guessLetter(letter) {
 }
 
 function endGame(isWin = false) {
+  previousWord = currentWord.word;
   if (isWin) {
     modalMessage.textContent = "You win";
   } else {
