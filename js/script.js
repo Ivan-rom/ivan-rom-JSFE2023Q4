@@ -1,4 +1,7 @@
 import { words } from "./words.js";
+import { generatePage } from "./generatePage.js";
+
+generatePage();
 
 const hangmanParts = document.querySelectorAll(".hangman__part");
 const keys = document.querySelectorAll(".keyboard__button");
