@@ -103,6 +103,10 @@ button {
   gap: 50px;
 }
 
+.interface__hint {
+  max-width: 500px;
+}
+
 .interface__count {
   color: red;
 }
