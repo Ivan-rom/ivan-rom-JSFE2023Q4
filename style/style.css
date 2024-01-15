@@ -113,11 +113,12 @@ button {
 .interface__letter {
   min-width: 50px;
   min-height: 80px;
+  font-size: 70px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .interface__letter_hidden {
-  font-size: 70px;
-  text-transform: uppercase;
   position: relative;
 }
 
