@@ -168,3 +168,45 @@ button {
   opacity: 0.7;
   pointer-events: none;
 }
+
+/* modal */
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_hidden {
+  display: none;
+}
+
+.modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.336);
+}
+
+.modal__content {
+  position: relative;
+  z-index: 999;
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal__message {
+  font-size: 32px;
+}
