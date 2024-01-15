@@ -9,7 +9,15 @@ const word = document.querySelector("#word");
 let incorrectGuessesCount = 0;
 let currentWord;
 
-initGame();
+(function () {
+  keys.forEach((key) =>
+    key.addEventListener("click", ({ target }) =>
+      guessLetter(target.textContent)
+    )
+  );
+
+  initGame();
+})();
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -25,10 +33,9 @@ function initGame() {
   keys.forEach((key) => {
     key.classList.remove("button_disabled");
   });
-  guessesPlaceholder.textContent = incorrectGuessesCount;
-
   hintPlaceholder.textContent = currentWord.hint;
 
+  updateGuessesCount();
   createWord();
 }
 
@@ -40,4 +47,35 @@ function createWord() {
     letters.push(letter);
   }
   word.append(...letters);
+}
+
+function guessLetter(letter) {
+  const indexes = [];
+  let pos = currentWord.word.indexOf(letter);
+  while (pos !== -1) {
+    indexes.push(pos);
+    pos = currentWord.word.indexOf(letter, pos + 1);
+  }
+
+  const key = findKey(letter);
+  key.classList.add("button_disabled");
+
+  if (indexes.length === 0) {
+    hangmanParts[incorrectGuessesCount].classList.remove(
+      "hangman__part_invisible"
+    );
+    incorrectGuessesCount++;
+    updateGuessesCount();
+  }
+}
+
+function findKey(letter) {
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if (key.textContent === letter) return key;
+  }
+}
+
+function updateGuessesCount() {
+  guessesPlaceholder.textContent = incorrectGuessesCount;
 }
