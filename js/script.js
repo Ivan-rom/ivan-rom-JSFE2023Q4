@@ -5,11 +5,14 @@ const keys = document.querySelectorAll(".keyboard__button");
 const hintPlaceholder = document.querySelector("#hint-placeholder");
 const guessesPlaceholder = document.querySelector("#guesses-placeholder");
 const word = document.querySelector("#word");
+const modal = document.querySelector("#modal");
+const modalMessage = document.querySelector("#modal-message-placeholder");
+const secretWord = document.querySelector("#secret-word-placeholder");
 
-let incorrectGuessesCount = 0;
+let incorrectGuesses = [];
 let currentWord;
 let letters = [];
-let guessedLetters = [];
+let correctGuesses = [];
 
 (function () {
   keys.forEach((key) =>
@@ -20,7 +23,10 @@ let guessedLetters = [];
 
   window.addEventListener("keydown", (e) => {
     if (e.keyCode >= 65 && e.keyCode <= 90) {
-      if (!guessedLetters.includes(e.key)) {
+      if (
+        !correctGuesses.includes(e.key) &&
+        !incorrectGuesses.includes(e.key)
+      ) {
         guessLetter(e.key.toLowerCase());
       }
     }
@@ -34,11 +40,13 @@ function getRandomInt(max) {
 }
 
 function initGame() {
+  modal.classList.add("modal_hidden");
+
   currentWord = words[getRandomInt(words.length)];
   letters = [];
-  guessedLetters = [];
+  correctGuesses = [];
 
-  incorrectGuessesCount = 0;
+  incorrectGuesses = [];
   hangmanParts.forEach((part) => {
     part.classList.add("hangman__part_invisible");
   });
@@ -71,20 +79,33 @@ function guessLetter(letter) {
   const key = findKey(letter);
   key.classList.add("button_disabled");
 
-  guessedLetters.push(letter);
-
   if (indexes.length === 0) {
-    hangmanParts[incorrectGuessesCount].classList.remove(
+    hangmanParts[incorrectGuesses.length].classList.remove(
       "hangman__part_invisible"
     );
-    incorrectGuessesCount++;
+    incorrectGuesses.push(letter);
     updateGuessesCount();
   } else {
     indexes.forEach((index) => {
       letters[index].textContent = letter;
       letters[index].classList.remove("interface__letter_hidden");
     });
+    correctGuesses.push(letter);
   }
+
+  if (incorrectGuesses.length === 6) endGame();
+  else if (correctGuesses.length === new Set(currentWord.word.split("")).size)
+    endGame(true);
+}
+
+function endGame(isWin = false) {
+  if (isWin) {
+    modalMessage.textContent = "You win";
+  } else {
+    modalMessage.textContent = "You lose";
+  }
+  modal.classList.remove("modal_hidden");
+  secretWord.textContent = currentWord.word.toUpperCase();
 }
 
 function findKey(letter) {
@@ -95,5 +116,5 @@ function findKey(letter) {
 }
 
 function updateGuessesCount() {
-  guessesPlaceholder.textContent = incorrectGuessesCount;
+  guessesPlaceholder.textContent = incorrectGuesses.length;
 }
