@@ -149,15 +149,18 @@ button {
   max-width: 500px;
 }
 
-.button {
-  background-color: rgb(32, 93, 206);
-  color: white;
+.keyboard__button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* button */
+.button {
+  background-color: rgb(32, 93, 206);
+  padding: 10px 15px;
+  color: white;
   border-radius: 5px;
-  width: 45px;
-  height: 40px;
   text-transform: uppercase;
 }
 
