@@ -8,6 +8,7 @@ const word = document.querySelector("#word");
 const modal = document.querySelector("#modal");
 const modalMessage = document.querySelector("#modal-message-placeholder");
 const secretWord = document.querySelector("#secret-word-placeholder");
+const modalButton = document.querySelector(".modal__button");
 
 let incorrectGuesses = [];
 let currentWord;
@@ -32,6 +33,8 @@ let correctGuesses = [];
     }
   });
 
+  modalButton.addEventListener("click", initGame);
+
   initGame();
 })();
 
@@ -41,6 +44,8 @@ function getRandomInt(max) {
 
 function initGame() {
   modal.classList.add("modal_hidden");
+
+  word.innerHTML = "";
 
   currentWord = words[getRandomInt(words.length)];
   letters = [];
