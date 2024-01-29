@@ -1,0 +1,145 @@
+:root {
+  --pixel-big: 20px;
+  --pixel-mini: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  padding: 15px;
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: minmax(100px, max-content) max-content;
+  grid-template-rows: minmax(100px, max-content) max-content;
+  gap: 10px;
+
+  .map {
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+
+    .art {
+      .row {
+        display: flex;
+      }
+
+      .pixel {
+        width: var(--pixel-mini);
+        height: var(--pixel-mini);
+      }
+    }
+  }
+
+  .hints {
+    display: flex;
+    border: 2px solid black;
+    display: flex;
+    align-items: stretch;
+
+    &.columns {
+      grid-column: 2 / -1;
+      grid-row: 1;
+    }
+
+    &.rows {
+      grid-column: 1;
+      grid-row: 2 / -1;
+      flex-direction: column;
+    }
+
+    .group {
+      display: flex;
+      justify-content: end;
+      align-items: end;
+      border: 0px solid rgb(88, 88, 88);
+
+      &.column {
+        border-right-width: 1px;
+        width: var(--pixel-big);
+
+        &:nth-child(5n) {
+          border-right-width: 2px;
+        }
+
+        &:last-child {
+          border: none;
+        }
+
+        .line {
+          border-top: 1px solid black;
+        }
+      }
+
+      &.row {
+        border-bottom-width: 1px;
+
+        &:nth-child(5n) {
+          border-bottom-width: 2px;
+        }
+
+        &:last-child {
+          border: none;
+        }
+
+        .wrapper {
+          display: flex;
+
+          .line {
+            border-left: 1px solid black;
+          }
+        }
+      }
+
+      .line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--pixel-big);
+        height: var(--pixel-big);
+      }
+    }
+  }
+
+  .main {
+    border: 2px solid black;
+    grid-row: 2 / -1;
+    grid-column: 2 / -1;
+
+    .row {
+      display: flex;
+      border-bottom: 1px solid black;
+
+      &:nth-child(5n) {
+        border-width: 2px;
+      }
+
+      &:last-child {
+        border: none;
+      }
+
+      .pixel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--pixel-big);
+        height: var(--pixel-big);
+        border-right: 1px solid black;
+
+        &:nth-child(5n) {
+          border-width: 2px;
+        }
+
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+}
