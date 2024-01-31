@@ -33,6 +33,10 @@
       .pixel {
         width: var(--pixel-mini);
         height: var(--pixel-mini);
+
+        &.active {
+          background-color: black;
+        }
       }
     }
   }
@@ -79,13 +83,16 @@
 
       &.row {
         border-bottom-width: 1px;
+        height: calc(var(--pixel-big) + 1px);
 
         &:nth-child(5n) {
           border-bottom-width: 2px;
+          height: calc(var(--pixel-big) + 2px);
         }
 
         &:last-child {
           border: none;
+          height: calc(var(--pixel-big));
         }
 
         .wrapper {
@@ -115,13 +122,16 @@
     .row {
       display: flex;
       border-bottom: 1px solid black;
+      height: calc(var(--pixel-big) + 1px);
 
       &:nth-child(5n) {
         border-width: 2px;
+        height: calc(var(--pixel-big) + 2px);
       }
 
       &:last-child {
         border: none;
+        height: calc(var(--pixel-big));
       }
 
       .pixel {
@@ -131,6 +141,10 @@
         width: var(--pixel-big);
         height: var(--pixel-big);
         border-right: 1px solid black;
+
+        &.active {
+          background-color: black;
+        }
 
         &:nth-child(5n) {
           border-width: 2px;
