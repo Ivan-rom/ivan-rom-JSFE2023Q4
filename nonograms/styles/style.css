@@ -1,6 +1,7 @@
 :root {
   --pixel-big: 20px;
-  --pixel-mini: 10px;
+  --pixel-medium: 10px;
+  --pixel-mini: 5px;
 }
 
 * {
@@ -9,16 +10,25 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: sans-serif;
+}
+
 .page {
   padding: 15px;
   display: grid;
   min-height: 100vh;
   grid-template-columns: minmax(100px, max-content) max-content;
-  grid-template-rows: minmax(100px, max-content) max-content;
+  grid-template-rows: 50px minmax(100px, max-content) max-content;
   gap: 10px;
 
-  .map {
+  .header {
     grid-row: 1;
+    grid-column: 1 / -1;
+  }
+
+  .map {
+    grid-row: 2;
     grid-column: 1;
     display: flex;
     align-items: center;
@@ -31,8 +41,8 @@
       }
 
       .pixel {
-        width: var(--pixel-mini);
-        height: var(--pixel-mini);
+        width: var(--pixel-medium);
+        height: var(--pixel-medium);
 
         &.active {
           background-color: black;
@@ -49,12 +59,12 @@
 
     &.columns {
       grid-column: 2 / -1;
-      grid-row: 1;
+      grid-row: 2;
     }
 
     &.rows {
       grid-column: 1;
-      grid-row: 2 / -1;
+      grid-row: 3 / -1;
       flex-direction: column;
     }
 
@@ -116,7 +126,7 @@
 
   .main {
     border: 2px solid black;
-    grid-row: 2 / -1;
+    grid-row: 3 / -1;
     grid-column: 2 / -1;
 
     .row {
@@ -139,7 +149,7 @@
         align-items: center;
         justify-content: center;
         width: var(--pixel-big);
-        height: var(--pixel-big);
+        height: 100%;
         border-right: 1px solid black;
 
         &.active {

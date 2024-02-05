@@ -1,5 +1,11 @@
-import { clickHandler, contextMenuHandler } from "./handlers.js";
-import { createGrid, createHints } from "./render.js";
+import {
+  clickHandler,
+  contextMenuHandler,
+  exitHandler,
+  resetHandler,
+  saveHandler,
+} from "./handlers.js";
+import { createGrid, createHints, renderGames } from "./render.js";
 
 const WIDTH = 20;
 const HEIGHT = 20;
@@ -11,11 +17,13 @@ const initialState = {
 };
 
 if (window.location.href.includes("#")) {
-  initApp(window.location.href.split("#")[1]);
+  initGame(window.location.href.split("#")[1]);
+} else {
+  initApp();
 }
 
 window.addEventListener("hashchange", () => {
-  initApp(window.location.href.split("#")[1]);
+  initGame(window.location.href.split("#")[1]);
 });
 
 function generateHintsData(arr, isVertical = false) {
@@ -56,7 +64,7 @@ function generateHintsData(arr, isVertical = false) {
   return result;
 }
 
-function initApp(id, state = initialState) {
+function initGame(id, state = initialState) {
   if (!localStorage.getItem(id)) {
     localStorage.setItem(id, JSON.stringify(state));
   }
@@ -96,4 +104,25 @@ function initApp(id, state = initialState) {
   `;
 
   document.body.append(main);
+}
+
+async function initApp() {
+  const { games } = await fetch("../js/nonograms.json")
+    .then((data) => data.json())
+    .then((games) => games);
+  console.log(games);
+  const easyGames = games.filter((game) => game.difficult === "easy");
+  document.body.innerHTML = `
+  <div class="levels">
+    <h2 class="title">Choose level</h2>
+    <ul class="groups">
+      <li class="easy">
+        <h3 class="title">Easy</h3>
+        <ul class="group">
+          ${renderGames(easyGames)}
+        </ul>
+      </li>
+    </ul>
+  </div>
+  `;
 }

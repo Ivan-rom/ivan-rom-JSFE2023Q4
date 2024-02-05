@@ -42,3 +42,7 @@ function sortIds(arr) {
     return sum;
   });
 }
+
+export function resetHandler() {}
+export function exitHandler() {}
+export function saveHandler() {}
