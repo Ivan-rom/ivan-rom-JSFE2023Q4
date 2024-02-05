@@ -1,5 +1,4 @@
 export function createGrid(width, height, state, isRenderingResult = false) {
-  console.log(state);
   let rows = ``;
   for (let i = 0; i < height; i++) {
     rows += createRow(i, width, state, isRenderingResult);
@@ -13,7 +12,6 @@ function createRow(
   { activePixels, markedPixels, result },
   isRenderingResult
 ) {
-  console.log(activePixels, rowId);
   let row = "";
   for (let i = 0; i < width; i++) {
     if (isRenderingResult) {

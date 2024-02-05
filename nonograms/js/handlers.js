@@ -1,6 +1,7 @@
 import { saveToLocalStorage } from "./localStorage.js";
+import { sortIds, start } from "./script.js";
 
-export function clickHandler(target, id, activePixels) {
+export function clickHandler(target, id, activePixels, result) {
   if (target.dataset.pixelId) {
     if (target.dataset.active === "false") {
       target.dataset.active = true;
@@ -14,6 +15,11 @@ export function clickHandler(target, id, activePixels) {
       .querySelector(`[data-pixel-id="${target.dataset.pixelId}"]`)
       .classList.toggle("active");
     saveToLocalStorage(id, sortIds(activePixels), "activePixels");
+    if (
+      JSON.stringify(sortIds(activePixels)) === JSON.stringify(sortIds(result))
+    ) {
+      console.log("WINNNN");
+    }
   }
 }
 
@@ -33,16 +39,26 @@ export function contextMenuHandler(e, id, markedPixels) {
   }
 }
 
-function sortIds(arr) {
-  return arr.sort((a, b) => {
-    const [aRowId, aColId] = a.split(":");
-    const [bRowId, bColId] = b.split(":");
+export function resetHandler(e) {
+  if (e.target.className === "reset") {
+    console.log("reset");
+    const id = window.location.href.split("#")[1];
 
-    let sum = (+aRowId - +bRowId) * 10 + (+aColId - +bColId);
-    return sum;
-  });
+    localStorage.removeItem(id);
+
+    start();
+    window.removeEventListener("click", resetHandler);
+  }
 }
 
-export function resetHandler() {}
-export function exitHandler() {}
+export function exitHandler(e) {
+  e.preventDefault();
+}
 export function saveHandler() {}
+
+export function continueHandler(e) {
+  if (e.target.className === "continue") {
+    start(true);
+    window.removeEventListener("click", continueHandler);
+  }
+}
