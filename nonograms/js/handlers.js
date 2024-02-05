@@ -1,8 +1,19 @@
 import { saveToLocalStorage } from "./localStorage.js";
-import { sortIds, start } from "./script.js";
+import { sortIds, start, updateRecords } from "./script.js";
 
-export function clickHandler(target, id, activePixels, result) {
+let isTiming = false;
+let timeInterval;
+
+export function clickHandler(
+  target,
+  startTimer,
+  { id, result, activePixels, time }
+) {
   if (target.dataset.pixelId) {
+    if (!isTiming) {
+      timeInterval = startTimer(id, time);
+      isTiming = true;
+    }
     if (target.dataset.active === "false") {
       target.dataset.active = true;
       activePixels.push(target.dataset.pixelId);
@@ -18,12 +29,27 @@ export function clickHandler(target, id, activePixels, result) {
     if (
       JSON.stringify(sortIds(activePixels)) === JSON.stringify(sortIds(result))
     ) {
-      console.log("WINNNN");
+      isTiming = false;
+      clearInterval(timeInterval);
+      saveToLocalStorage(id, true, "isFinished");
+      updateRecords(id, time);
+      localStorage.removeItem(id);
+
+      const modal = document.createElement("div");
+      modal.className = "modal";
+      modal.innerHTML = `
+        <p class="message">Congratulations you won the game!!!</p>
+        <button>YEAHHHH</button>
+      `;
+      document.body.appendChild(modal);
+      modal.querySelector("button").addEventListener("click", () => {
+        document.body.removeChild(modal);
+      });
     }
   }
 }
 
-export function contextMenuHandler(e, id, markedPixels) {
+export function contextMenuHandler(e, { id, markedPixels }) {
   e.preventDefault();
   if (e.target.dataset.pixelId) {
     if (e.target.dataset.marked === "false") {
@@ -41,17 +67,19 @@ export function contextMenuHandler(e, id, markedPixels) {
 
 export function resetHandler(e) {
   if (e.target.className === "reset") {
-    console.log("reset");
+    clearInterval(timeInterval);
+    isTiming = false;
     const id = window.location.href.split("#")[1];
-
     localStorage.removeItem(id);
-
     start();
     window.removeEventListener("click", resetHandler);
   }
 }
 
 export function exitHandler(e) {
+  clearInterval(timeInterval);
+  isTiming = false;
+
   e.preventDefault();
 }
 export function saveHandler() {}

@@ -95,7 +95,7 @@ export function renderGames(data) {
       <li class="level">
         <a href="#${game.id}" class="link">
           <div class="image">
-            ${createGrid(20, 20, game, true)}
+            ${createGrid(game?.width || 5, game?.height || 5, game, true)}
           </div>
         </a>
       </li>

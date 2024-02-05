@@ -5,10 +5,11 @@ import {
   exitHandler,
   resetHandler,
 } from "./handlers.js";
+import { saveToLocalStorage } from "./localStorage.js";
 import { createGrid, createHints, renderGames } from "./render.js";
 
-const WIDTH = 20;
-const HEIGHT = 20;
+const WIDTH = 5;
+const HEIGHT = 5;
 
 export const initialState = {
   activePixels: [],
@@ -18,6 +19,7 @@ export const initialState = {
 };
 
 start();
+initRecords();
 
 export function start(isContinuing = false) {
   if (window.location.href.includes("#")) {
@@ -33,8 +35,8 @@ export function start(isContinuing = false) {
         ) {
           initModal();
         } else {
-          const { result } = data.games.find((el) => el.id == id);
-          initGame(id, result);
+          const game = data.games.find((el) => el.id == id);
+          initGame(id, game);
         }
       });
   } else {
@@ -46,15 +48,8 @@ window.addEventListener("hashchange", () => {
   start();
 });
 
-window.addEventListener("click", (e) => {
-  if (e.target.className === "exit") {
-    exitHandler(e);
-  } else if (e.target.className === "reset") {
-    resetHandler(e);
-  }
-});
-
 window.addEventListener("click", continueHandler);
+window.addEventListener("click", resetHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -96,34 +91,38 @@ function generateHintsData(arr, isVertical = false) {
   return result;
 }
 
-export function initGame(id, result) {
+export function initGame(id, game) {
   if (!localStorage.getItem(id)) {
-    const data = { ...initialState, result };
+    const data = { ...initialState, ...game };
     localStorage.setItem(id, JSON.stringify(data));
   }
-  document.body.classList.add("page");
+  document.body.className = "page";
   const localData = JSON.parse(localStorage.getItem(id));
-  const { activePixels, markedPixels } = localData;
 
   const main = document.createElement("div");
+  console.log(localData);
   main.className = "main";
-  const art = createGrid(WIDTH, HEIGHT, localData);
+  const art = createGrid(
+    localData?.width || WIDTH,
+    localData?.height || HEIGHT,
+    localData
+  );
   main.innerHTML = art;
 
   main.addEventListener("click", ({ target }) => {
-    clickHandler(target, id, activePixels, result);
+    clickHandler(target, startTimer, localData);
   });
 
   main.addEventListener("contextmenu", (e) => {
-    contextMenuHandler(e, id, markedPixels);
+    contextMenuHandler(e, localData);
   });
 
   const horizontalHints = createHints(
-    WIDTH,
+    localData?.width || WIDTH,
     generateHintsData([...localData.result])
   );
   const verticalHints = createHints(
-    HEIGHT,
+    localData?.height || HEIGHT,
     generateHintsData([...localData.result], true),
     true
   );
@@ -150,13 +149,27 @@ async function initApp() {
     .then((data) => data.json())
     .then((games) => games);
   const easyGames = games.filter((game) => game.difficult === "easy");
+
+  document.body.className = "home";
   document.body.innerHTML = `
+  <h1 class="title">Nonograms</h1>
+  <div class="table">
+    <h2 class="title">Last wins</h2>
+    <ol class="records">
+      <li class="record">
+        <div class="place">3</div>
+        <div class="image"></div>
+        <div class="difficult">medium</div>
+        <div class="time">00:00</div>
+      </li>
+    </ol>
+  </div>
   <div class="levels">
     <h2 class="title">Choose level</h2>
     <ul class="groups">
       <li class="easy">
         <h3 class="title">Easy</h3>
-        <ul class="group">
+        <ul class="list">
           ${renderGames(easyGames)}
         </ul>
       </li>
@@ -166,8 +179,6 @@ async function initApp() {
 }
 
 function initModal() {
-  window.addEventListener("click", continueHandler);
-  window.addEventListener("click", resetHandler);
   document.body.innerHTML = `
     <div class="modal">
       Would you like to continue your game or reset?
@@ -184,4 +195,30 @@ export function sortIds(arr) {
 
     return +aRowId - +bRowId || +aColId - +bColId;
   });
+}
+
+function startTimer(id, time) {
+  let timeLeft = time;
+  const timeInterval = setInterval(() => {
+    timeLeft -= 1000;
+    console.log(timeLeft);
+    saveToLocalStorage(id, timeLeft, "time");
+    if (timeLeft === 0) {
+      clearInterval(timeInterval);
+    }
+  }, 1000);
+  return timeInterval;
+}
+
+function initRecords(records = []) {
+  localStorage.setItem("records", JSON.stringify(records));
+}
+
+export function updateRecords(id, time) {
+  const prev = JSON.parse(localStorage.getItem("records"));
+  console.log(prev);
+  prev.shift();
+  prev.push({ [id]: time });
+
+  initRecords(prev);
 }
