@@ -103,3 +103,40 @@ export function renderGames(data) {
   }
   return result;
 }
+
+export function renderTimer(time) {
+  const seconds = String(time % 60).padStart(2, 0);
+  const minutes = String((time - seconds) / 60).padStart(2, 0);
+  return `${minutes}:${seconds}`;
+}
+
+export function renderRecords(records) {
+  let result = "";
+  if (records.length === 0) {
+    result = `
+      <div class="warning">
+        You haven't complete any game... Would you like to start?
+        <button class="random">Choose random game</button>
+      </div>
+    `;
+  } else {
+    const sortedRecords = records.sort((a, b) => a.time - b.time);
+    for (let i = 0; i < sortedRecords.length; i++) {
+      const record = sortedRecords[i];
+      result += `
+      <li class="record">
+      <div class="place">${i + 1}</div>
+      <div class="image">${createGrid(
+        record.width,
+        record.height,
+        record,
+        true
+      )}</div>
+        <div class="difficult">${record.difficult}</div>
+        <div class="time">${renderTimer(record.time)}</div>
+        </li>
+        `;
+    }
+  }
+  return result;
+}

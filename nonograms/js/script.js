@@ -6,7 +6,13 @@ import {
   resetHandler,
 } from "./handlers.js";
 import { saveToLocalStorage } from "./localStorage.js";
-import { createGrid, createHints, renderGames } from "./render.js";
+import {
+  createGrid,
+  createHints,
+  renderGames,
+  renderRecords,
+  renderTimer,
+} from "./render.js";
 
 const WIDTH = 5;
 const HEIGHT = 5;
@@ -14,12 +20,11 @@ const HEIGHT = 5;
 export const initialState = {
   activePixels: [],
   markedPixels: [],
-  time: 300000,
+  time: 0,
   isFinished: false,
 };
 
 start();
-initRecords();
 
 export function start(isContinuing = false) {
   if (window.location.href.includes("#")) {
@@ -31,7 +36,9 @@ export function start(isContinuing = false) {
         if (
           !isContinuing &&
           localStorage.getItem(id) &&
-          !JSON.parse(localStorage.getItem(id)).isFinished
+          !JSON.parse(localStorage.getItem(id)).isFinished &&
+          JSON.parse(localStorage.getItem(id)).time !=
+            JSON.parse(localStorage.getItem(id)).timeLeft
         ) {
           initModal();
         } else {
@@ -42,6 +49,9 @@ export function start(isContinuing = false) {
   } else {
     initApp();
   }
+  if (!localStorage.getItem("records")) {
+    localStorage.setItem("records", "[]");
+  }
 }
 
 window.addEventListener("hashchange", () => {
@@ -50,6 +60,7 @@ window.addEventListener("hashchange", () => {
 
 window.addEventListener("click", continueHandler);
 window.addEventListener("click", resetHandler);
+window.addEventListener("click", exitHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -100,7 +111,6 @@ export function initGame(id, game) {
   const localData = JSON.parse(localStorage.getItem(id));
 
   const main = document.createElement("div");
-  console.log(localData);
   main.className = "main";
   const art = createGrid(
     localData?.width || WIDTH,
@@ -144,11 +154,14 @@ export function initGame(id, game) {
   document.body.append(main);
 }
 
-async function initApp() {
+export async function initApp() {
   const { games } = await fetch("../js/nonograms.json")
     .then((data) => data.json())
     .then((games) => games);
   const easyGames = games.filter((game) => game.difficult === "easy");
+  const recordsData =
+    localStorage.getItem("records") &&
+    JSON.parse(localStorage.getItem("records"));
 
   document.body.className = "home";
   document.body.innerHTML = `
@@ -156,12 +169,7 @@ async function initApp() {
   <div class="table">
     <h2 class="title">Last wins</h2>
     <ol class="records">
-      <li class="record">
-        <div class="place">3</div>
-        <div class="image"></div>
-        <div class="difficult">medium</div>
-        <div class="time">00:00</div>
-      </li>
+      ${renderRecords(recordsData)}
     </ol>
   </div>
   <div class="levels">
@@ -198,27 +206,28 @@ export function sortIds(arr) {
 }
 
 function startTimer(id, time) {
-  let timeLeft = time;
+  const header = document.querySelector(".header");
+  const timer = document.createElement("div");
+  timer.className = "timer";
+  timer.textContent = renderTimer(time);
+  header.append(timer);
   const timeInterval = setInterval(() => {
-    timeLeft -= 1000;
-    console.log(timeLeft);
-    saveToLocalStorage(id, timeLeft, "time");
-    if (timeLeft === 0) {
-      clearInterval(timeInterval);
-    }
+    time += 1;
+    timer.textContent = renderTimer(time);
+    saveToLocalStorage(id, time, "time");
   }, 1000);
   return timeInterval;
 }
 
-function initRecords(records = []) {
-  localStorage.setItem("records", JSON.stringify(records));
-}
-
-export function updateRecords(id, time) {
+export async function updateRecords(id, time) {
   const prev = JSON.parse(localStorage.getItem("records"));
-  console.log(prev);
-  prev.shift();
-  prev.push({ [id]: time });
-
-  initRecords(prev);
+  if (prev.length === 5) {
+    prev.shift();
+  }
+  const { games } = await fetch("../js/nonograms.json")
+    .then((data) => data.json())
+    .then((games) => games);
+  const newRecord = games.find((game) => game.id === id);
+  prev.push({ ...newRecord, time });
+  localStorage.setItem("records", JSON.stringify(prev));
 }
