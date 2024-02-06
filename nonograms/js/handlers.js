@@ -1,5 +1,5 @@
 import { saveToLocalStorage } from "./localStorage.js";
-import { sortIds, start, updateRecords } from "./script.js";
+import { initApp, sortIds, start, updateRecords } from "./script.js";
 
 let isTiming = false;
 let timeInterval;
@@ -7,7 +7,7 @@ let timeInterval;
 export function clickHandler(
   target,
   startTimer,
-  { id, result, activePixels, time }
+  { id, result, activePixels, time, difficult }
 ) {
   if (target.dataset.pixelId) {
     if (!isTiming) {
@@ -32,7 +32,8 @@ export function clickHandler(
       isTiming = false;
       clearInterval(timeInterval);
       saveToLocalStorage(id, true, "isFinished");
-      updateRecords(id, time);
+      const finalTime = JSON.parse(localStorage.getItem(id)).time;
+      updateRecords(id, finalTime, result, difficult);
       localStorage.removeItem(id);
 
       const modal = document.createElement("div");
@@ -72,21 +73,22 @@ export function resetHandler(e) {
     const id = window.location.href.split("#")[1];
     localStorage.removeItem(id);
     start();
-    window.removeEventListener("click", resetHandler);
   }
 }
 
 export function exitHandler(e) {
-  clearInterval(timeInterval);
-  isTiming = false;
-
-  e.preventDefault();
+  if (e.target.className === "exit") {
+    e.preventDefault();
+    clearInterval(timeInterval);
+    isTiming = false;
+    history.pushState(null, null, window.location.href.split("#")[0]);
+    initApp();
+  }
 }
 export function saveHandler() {}
 
 export function continueHandler(e) {
   if (e.target.className === "continue") {
     start(true);
-    window.removeEventListener("click", continueHandler);
   }
 }
