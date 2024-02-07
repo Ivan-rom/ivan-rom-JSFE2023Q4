@@ -2,6 +2,8 @@ import { saveToLocalStorage } from "./localStorage.js";
 import { createGrid } from "./render.js";
 import { initApp, sortIds, start, updateRecords } from "./script.js";
 
+// https://www.fesliyanstudios.com/play-mp3/3
+
 let isTiming = false;
 let timeInterval;
 let isFailed = false;
@@ -16,13 +18,18 @@ export function clickHandler(
       timeInterval = startTimer(id, time);
       isTiming = true;
     }
-    audio.play();
     if (target.dataset.active === "false") {
       target.dataset.active = true;
       activePixels.push(target.dataset.pixelId);
+
+      const audio = new Audio("../assets/active.mp3");
+      audio.play();
     } else {
       target.dataset.active = false;
       activePixels.splice(activePixels.indexOf(target.dataset.pixelId), 1);
+
+      const audio = new Audio("../assets/activeClear.mp3");
+      audio.play();
     }
     target.classList.toggle("active");
     document
@@ -32,6 +39,9 @@ export function clickHandler(
     if (
       JSON.stringify(sortIds(activePixels)) === JSON.stringify(sortIds(result))
     ) {
+      const audio = new Audio("../assets/win.mp3");
+      audio.play();
+
       isTiming = false;
       clearInterval(timeInterval);
       saveToLocalStorage(id, true, "isFinished");
@@ -60,10 +70,16 @@ export function contextMenuHandler(e, { id, markedPixels }) {
       e.target.dataset.marked = true;
       e.target.innerHTML = "&times;";
       markedPixels.push(e.target.dataset.pixelId);
+
+      const audio = new Audio("../assets/marked.mp3");
+      audio.play();
     } else {
       e.target.dataset.marked = false;
       e.target.innerHTML = "";
       markedPixels.splice(markedPixels.indexOf(e.target.dataset.pixelId), 1);
+
+      const audio = new Audio("../assets/markedClear.mp3");
+      audio.play();
     }
     saveToLocalStorage(id, markedPixels, "markedPixels");
   }

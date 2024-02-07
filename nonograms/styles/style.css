@@ -14,6 +14,16 @@ body {
   font-family: sans-serif;
 }
 
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 15px;
+  border-radius: 15px;
+  background-color: aqua;
+}
+
 .page {
   padding: 15px;
   display: grid;
