@@ -4,6 +4,7 @@ import {
   continueHandler,
   exitHandler,
   resetHandler,
+  showHandler,
 } from "./handlers.js";
 import { saveToLocalStorage } from "./localStorage.js";
 import {
@@ -33,12 +34,14 @@ export function start(isContinuing = false) {
       .then((games) => games)
       .then((data) => {
         const id = window.location.href.split("#")[1];
+        const localData = JSON.parse(localStorage.getItem(id));
         if (
           !isContinuing &&
           localStorage.getItem(id) &&
-          !JSON.parse(localStorage.getItem(id)).isFinished &&
-          JSON.parse(localStorage.getItem(id)).time !=
-            JSON.parse(localStorage.getItem(id)).timeLeft
+          !localData.isFinished &&
+          localData.time !== localData.timeLeft &&
+          (localData.markedPixels.length !== 0 ||
+            localData.activePixels.length !== 0)
         ) {
           initModal();
         } else {
@@ -61,6 +64,7 @@ window.addEventListener("hashchange", () => {
 window.addEventListener("click", continueHandler);
 window.addEventListener("click", resetHandler);
 window.addEventListener("click", exitHandler);
+window.addEventListener("click", showHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -141,6 +145,8 @@ export function initGame(id, game) {
     <div class="header">
       <a href="" class="exit">Exit</a>
       <button class="reset">Reset level</button>
+      <div class="timer">${renderTimer(localData.time)}</div>
+      <button class="show">Show result</button>
     </div>
     <div class="map">
       <div class="art">
@@ -206,11 +212,8 @@ export function sortIds(arr) {
 }
 
 function startTimer(id, time) {
-  const header = document.querySelector(".header");
-  const timer = document.createElement("div");
-  timer.className = "timer";
-  timer.textContent = renderTimer(time);
-  header.append(timer);
+  const timer = document.querySelector(".timer");
+
   const timeInterval = setInterval(() => {
     time += 1;
     timer.textContent = renderTimer(time);
