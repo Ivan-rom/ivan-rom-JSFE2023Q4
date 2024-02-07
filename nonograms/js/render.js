@@ -116,7 +116,6 @@ export function renderRecords(records) {
     result = `
       <div class="warning">
         You haven't complete any game... Would you like to start?
-        <button class="random">Choose random game</button>
       </div>
     `;
   } else {

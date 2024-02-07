@@ -3,7 +3,9 @@ import {
   contextMenuHandler,
   continueHandler,
   exitHandler,
+  randomHandler,
   resetHandler,
+  showHandler,
 } from "./handlers.js";
 import { saveToLocalStorage } from "./localStorage.js";
 import {
@@ -33,12 +35,14 @@ export function start(isContinuing = false) {
       .then((games) => games)
       .then((data) => {
         const id = window.location.href.split("#")[1];
+        const localData = JSON.parse(localStorage.getItem(id));
         if (
           !isContinuing &&
           localStorage.getItem(id) &&
-          !JSON.parse(localStorage.getItem(id)).isFinished &&
-          JSON.parse(localStorage.getItem(id)).time !=
-            JSON.parse(localStorage.getItem(id)).timeLeft
+          !localData.isFinished &&
+          localData.time !== localData.timeLeft &&
+          (localData.markedPixels.length !== 0 ||
+            localData.activePixels.length !== 0)
         ) {
           initModal();
         } else {
@@ -54,13 +58,12 @@ export function start(isContinuing = false) {
   }
 }
 
-window.addEventListener("hashchange", () => {
-  start();
-});
-
+window.addEventListener("hashchange", start);
 window.addEventListener("click", continueHandler);
 window.addEventListener("click", resetHandler);
 window.addEventListener("click", exitHandler);
+window.addEventListener("click", showHandler);
+window.addEventListener("click", randomHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -141,6 +144,8 @@ export function initGame(id, game) {
     <div class="header">
       <a href="" class="exit">Exit</a>
       <button class="reset">Reset level</button>
+      <div class="timer">${renderTimer(localData.time)}</div>
+      <button class="show">Show result</button>
     </div>
     <div class="map">
       <div class="art">
@@ -159,6 +164,8 @@ export async function initApp() {
     .then((data) => data.json())
     .then((games) => games);
   const easyGames = games.filter((game) => game.difficult === "easy");
+  const mediumGames = games.filter((game) => game.difficult === "medium");
+  const hardGames = games.filter((game) => game.difficult === "hard");
   const recordsData =
     localStorage.getItem("records") &&
     JSON.parse(localStorage.getItem("records"));
@@ -174,11 +181,24 @@ export async function initApp() {
   </div>
   <div class="levels">
     <h2 class="title">Choose level</h2>
+    <button class="random">Choose random game</button>
     <ul class="groups">
       <li class="easy">
         <h3 class="title">Easy</h3>
         <ul class="list">
           ${renderGames(easyGames)}
+        </ul>
+      </li>
+      <li class="medium">
+        <h3 class="title">Medium</h3>
+        <ul class="list">
+          ${renderGames(mediumGames)}
+        </ul>
+      </li>
+      <li class="hard">
+        <h3 class="title">Hard</h3>
+        <ul class="list">
+          ${renderGames(hardGames)}
         </ul>
       </li>
     </ul>
@@ -206,11 +226,8 @@ export function sortIds(arr) {
 }
 
 function startTimer(id, time) {
-  const header = document.querySelector(".header");
-  const timer = document.createElement("div");
-  timer.className = "timer";
-  timer.textContent = renderTimer(time);
-  header.append(timer);
+  const timer = document.querySelector(".timer");
+
   const timeInterval = setInterval(() => {
     time += 1;
     timer.textContent = renderTimer(time);
