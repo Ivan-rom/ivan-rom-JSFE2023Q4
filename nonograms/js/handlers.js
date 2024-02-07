@@ -53,7 +53,8 @@ export function clickHandler(
       modal.className = "modal";
       modal.innerHTML = `
         <p class="message">Congratulations you won the game!!!</p>
-        <button>YEAHHHH</button>
+        <button class="exit">Home</button>
+        <button class="random">Random game</button>
       `;
       document.body.appendChild(modal);
       modal.querySelector("button").addEventListener("click", () => {
@@ -135,5 +136,20 @@ export function showHandler(e) {
 export function continueHandler(e) {
   if (e.target.className === "continue") {
     start(true);
+  }
+}
+
+export function randomHandler(e) {
+  if (e.target.className === "random") {
+    fetch("../js/nonograms.json")
+      .then((data) => data.json())
+      .then((games) => games)
+      .then((data) => {
+        const randomId =
+          data.games[Math.floor(Math.random() * data.games.length)].id;
+
+        window.location.hash = randomId;
+        initApp();
+      });
   }
 }

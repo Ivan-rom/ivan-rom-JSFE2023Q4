@@ -3,6 +3,7 @@ import {
   contextMenuHandler,
   continueHandler,
   exitHandler,
+  randomHandler,
   resetHandler,
   showHandler,
 } from "./handlers.js";
@@ -57,14 +58,12 @@ export function start(isContinuing = false) {
   }
 }
 
-window.addEventListener("hashchange", () => {
-  start();
-});
-
+window.addEventListener("hashchange", start);
 window.addEventListener("click", continueHandler);
 window.addEventListener("click", resetHandler);
 window.addEventListener("click", exitHandler);
 window.addEventListener("click", showHandler);
+window.addEventListener("click", randomHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -180,6 +179,7 @@ export async function initApp() {
   </div>
   <div class="levels">
     <h2 class="title">Choose level</h2>
+    <button class="random">Choose random game</button>
     <ul class="groups">
       <li class="easy">
         <h3 class="title">Easy</h3>
