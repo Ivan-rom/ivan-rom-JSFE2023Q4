@@ -164,6 +164,8 @@ export async function initApp() {
     .then((data) => data.json())
     .then((games) => games);
   const easyGames = games.filter((game) => game.difficult === "easy");
+  const mediumGames = games.filter((game) => game.difficult === "medium");
+  const hardGames = games.filter((game) => game.difficult === "hard");
   const recordsData =
     localStorage.getItem("records") &&
     JSON.parse(localStorage.getItem("records"));
@@ -185,6 +187,18 @@ export async function initApp() {
         <h3 class="title">Easy</h3>
         <ul class="list">
           ${renderGames(easyGames)}
+        </ul>
+      </li>
+      <li class="medium">
+        <h3 class="title">Medium</h3>
+        <ul class="list">
+          ${renderGames(mediumGames)}
+        </ul>
+      </li>
+      <li class="hard">
+        <h3 class="title">Hard</h3>
+        <ul class="list">
+          ${renderGames(hardGames)}
         </ul>
       </li>
     </ul>

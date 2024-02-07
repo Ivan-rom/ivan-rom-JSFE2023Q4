@@ -2,8 +2,6 @@ import { saveToLocalStorage } from "./localStorage.js";
 import { createGrid } from "./render.js";
 import { initApp, sortIds, start, updateRecords } from "./script.js";
 
-// https://www.fesliyanstudios.com/play-mp3/3
-
 let isTiming = false;
 let timeInterval;
 let isFailed = false;
