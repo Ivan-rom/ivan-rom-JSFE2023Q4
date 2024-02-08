@@ -6,6 +6,7 @@ import {
   randomHandler,
   resetHandler,
   showHandler,
+  soundHandler,
 } from "./handlers.js";
 import { saveToLocalStorage } from "./localStorage.js";
 import {
@@ -64,6 +65,7 @@ window.addEventListener("click", resetHandler);
 window.addEventListener("click", exitHandler);
 window.addEventListener("click", showHandler);
 window.addEventListener("click", randomHandler);
+window.addEventListener("click", soundHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -146,6 +148,7 @@ export function initGame(id, game) {
       <button class="reset">Reset level</button>
       <div class="timer">${renderTimer(localData.time)}</div>
       <button class="show">Show result</button>
+      <button class="sound">Turn off sound</button>
     </div>
     <div class="map">
       <div class="art">

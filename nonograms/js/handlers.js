@@ -5,6 +5,7 @@ import { initApp, sortIds, start, updateRecords } from "./script.js";
 let isTiming = false;
 let timeInterval;
 let isFailed = false;
+let isSound = true;
 
 export function clickHandler(
   target,
@@ -20,14 +21,18 @@ export function clickHandler(
       target.dataset.active = true;
       activePixels.push(target.dataset.pixelId);
 
-      const audio = new Audio("../assets/active.mp3");
-      audio.play();
+      if (isSound) {
+        const audio = new Audio("../assets/active.mp3");
+        audio.play();
+      }
     } else {
       target.dataset.active = false;
       activePixels.splice(activePixels.indexOf(target.dataset.pixelId), 1);
 
-      const audio = new Audio("../assets/activeClear.mp3");
-      audio.play();
+      if (isSound) {
+        const audio = new Audio("../assets/activeClear.mp3");
+        audio.play();
+      }
     }
     target.classList.toggle("active");
     document
@@ -37,8 +42,10 @@ export function clickHandler(
     if (
       JSON.stringify(sortIds(activePixels)) === JSON.stringify(sortIds(result))
     ) {
-      const audio = new Audio("../assets/win.mp3");
-      audio.play();
+      if (isSound) {
+        const audio = new Audio("../assets/win.mp3");
+        audio.play();
+      }
 
       isTiming = false;
       clearInterval(timeInterval);
@@ -70,15 +77,19 @@ export function contextMenuHandler(e, { id, markedPixels }) {
       e.target.innerHTML = "&times;";
       markedPixels.push(e.target.dataset.pixelId);
 
-      const audio = new Audio("../assets/marked.mp3");
-      audio.play();
+      if (isSound) {
+        const audio = new Audio("../assets/marked.mp3");
+        audio.play();
+      }
     } else {
       e.target.dataset.marked = false;
       e.target.innerHTML = "";
       markedPixels.splice(markedPixels.indexOf(e.target.dataset.pixelId), 1);
 
-      const audio = new Audio("../assets/markedClear.mp3");
-      audio.play();
+      if (isSound) {
+        const audio = new Audio("../assets/markedClear.mp3");
+        audio.play();
+      }
     }
     saveToLocalStorage(id, markedPixels, "markedPixels");
   }
@@ -149,5 +160,17 @@ export function randomHandler(e) {
         window.location.hash = randomId;
         initApp();
       });
+  }
+}
+export function soundHandler(e) {
+  if (e.target.className === "sound") {
+    console.log(isSound);
+    if (isSound) {
+      isSound = false;
+      e.target.textContent = "Turn sound on";
+    } else {
+      isSound = true;
+      e.target.textContent = "Turn sound off";
+    }
   }
 }
