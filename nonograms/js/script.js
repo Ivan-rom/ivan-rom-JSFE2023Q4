@@ -28,19 +28,17 @@ export const initialState = {
   isFinished: false,
 };
 
-start();
-
 export function start(isContinuing = false) {
   if (window.location.href.includes("#")) {
-    fetch("../js/nonograms.json")
-      .then((data) => data.json())
-      .then((games) => games)
-      .then((data) => {
-        const id = window.location.href.split("#")[1];
-        const localData = JSON.parse(localStorage.getItem(id));
-        if (localData) {
-          initGame(id, localData);
-        } else {
+    const id = window.location.href.split("#")[1];
+    const localData = JSON.parse(localStorage.getItem(id));
+    if (localData) {
+      initGame(id, localData);
+    } else {
+      fetch("../js/nonograms.json")
+        .then((data) => data.json())
+        .then((games) => games)
+        .then((data) => {
           // if (
           //   !isContinuing &&
           //   localStorage.getItem(id) &&
@@ -52,9 +50,9 @@ export function start(isContinuing = false) {
           // } else {
           const game = data.games.find((el) => el.id == id);
           initGame(id, game);
-        }
-        // }
-      });
+        });
+    }
+    // }
   } else {
     initApp();
   }
@@ -254,7 +252,23 @@ export async function updateRecords(id, time) {
   const { games } = await fetch("../js/nonograms.json")
     .then((data) => data.json())
     .then((games) => games);
-  const newRecord = games.find((game) => game.id === id);
+  const newRecord = games.find((game) => game.id == id);
   prev.push({ ...newRecord, time });
   localStorage.setItem("records", JSON.stringify(prev));
 }
+
+function initialStart() {
+  fetch("../js/nonograms.json")
+    .then((data) => data.json())
+    .then((games) => games)
+    .then((data) => {
+      const easyGames = data.games.filter((game) => game.difficult === "easy");
+      const randomId =
+        easyGames[Math.floor(Math.random() * easyGames.length)].id;
+
+      window.location.hash = randomId;
+      start();
+    });
+}
+
+initialStart();

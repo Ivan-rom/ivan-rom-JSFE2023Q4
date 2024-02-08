@@ -57,7 +57,7 @@ export function clickHandler(
       clearInterval(timeInterval);
       saveToLocalStorage(id, true, "isFinished");
       const finalTime = JSON.parse(localStorage.getItem(id)).time;
-      updateRecords(id, finalTime, result, difficult);
+      updateRecords(id, finalTime);
       localStorage.removeItem(id);
 
       const modal = document.createElement("div");
@@ -174,7 +174,7 @@ export function randomHandler(e) {
           data.games[Math.floor(Math.random() * data.games.length)].id;
 
         window.location.hash = randomId;
-        initApp();
+        start();
       });
   }
 }
