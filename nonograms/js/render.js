@@ -94,9 +94,7 @@ export function renderGames(data) {
     result += `
       <li class="level">
         <a href="#${game.id}" class="link">
-          <div class="image">
-            ${createGrid(game?.width || 5, game?.height || 5, game, true)}
-          </div>
+          ${game.title}
         </a>
       </li>
     `;
@@ -124,16 +122,17 @@ export function renderRecords(records) {
       const record = sortedRecords[i];
       result += `
       <li class="record">
-      <div class="place">${i + 1}</div>
-      <div class="image">${createGrid(
-        record.width,
-        record.height,
-        record,
-        true
-      )}</div>
+        <div class="place">${i + 1}</div>
+        <div class="image">${createGrid(
+          record.width,
+          record.height,
+          record,
+          true
+        )}</div>
+        <p class="title">${record.title}</p>
         <div class="difficult">${record.difficult}</div>
         <div class="time">${renderTimer(record.time)}</div>
-        </li>
+      </li>
         `;
     }
   }
