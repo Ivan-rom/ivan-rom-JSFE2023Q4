@@ -1,5 +1,5 @@
 import { saveToLocalStorage } from "./localStorage.js";
-import { createGrid } from "./render.js";
+import { createGrid, renderTimer } from "./render.js";
 import {
   initApp,
   sortIds,
@@ -64,6 +64,7 @@ export function clickHandler(
       modal.classList.contains("modal");
       modal.innerHTML = `
         <p class="message">Congratulations you won the game!!!</p>
+        <p class="message">You solved nonogram in ${renderTimer(time)}</p>
         <button class="exit">Home</button>
         <button class="random">Random game</button>
       `;
