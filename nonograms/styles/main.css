@@ -38,11 +38,11 @@
         list-style: none;
 
         .level {
-          margin-bottom: 5px;
+          margin-bottom: 20px;
 
           .link {
             text-decoration: none;
-            color: black;
+            color: var(--content-color);
           }
         }
       }
@@ -50,17 +50,12 @@
   }
 
   .image {
-    border: 1px solid black;
     .row {
       display: flex;
 
       .pixel {
         width: var(--pixel-mini);
         height: var(--pixel-mini);
-
-        &.active {
-          background-color: black;
-        }
       }
     }
   }

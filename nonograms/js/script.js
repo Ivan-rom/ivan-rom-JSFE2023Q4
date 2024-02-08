@@ -21,6 +21,8 @@ import {
 const WIDTH = 5;
 const HEIGHT = 5;
 
+let darkMode = false;
+
 export const initialState = {
   activePixels: [],
   markedPixels: [],
@@ -69,6 +71,17 @@ window.addEventListener("click", exitHandler);
 window.addEventListener("click", showHandler);
 window.addEventListener("click", randomHandler);
 window.addEventListener("click", soundHandler);
+window.addEventListener("click", (e) => {
+  if (e.target.classList.contains("theme")) {
+    document.body.classList.toggle("dark");
+    darkMode = !darkMode;
+    if (darkMode) {
+      e.target.textContent = "Light mode";
+    } else {
+      e.target.textContent = "Dark mode";
+    }
+  }
+});
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -115,7 +128,14 @@ export function initGame(id, game) {
     const data = { ...initialState, ...game };
     localStorage.setItem(id, JSON.stringify(data));
   }
-  document.body.className = "page";
+  document.body.classList.add("page");
+  document.body.classList.remove("home");
+  if (darkMode) {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+
   const localData = JSON.parse(localStorage.getItem(id));
 
   const main = document.createElement("div");
@@ -148,6 +168,7 @@ export function initGame(id, game) {
   document.body.innerHTML = `
     <div class="header">
       <button class="exit">Exit</button>
+      <button class="theme">${darkMode ? "Light mode" : "Dark mode"}</button>
       <button class="reset">Reset level</button>
       <div class="timer">${renderTimer(localData.time)}</div>
       <button class="show">Show result</button>
@@ -178,9 +199,16 @@ export async function initApp() {
     JSON.parse(localStorage.getItem("records"));
   const lastGame = JSON.parse(localStorage.getItem("last-game"));
 
-  document.body.className = "home";
+  document.body.classList.remove("page");
+  document.body.classList.add("home");
+  if (darkMode) {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
   document.body.innerHTML = `
   <h1 class="title">Nonograms</h1>
+  <button class="theme">${darkMode ? "Light mode" : "Dark mode"}</button>
   <div class="table">
     <h2 class="title">Last wins</h2>
     <ol class="records">
