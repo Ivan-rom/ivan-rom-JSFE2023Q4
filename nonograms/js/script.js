@@ -5,7 +5,9 @@ import {
   exitHandler,
   randomHandler,
   resetHandler,
+  saveHandler,
   showHandler,
+  soundHandler,
 } from "./handlers.js";
 import { saveToLocalStorage } from "./localStorage.js";
 import {
@@ -36,19 +38,22 @@ export function start(isContinuing = false) {
       .then((data) => {
         const id = window.location.href.split("#")[1];
         const localData = JSON.parse(localStorage.getItem(id));
-        if (
-          !isContinuing &&
-          localStorage.getItem(id) &&
-          !localData.isFinished &&
-          localData.time !== localData.timeLeft &&
-          (localData.markedPixels.length !== 0 ||
-            localData.activePixels.length !== 0)
-        ) {
-          initModal();
+        if (localData) {
+          initGame(id, localData);
         } else {
+          // if (
+          //   !isContinuing &&
+          //   localStorage.getItem(id) &&
+          //   !localData.isFinished &&
+          //   (localData.markedPixels.length !== 0 ||
+          //     localData.activePixels.length !== 0)
+          // ) {
+          //   initModal();
+          // } else {
           const game = data.games.find((el) => el.id == id);
           initGame(id, game);
         }
+        // }
       });
   } else {
     initApp();
@@ -61,9 +66,11 @@ export function start(isContinuing = false) {
 window.addEventListener("hashchange", start);
 window.addEventListener("click", continueHandler);
 window.addEventListener("click", resetHandler);
+window.addEventListener("click", saveHandler);
 window.addEventListener("click", exitHandler);
 window.addEventListener("click", showHandler);
 window.addEventListener("click", randomHandler);
+window.addEventListener("click", soundHandler);
 
 function generateHintsData(arr, isVertical = false) {
   let result = [];
@@ -123,11 +130,11 @@ export function initGame(id, game) {
   main.innerHTML = art;
 
   main.addEventListener("click", ({ target }) => {
-    clickHandler(target, startTimer, localData);
+    clickHandler(target, id, localData);
   });
 
   main.addEventListener("contextmenu", (e) => {
-    contextMenuHandler(e, localData);
+    contextMenuHandler(e, id, localData);
   });
 
   const horizontalHints = createHints(
@@ -142,10 +149,12 @@ export function initGame(id, game) {
 
   document.body.innerHTML = `
     <div class="header">
-      <a href="" class="exit">Exit</a>
+      <button class="exit">Exit</button>
       <button class="reset">Reset level</button>
       <div class="timer">${renderTimer(localData.time)}</div>
       <button class="show">Show result</button>
+      <button class="sound">Turn off sound</button>
+      <button class="save">Save and exit</button>
     </div>
     <div class="map">
       <div class="art">
@@ -169,6 +178,7 @@ export async function initApp() {
   const recordsData =
     localStorage.getItem("records") &&
     JSON.parse(localStorage.getItem("records"));
+  const lastGame = JSON.parse(localStorage.getItem("last-game"));
 
   document.body.className = "home";
   document.body.innerHTML = `
@@ -182,6 +192,7 @@ export async function initApp() {
   <div class="levels">
     <h2 class="title">Choose level</h2>
     <button class="random">Choose random game</button>
+    ${lastGame ? '<button class="continue">Continue last game</button>' : ""}
     <ul class="groups">
       <li class="easy">
         <h3 class="title">Easy</h3>
@@ -225,10 +236,9 @@ export function sortIds(arr) {
   });
 }
 
-function startTimer(id, time) {
-  const timer = document.querySelector(".timer");
-
+export function startTimer(id, time) {
   const timeInterval = setInterval(() => {
+    const timer = document.querySelector(".timer");
     time += 1;
     timer.textContent = renderTimer(time);
     saveToLocalStorage(id, time, "time");
