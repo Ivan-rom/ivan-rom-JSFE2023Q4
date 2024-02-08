@@ -2,6 +2,13 @@
   --pixel-big: 20px;
   --pixel-medium: 10px;
   --pixel-mini: 5px;
+  --content-color: black;
+  --bg-color: white;
+}
+
+.dark {
+  --content-color: white;
+  --bg-color: black;
 }
 
 * {
@@ -12,6 +19,14 @@
 
 body {
   font-family: sans-serif;
+  color: var(--content-color);
+  background-color: var(--bg-color);
+}
+
+.pixel {
+  &.active {
+    background-color: var(--content-color);
+  }
 }
 
 .modal {
@@ -43,7 +58,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid black;
+    border: 2px solid var(--content-color);
 
     .art {
       .row {
@@ -53,17 +68,13 @@ body {
       .pixel {
         width: var(--pixel-medium);
         height: var(--pixel-medium);
-
-        &.active {
-          background-color: black;
-        }
       }
     }
   }
 
   .hints {
     display: flex;
-    border: 2px solid black;
+    border: 2px solid var(--content-color);
     display: flex;
     align-items: stretch;
 
@@ -97,7 +108,7 @@ body {
         }
 
         .line {
-          border-top: 1px solid black;
+          border-top: 1px solid var(--content-color);
         }
       }
 
@@ -119,7 +130,7 @@ body {
           display: flex;
 
           .line {
-            border-left: 1px solid black;
+            border-left: 1px solid var(--content-color);
           }
         }
       }
@@ -135,13 +146,13 @@ body {
   }
 
   .main {
-    border: 2px solid black;
+    border: 2px solid var(--content-color);
     grid-row: 3 / -1;
     grid-column: 2 / -1;
 
     .row {
       display: flex;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid var(--content-color);
       height: calc(var(--pixel-big) + 1px);
 
       &:nth-child(5n) {
@@ -160,11 +171,7 @@ body {
         justify-content: center;
         width: var(--pixel-big);
         height: 100%;
-        border-right: 1px solid black;
-
-        &.active {
-          background-color: black;
-        }
+        border-right: 1px solid var(--content-color);
 
         &:nth-child(5n) {
           border-width: 2px;
