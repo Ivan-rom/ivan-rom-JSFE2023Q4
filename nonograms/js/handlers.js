@@ -69,9 +69,13 @@ export function clickHandler(
   }
 }
 
-export function contextMenuHandler(e, { id, markedPixels }) {
+export function contextMenuHandler(e, startTimer, { id, markedPixels, time }) {
   e.preventDefault();
   if (e.target.dataset.pixelId && !isFailed) {
+    if (!isTiming) {
+      timeInterval = startTimer(id, time);
+      isTiming = true;
+    }
     if (e.target.dataset.marked === "false") {
       e.target.dataset.marked = true;
       e.target.innerHTML = "&times;";

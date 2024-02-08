@@ -129,7 +129,7 @@ export function initGame(id, game) {
   });
 
   main.addEventListener("contextmenu", (e) => {
-    contextMenuHandler(e, localData);
+    contextMenuHandler(e, startTimer, localData);
   });
 
   const horizontalHints = createHints(
