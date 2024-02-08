@@ -61,10 +61,10 @@ export function clickHandler(
       localStorage.removeItem(id);
 
       const modal = document.createElement("div");
-      modal.classList.contains("modal");
+      modal.classList.add("modal");
       modal.innerHTML = `
         <p class="message">Congratulations you won the game!!!</p>
-        <p class="message">You solved nonogram in ${renderTimer(time)}</p>
+        <p class="message">You solved nonogram in ${renderTimer(finalTime)}</p>
         <button class="exit">Home</button>
         <button class="random">Random game</button>
       `;
