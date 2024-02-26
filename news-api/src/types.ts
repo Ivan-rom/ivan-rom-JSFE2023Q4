@@ -32,3 +32,8 @@ export type DataSources = {
     sources: Source[];
     status: 'ok' | number;
 };
+
+export enum Endpoint {
+    SOURCES = 'sources',
+    EVERYTHING = 'everything',
+}

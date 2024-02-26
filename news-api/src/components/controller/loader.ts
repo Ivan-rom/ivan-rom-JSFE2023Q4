@@ -1,3 +1,5 @@
+import { Endpoint } from '../../types';
+
 class Loader {
     readonly baseLink: string;
     readonly options: { apiKey: string };
@@ -8,7 +10,7 @@ class Loader {
     }
 
     getResp<ArgType>(
-        { endpoint, options = {} }: { endpoint: 'sources' | 'everything'; options?: {} },
+        { endpoint, options = {} }: { endpoint: Endpoint; options?: {} },
         callback = (data: ArgType): void => {
             console.error('No callback for GET response');
         }
@@ -26,7 +28,7 @@ class Loader {
         return res;
     }
 
-    makeUrl(options: { [prop: string]: string }, endpoint: string) {
+    makeUrl(options: { [prop: string]: string }, endpoint: Endpoint) {
         const urlOptions: { [prop: string]: string } = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
 
@@ -39,7 +41,7 @@ class Loader {
 
     load<ArgType>(
         method: string,
-        endpoint: string,
+        endpoint: Endpoint,
         callback: (data: ArgType) => void,
         options: { [prop: string]: string } = {}
     ) {
