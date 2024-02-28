@@ -2,13 +2,13 @@ import { Article } from '../../../types';
 import './news.css';
 
 class News {
-    draw(data: Article[]) {
+    public draw(data: Article[]): void {
         const news = data.length >= 10 ? data.filter((_item, idx) => idx < 10) : data;
 
         const fragment: DocumentFragment = document.createDocumentFragment();
         const newsItemTemp: HTMLTemplateElement = document.querySelector('#newsItemTemp') as HTMLTemplateElement;
 
-        news.forEach((item, idx) => {
+        news.forEach((item: Article, idx: number): void => {
             const newsClone = newsItemTemp.content.cloneNode(true) as HTMLDivElement;
 
             if (newsClone !== null) {

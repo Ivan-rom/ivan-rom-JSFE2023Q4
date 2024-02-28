@@ -1,4 +1,4 @@
-import { Article, Source, DataSources, DataArticles } from '../../types';
+import { DataSources, DataArticles } from '../../types';
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
 
@@ -11,7 +11,7 @@ class App {
         this.view = new AppView();
     }
 
-    public start() {
+    public start(): void {
         const sources = document.querySelector('.sources') as NonNullable<HTMLDivElement>;
         sources.addEventListener('click', (e) =>
             this.controller.getNews<DataArticles>(e, (data: DataArticles) => this.view.drawNews(data))
