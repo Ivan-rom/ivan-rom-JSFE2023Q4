@@ -6,13 +6,15 @@ type Params = {
     classList?: string[];
     event?: ComponentEvent;
     type?: string;
+    required?: boolean;
 };
 
-export class Input extends BaseComponent {
-    constructor({ name, classList = [], type = 'text', event }: Params) {
+export class Input extends BaseComponent<HTMLInputElement> {
+    constructor({ name, classList = [], type = 'text', required = false, event }: Params) {
         super({ tagName: 'input', classList, event });
-        (this.component as HTMLInputElement).name = name;
-        (this.component as HTMLInputElement).type = type;
+        this.component.name = name;
+        this.component.type = type;
+        this.component.required = required;
         this.component.id = name;
     }
 }
