@@ -3,6 +3,8 @@ import { toCapitalize } from '../../utils/utils';
 import { Button } from '../Button/Button';
 import { Input } from '../input/Input';
 
+import './loginForm.css';
+
 const fields: {
     [key: string]: {
         type: string;
@@ -62,7 +64,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
     createField(name: 'name' | 'surname' = 'name'): BaseComponent {
         const div = new BaseComponent<HTMLDivElement>({});
-        const ul = new BaseComponent<HTMLUListElement>({ tagName: 'ul', classList: ['errors-list'] });
+        const ul = new BaseComponent<HTMLUListElement>({ tagName: 'ul', classList: ['error-list'] });
         const label = new BaseComponent<HTMLLabelElement>({
             tagName: 'div',
             text: toCapitalize(name + ':'),
@@ -91,10 +93,15 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             });
         };
 
-        const input = new Input({ name: name, event: { type: 'input', callback: inputHandler }, required: true });
+        const input = new Input({
+            name: name,
+            event: { type: 'input', callback: inputHandler },
+            required: true,
+            classList: ['login-input'],
+        });
         this.checkValues(input.getComponent().value);
 
-        div.append([label.getComponent(), ul.getComponent(), input.getComponent()]);
+        div.append([label.getComponent(), input.getComponent(), ul.getComponent()]);
 
         return div;
     }
@@ -105,7 +112,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             }
         };
 
-        return new Button('Login', clickHandler, ['form-button'], this.hasErrors);
+        return new Button('Login', clickHandler, ['login-button'], this.hasErrors);
     }
 
     checkValues(value: string) {
@@ -115,6 +122,13 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
     }
 
     render() {
+        this.append([
+            new BaseComponent<HTMLElementTagNameMap['h2']>({
+                tagName: 'h2',
+                classList: ['login-heading'],
+                text: 'Login',
+            }),
+        ]);
         this.fields.forEach((field) => this.append([field.getComponent()]));
         this.append([this.submitButton.getComponent()]);
     }

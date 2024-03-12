@@ -1,0 +1,48 @@
+.login-form {
+    background-color: rgba(160, 160, 160, 0.438);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.login-heading {
+    text-align: center;
+    font-size: 26px;
+    margin: 5px 0;
+}
+
+.login-input {
+    width: 100%;
+    outline: none;
+    border: none;
+}
+
+.error-list {
+    margin-bottom: 10px;
+}
+
+.error-item {
+    color: rgb(255, 251, 0);
+    padding: 0 5px;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.login-button {
+    transition: 0.2s;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    padding: 3px 20px;
+    border: none;
+    background-color: rgb(206, 134, 0);
+    color: rgb(255, 223, 163);
+    border-radius: 5px;
+
+    &:disabled {
+        cursor: default;
+        filter: brightness(70%);
+    }
+}
