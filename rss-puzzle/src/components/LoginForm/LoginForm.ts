@@ -92,7 +92,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
                     });
                     this.hasErrors = true;
                     this.submitButton.setDisabled(this.hasErrors);
-                    ul.append([errorItem.getComponent()]);
+                    ul.append([errorItem]);
                 }
             });
         };
@@ -106,7 +106,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
         this.inputs.push(input.getComponent());
 
-        div.append([label.getComponent(), input.getComponent(), ul.getComponent()]);
+        div.append([label, input, ul]);
 
         return div;
     }
@@ -139,7 +139,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
                 text: 'Login',
             }),
         ]);
-        this.fields.forEach((field) => this.append([field.getComponent()]));
-        this.append([this.submitButton.getComponent()]);
+        this.fields.forEach((field) => this.append([field]));
+        this.append([this.submitButton]);
     }
 }

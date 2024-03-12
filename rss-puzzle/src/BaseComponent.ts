@@ -26,7 +26,7 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     append(children: (BaseComponent | HTMLElement)[]) {
         children.forEach((child) => {
             if (child instanceof BaseComponent) {
-                this.component.append(child.component);
+                this.component.append(child.getComponent());
             } else {
                 this.component.append(child);
             }
