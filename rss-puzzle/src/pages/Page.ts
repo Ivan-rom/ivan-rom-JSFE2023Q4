@@ -1,8 +1,8 @@
-import { BaseComponent } from '../BaseComponent';
+import { BaseComponent, Params } from '../BaseComponent';
 
 export class Page<T extends HTMLElement = HTMLElement> extends BaseComponent<T> {
-    constructor(content?: HTMLElement | BaseComponent, classList: string[] = []) {
-        super({ tagName: 'main', classList: ['main', ...classList] });
+    constructor(params: Params<T>, content?: HTMLElement | BaseComponent) {
+        super(params);
         if (content) this.append([content]);
     }
 

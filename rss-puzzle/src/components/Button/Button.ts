@@ -1,8 +1,13 @@
 import { BaseComponent } from '../../BaseComponent';
 
 export class Button extends BaseComponent<HTMLButtonElement> {
-    constructor(text: string, callback: (event: Event) => void, classList: string[] = [], disabled: boolean = false) {
-        super({ tagName: 'button', classList: ['button', ...classList], event: { type: 'click', callback }, text });
+    constructor(
+        textContent: string,
+        callback: (event: Event) => void,
+        className: string = '',
+        disabled: boolean = false
+    ) {
+        super({ tag: 'button', className: 'button ' + className, onclick: callback, textContent });
 
         this.setDisabled(disabled);
     }

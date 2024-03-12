@@ -5,7 +5,11 @@ import './loginPage.css';
 
 export class LoginPage extends Page {
     constructor() {
-        super(new LoginForm(), ['login-page']);
+        super({ className: 'login-page' });
+
+        const form = new LoginForm();
+
+        this.append([form]);
     }
 
     render() {

@@ -1,7 +1,6 @@
 import { BaseComponent } from '../../BaseComponent';
 import { toCapitalize } from '../../utils/utils';
 import { Button } from '../Button/Button';
-import { Input } from '../input/Input';
 
 import './loginForm.css';
 
@@ -56,7 +55,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
     };
 
     constructor() {
-        super({ tagName: 'form', classList: ['login-form'] });
+        super({ tag: 'form', classList: ['login-form'] });
         this.component.action = '#';
 
         this.user = {
@@ -75,11 +74,11 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
     createField(name: 'name' | 'surname' = 'name'): BaseComponent {
         const div = new BaseComponent<HTMLDivElement>({});
-        const ul = new BaseComponent<HTMLUListElement>({ tagName: 'ul', classList: ['error-list'] });
+        const ul = new BaseComponent<HTMLUListElement>({ tag: 'ul', className: 'error-list' });
         const label = new BaseComponent<HTMLLabelElement>({
-            tagName: 'div',
-            text: toCapitalize(name + ':'),
-            classList: ['label', 'label-required'],
+            tag: 'div',
+            textContent: toCapitalize(name + ':'),
+            className: 'label label-required',
         });
 
         const inputHandler = (event: Event) => {
@@ -97,9 +96,9 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             errors.forEach((error) => {
                 if (!error.test.test(target.value)) {
                     const errorItem = new BaseComponent({
-                        tagName: 'li',
-                        classList: ['error-item'],
-                        text: error.message,
+                        tag: 'li',
+                        className: 'error-item',
+                        textContent: error.message,
                     });
                     this.hasErrors = true;
                     this.submitButton.setDisabled(this.hasErrors);
@@ -108,11 +107,14 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             });
         };
 
-        const input = new Input({
+        const input = new BaseComponent<HTMLInputElement>({
+            tag: 'input',
             name: name,
-            event: { type: 'input', callback: inputHandler },
+            className: 'login-input',
+            oninput: inputHandler,
             required: true,
-            classList: ['login-input'],
+            type: 'text',
+            id: name,
         });
 
         this.inputs.push(input.getComponent());
@@ -131,7 +133,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             }
         };
 
-        return new Button('Login', clickHandler, ['login-button'], this.hasErrors);
+        return new Button('Login', clickHandler, 'login-button', this.hasErrors);
     }
 
     checkValues() {
@@ -148,9 +150,9 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         this.checkValues();
         this.append([
             new BaseComponent<HTMLElementTagNameMap['h2']>({
-                tagName: 'h2',
-                classList: ['login-heading'],
-                text: 'Login',
+                tag: 'h2',
+                className: 'login-heading',
+                textContent: 'Login',
             }),
         ]);
         this.fields.forEach((field) => this.append([field]));
