@@ -7,4 +7,9 @@ export class LoginPage extends Page {
     constructor() {
         super(new LoginForm(), ['login-page']);
     }
+
+    render() {
+        document.body.innerHTML = '';
+        document.body.append(this.getComponent());
+    }
 }

@@ -1,5 +1,5 @@
-import { LoginPage } from './pages/LoginPage/LoginPage';
+import { Router } from './Router';
 
-const loginPage = new LoginPage();
+const router = new Router();
 
-document.body.appendChild(loginPage.getComponent());
+router.render();
