@@ -1,0 +1,23 @@
+@import url(normalize.css);
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+
+    &:disabled {
+        cursor: default;
+    }
+}
