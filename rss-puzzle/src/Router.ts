@@ -34,6 +34,7 @@ export class Router {
     };
 
     render() {
+        this.hash = window.location.hash.slice(1);
         const user = JSON.parse(localStorage.getItem('user') as string);
 
         if (!user) {

@@ -127,6 +127,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
             event.preventDefault();
             if (!this.hasErrors) {
                 localStorage.setItem('user', JSON.stringify(this.user));
+                window.location.hash = 'home';
             }
         };
 
