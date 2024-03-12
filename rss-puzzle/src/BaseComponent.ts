@@ -1,22 +1,22 @@
 import { ComponentEvent } from './types';
 
-type Params = {
-    classList?: string[];
-    tagName?: keyof HTMLElementTagNameMap;
+export type Params<T extends HTMLElement = HTMLElement> = Partial<
+    Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName' | 'className'>
+> & {
+    tag?: keyof HTMLElementTagNameMap;
     event?: ComponentEvent;
     text?: string;
+    className?: string;
 };
 
 export class BaseComponent<T extends HTMLElement = HTMLElement> {
     protected component: T;
 
-    constructor({ classList = [], tagName = 'div', text = '', event }: Params) {
-        this.component = this.createElement(tagName) as T;
-        classList?.length !== 0 && this.component.classList.add(...classList);
+    constructor(props: Params<T>) {
+        const component = this.createElement(props.tag || 'div') as T;
+        this.component = Object.assign(component, props);
 
-        if (event) this.component.addEventListener(event.type, event.callback);
-
-        if (text) this.component.textContent = text;
+        if (props.event) this.component.addEventListener(props.event.type, props.event.callback);
     }
 
     createElement(tagName: string) {

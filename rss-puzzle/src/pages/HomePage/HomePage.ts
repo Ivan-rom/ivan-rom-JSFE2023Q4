@@ -5,7 +5,7 @@ export class HomePage extends Page {
     user: { name: string; surname: string } | null;
 
     constructor() {
-        super();
+        super({ className: 'home' });
 
         this.user = JSON.parse(localStorage.getItem('user') as string);
 
