@@ -26,6 +26,8 @@ export class Router {
         this.routes = routes;
         this.hash = window.location.hash.slice(1);
 
+        this.render();
+
         window.addEventListener('hashchange', this.hashChangeHandler);
     }
 
@@ -36,6 +38,10 @@ export class Router {
     render() {
         this.hash = window.location.hash.slice(1);
         const user = JSON.parse(localStorage.getItem('user') as string);
+
+        if (!this.hash || (user && this.hash === 'login')) {
+            window.location.hash = 'home';
+        }
 
         if (!user) {
             window.location.hash = 'login';
