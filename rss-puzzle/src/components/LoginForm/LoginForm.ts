@@ -50,10 +50,19 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
     submitButton: Button;
     fields: BaseComponent[];
     inputs: HTMLInputElement[];
+    user: {
+        name: string;
+        surname: string;
+    };
 
     constructor() {
         super({ tagName: 'form', classList: ['login-form'] });
         this.component.action = '#';
+
+        this.user = {
+            name: '',
+            surname: '',
+        };
 
         this.inputs = [];
         this.fields = [this.createField(), this.createField('surname')];
@@ -82,6 +91,8 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
             const target = event.target as HTMLInputElement;
             const errors = [...fields[target.name], ...fields.errors];
+
+            this.user[name] = target.value;
 
             errors.forEach((error) => {
                 if (!error.test.test(target.value)) {
@@ -113,7 +124,9 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
     createButton(): Button {
         const clickHandler = (event: Event) => {
+            event.preventDefault();
             if (!this.hasErrors) {
+                localStorage.setItem('user', JSON.stringify(this.user));
             }
         };
 
