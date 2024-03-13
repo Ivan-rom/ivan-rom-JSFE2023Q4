@@ -15,11 +15,22 @@ export class HomePage extends Page {
 
         const header = new Header();
 
-        this.append([header, this.createContent()]);
+        this.append([header]);
     }
 
     createContent(): BaseComponent {
+        this.user = JSON.parse(localStorage.getItem('user') as string);
+
         const h1 = new BaseComponent({ tag: 'h1', textContent: 'RSS Puzzle Game', className: 'heading' });
+
+        const greeting = new BaseComponent<HTMLParagraphElement>({
+            tag: 'p',
+            className: 'greeting',
+            innerHTML: `
+            Hello, <span class="name">${this.user?.name} ${this.user?.surname}</span>
+        `,
+        });
+
         const text = [
             new BaseComponent({
                 tag: 'p',
@@ -37,10 +48,12 @@ export class HomePage extends Page {
 
         const button = new Button('Start', clickHandler, 'start-button');
 
-        return new BaseComponent({ className: 'home-content' }, [h1, ...text, button]);
+        return new BaseComponent({ className: 'home-content' }, [h1, greeting, ...text, button]);
     }
 
     render() {
+        this.append([this.createContent()]);
+
         document.body.innerHTML = '';
         document.body.append(this.getComponent());
     }
