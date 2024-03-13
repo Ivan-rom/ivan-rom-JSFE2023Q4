@@ -1,8 +1,7 @@
 .login-form {
-    background-color: rgba(160, 160, 160, 0.438);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(5px);
-    padding: 10px;
+    background-color: rgb(48, 16, 35);
+    color: white;
+    padding: 10px 20px;
     width: 300px;
     border-radius: 10px;
 }
@@ -14,6 +13,10 @@
 }
 
 .login-input {
+    background-color: rgb(255, 222, 161);
+    padding: 3px;
+    border-radius: 3px;
+    color: rgb(48, 16, 35);
     width: 100%;
     outline: none;
     border: none;
@@ -36,8 +39,9 @@
     display: block;
     margin: 0 auto;
     padding: 3px 20px;
-    background-color: rgb(206, 134, 0);
-    color: rgb(255, 223, 163);
+    background-color: rgb(254, 212, 164);
+    color: rgb(48, 16, 35);
+    font-weight: 700;
     border-radius: 5px;
 
     &:disabled {
