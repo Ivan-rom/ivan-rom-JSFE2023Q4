@@ -12,10 +12,6 @@ export class HomePage extends Page {
         super({ className: 'home' });
 
         this.user = JSON.parse(localStorage.getItem('user') as string);
-
-        const header = new Header();
-
-        this.append([header]);
     }
 
     createContent(): BaseComponent {
@@ -27,7 +23,7 @@ export class HomePage extends Page {
             tag: 'p',
             className: 'greeting',
             innerHTML: `
-            Hello, <span class="name">${this.user?.name} ${this.user?.surname}</span>
+            Hello, <span class="name">${this.user?.name} ${this.user?.surname}</span>!
         `,
         });
 
@@ -52,7 +48,11 @@ export class HomePage extends Page {
     }
 
     render() {
-        this.append([this.createContent()]);
+        const header = new Header();
+
+        this.clear();
+
+        this.append([header, this.createContent()]);
 
         document.body.innerHTML = '';
         document.body.append(this.getComponent());
