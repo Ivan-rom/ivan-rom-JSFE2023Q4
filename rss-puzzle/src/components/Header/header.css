@@ -4,7 +4,8 @@
     align-items: center;
     justify-content: space-between;
     background-color: rgb(254, 212, 164);
-    position: sticky;
+    position: fixed;
+    z-index: 999;
     top: 0;
     left: 0;
     right: 0;
