@@ -6,6 +6,12 @@
 
 body {
     font-family: sans-serif;
+
+    min-height: 100vh;
+    background-image: url('../public/login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 ul {
@@ -16,6 +22,8 @@ ul {
 
 button {
     cursor: pointer;
+    border: none;
+    background: none;
 
     &:disabled {
         cursor: default;
