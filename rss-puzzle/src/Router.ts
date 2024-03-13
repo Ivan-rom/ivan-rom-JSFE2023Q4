@@ -1,3 +1,4 @@
+import { GamePage } from './pages/GamePage/GamePage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { Page } from './pages/Page';
@@ -15,6 +16,10 @@ const routes: Route[] = [
     {
         path: 'home',
         page: new HomePage(),
+    },
+    {
+        path: 'game',
+        page: new GamePage(),
     },
 ];
 
