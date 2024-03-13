@@ -19,8 +19,9 @@
 }
 
 .logout-button {
-    background-color: rgb(161, 43, 43);
-    border-radius: 5px;
+    --button-bg-color: rgb(161, 43, 43);
+    --button-shadow-color: rgb(104, 28, 28);
+
     padding: 10px;
     color: white;
     text-transform: uppercase;

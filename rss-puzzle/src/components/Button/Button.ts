@@ -1,5 +1,7 @@
 import { BaseComponent } from '../../BaseComponent';
 
+import './button.css';
+
 export class Button extends BaseComponent<HTMLButtonElement> {
     constructor(
         textContent: string,
