@@ -5,18 +5,18 @@ export type Params<T extends HTMLElement = HTMLElement> = Partial<
 > & {
     tag?: keyof HTMLElementTagNameMap;
     event?: ComponentEvent;
-    text?: string;
     className?: string;
 };
 
 export class BaseComponent<T extends HTMLElement = HTMLElement> {
     protected component: T;
 
-    constructor(props: Params<T>) {
-        const component = this.createElement(props.tag || 'div') as T;
+    constructor(props?: Params<T>, children: (HTMLElement | BaseComponent)[] = []) {
+        const component = this.createElement(props?.tag || 'div') as T;
         this.component = Object.assign(component, props);
 
-        if (props.event) this.component.addEventListener(props.event.type, props.event.callback);
+        if (props?.event) this.component.addEventListener(props.event.type, props.event.callback);
+        this.append(children);
     }
 
     createElement(tagName: string) {

@@ -73,7 +73,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
     }
 
     createField(name: 'name' | 'surname' = 'name'): BaseComponent {
-        const div = new BaseComponent<HTMLDivElement>({});
+        const div = new BaseComponent<HTMLDivElement>();
         const ul = new BaseComponent<HTMLUListElement>({ tag: 'ul', className: 'error-list' });
         const label = new BaseComponent<HTMLLabelElement>({
             tag: 'div',

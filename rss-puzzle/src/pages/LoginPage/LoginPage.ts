@@ -13,8 +13,6 @@ export class LoginPage extends Page {
     }
 
     render() {
-        console.log('login');
-
         document.body.innerHTML = '';
         document.body.append(this.getComponent());
     }

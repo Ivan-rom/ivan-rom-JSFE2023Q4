@@ -1,9 +1,9 @@
 import { BaseComponent } from '../../BaseComponent';
 import { Button } from '../Button/Button';
 
-export class Header extends BaseComponent {
-    logoutButton: Button;
+import './header.css';
 
+export class Header extends BaseComponent {
     constructor() {
         super({ tag: 'header', className: 'header' });
 
@@ -12,8 +12,14 @@ export class Header extends BaseComponent {
             location.hash = 'login';
         };
 
-        this.logoutButton = new Button('Log out', clickHandler, 'logout-button');
+        const logoutButton = new Button('Log out', clickHandler, 'logout-button');
+        const logo = new BaseComponent<HTMLAnchorElement>({
+            tag: 'a',
+            href: '#home',
+            text: 'RSS Puzzle',
+            className: 'logo',
+        });
 
-        this.append([this.logoutButton]);
+        this.append([logo, logoutButton]);
     }
 }
