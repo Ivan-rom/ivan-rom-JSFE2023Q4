@@ -12,6 +12,9 @@ export class HomePage extends Page {
         super({ className: 'home' });
 
         this.user = JSON.parse(localStorage.getItem('user') as string);
+
+        this.clear();
+        this.append([this.createContent()]);
     }
 
     createContent(): BaseComponent {
@@ -47,16 +50,5 @@ export class HomePage extends Page {
         const button = new Button('Start', clickHandler, 'start-button');
 
         return new BaseComponent({ className: 'home-content' }, [h1, greeting, ...text, button]);
-    }
-
-    render() {
-        const header = new Header();
-
-        this.clear();
-
-        this.append([header, this.createContent()]);
-
-        document.body.innerHTML = '';
-        document.body.append(this.getComponent());
     }
 }

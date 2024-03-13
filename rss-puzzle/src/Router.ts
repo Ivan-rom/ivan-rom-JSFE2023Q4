@@ -1,3 +1,4 @@
+import { Header } from './components/Header/Header';
 import { GamePage } from './pages/GamePage/GamePage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { LoginPage } from './pages/LoginPage/LoginPage';
@@ -53,6 +54,10 @@ export class Router {
         }
 
         const currentPage = this.routes.find((route) => route.path === this.hash);
-        currentPage?.page.render();
+
+        document.body.innerHTML = '';
+
+        window.location.hash.slice(1) != 'login' && document.body.append(new Header().getComponent());
+        document.body.append(currentPage?.page.getComponent() as Node);
     }
 }

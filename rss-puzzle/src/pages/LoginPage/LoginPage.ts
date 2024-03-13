@@ -11,9 +11,4 @@ export class LoginPage extends Page {
 
         this.append([form]);
     }
-
-    render() {
-        document.body.innerHTML = '';
-        document.body.append(this.getComponent());
-    }
 }
