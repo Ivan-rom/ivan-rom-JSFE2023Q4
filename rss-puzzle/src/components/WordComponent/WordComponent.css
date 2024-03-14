@@ -1,6 +1,7 @@
 .word {
     display: inline-block;
     padding: 5px;
-    background-color: rgb(48, 16, 35);
-    color: white;
+    color: rgb(48, 16, 35);
+    cursor: pointer;
+    background-color: rgb(254, 212, 164);
 }
