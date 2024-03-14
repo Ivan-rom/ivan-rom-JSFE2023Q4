@@ -9,10 +9,14 @@ import './Game.css';
 export class Game extends BaseComponent {
     data: Round;
     answer?: Answer;
+    answers: BaseComponent;
     dataSource?: BaseComponent;
 
     constructor(data: Round) {
         super({ className: 'game' });
+
+        this.answers = new BaseComponent({ className: 'answers' });
+        this.append([this.answers]);
 
         this.data = data;
     }
@@ -39,13 +43,12 @@ export class Game extends BaseComponent {
 
         words.map((word) => word.setDataset('width', word.getComponent().offsetWidth.toString()));
         words.map((word) => word.getComponent().setAttribute('style', `width: ${word.getComponent().dataset.width}px`));
-        console.log(words.map((word) => word.getComponent().dataset.width));
     }
 
     createAnswer(length: number) {
         const answer = new Answer(length);
         this.answer = answer;
-        this.append([answer]);
+        this.answers.append([answer]);
     }
 
     moveWord(component: HTMLElement, parent: string) {

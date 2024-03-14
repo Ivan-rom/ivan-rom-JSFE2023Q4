@@ -1,7 +1,9 @@
 .word {
-    display: inline-block;
+    display: block;
     padding: 5px;
     color: rgb(48, 16, 35);
     cursor: pointer;
     background-color: rgb(254, 212, 164);
+    flex-grow: 1;
+    text-align: center;
 }
