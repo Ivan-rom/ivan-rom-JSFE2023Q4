@@ -1,6 +1,5 @@
 import { BaseComponent } from '../../BaseComponent';
 import { Button } from '../../components/Button/Button';
-import { Header } from '../../components/Header/Header';
 import { Page } from '../Page';
 
 import './homePage.css';

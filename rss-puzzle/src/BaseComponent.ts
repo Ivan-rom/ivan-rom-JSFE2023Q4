@@ -33,6 +33,10 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
         });
     }
 
+    setDataset(name: string, value: string) {
+        this.component.dataset[name] = value;
+    }
+
     getComponent() {
         return this.component;
     }
