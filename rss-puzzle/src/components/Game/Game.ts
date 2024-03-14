@@ -2,6 +2,7 @@ import { BaseComponent } from '../../BaseComponent';
 import { Round, Word } from '../../types';
 import { randomizeArray } from '../../utils/utils';
 import { Answer } from '../Answer/Answer';
+import { Button } from '../Button/Button';
 import { WordComponent } from '../WordComponent/WordComponent';
 
 import './Game.css';
@@ -39,6 +40,8 @@ export class Game extends BaseComponent {
 
         words.map((word) => word.setDataset('width', word.getComponent().offsetWidth.toString()));
         words.map((word) => word.getComponent().setAttribute('style', `width: ${word.getComponent().dataset.width}px`));
+
+        this.createContinueButton();
     }
 
     createAnswer(length: number) {
@@ -55,5 +58,11 @@ export class Game extends BaseComponent {
             this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
+    }
+
+    createContinueButton() {
+        const callback = (e: Event) => {};
+        const button = new Button('Continue', callback, 'continue', false);
+        this.append([button]);
     }
 }
