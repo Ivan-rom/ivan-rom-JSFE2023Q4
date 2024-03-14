@@ -54,6 +54,8 @@ export class Game extends BaseComponent {
     moveWord(component: HTMLElement, parent: string) {
         if (parent === 'data-source') {
             this.answer?.appendWord(component);
+        } else {
+            this.dataSource?.append([component]);
         }
     }
 }
