@@ -12,6 +12,7 @@ export class Game extends BaseComponent {
     answer?: Answer;
     answers: BaseComponent;
     dataSource?: BaseComponent;
+    continueButton?: Button;
 
     constructor(data: Round) {
         super({ className: 'game' });
@@ -58,11 +59,19 @@ export class Game extends BaseComponent {
             this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
+        this.continueButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
     createContinueButton() {
-        const callback = (e: Event) => {};
-        const button = new Button('Continue', callback, 'continue', false);
+        const callback = (e: Event) => {
+            if (this.answer?.isSolved()) {
+                console.log('next');
+            } else {
+                console.log('no');
+            }
+        };
+        const button = new Button('Continue', callback, 'continue', true);
+        this.continueButton = button;
         this.append([button]);
     }
 }
