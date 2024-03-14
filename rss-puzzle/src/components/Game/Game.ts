@@ -22,11 +22,7 @@ export class Game extends BaseComponent {
     }
 
     createDataSource(sentence: Word) {
-        const clickHandler = (e: Event) => {
-            const component = e.target as HTMLElement;
-            this.moveWord(component, component.parentElement?.className as string);
-        };
-
+        const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
         const words = sentence.textExample.split(' ').map((word, i) => {
             const wordComponent = new WordComponent(word, { onclick: clickHandler });
             wordComponent.setDataset('index', i.toString());
@@ -51,10 +47,12 @@ export class Game extends BaseComponent {
         this.answers.append([answer]);
     }
 
-    moveWord(component: HTMLElement, parent: string) {
-        if (parent === 'data-source') {
+    moveWord(component: HTMLElement) {
+        const parent = component.parentElement as HTMLElement;
+        if ((parent.className as string) === 'data-source') {
             this.answer?.appendWord(component);
         } else {
+            this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
     }
