@@ -4,9 +4,12 @@ import './answer.css';
 
 export class Answer extends BaseComponent {
     fields: HTMLElement[];
+    activeFields: HTMLElement[];
     constructor(length: number) {
         super({ className: 'answer' });
+
         this.fields = [];
+        this.activeFields = [];
 
         for (let i = 0; i < length; i++) {
             this.createField(i);
@@ -19,14 +22,26 @@ export class Answer extends BaseComponent {
         this.append([field]);
 
         this.fields.push(field.getComponent());
-        this.fields.sort((a, b) => +(a.dataset.index as string) - +(b.dataset.index as string));
+        this.activeFields.push(field.getComponent());
+        this.sortFields(this.activeFields);
+    }
+
+    sortFields(fields: HTMLElement[]) {
+        return fields.sort((a, b) => +(a.dataset.index as string) - +(b.dataset.index as string));
     }
 
     appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
-        const field = this.fields[0];
+        const activeField = this.activeFields[0];
         const component = child instanceof BaseComponent ? child.getComponent() : child;
-        field.append(component);
-        field.setAttribute('style', `width: ${component.dataset.width}px`);
-        this.fields.shift();
+        activeField.append(component);
+        activeField.setAttribute('style', `width: ${component.dataset.width}px`);
+        this.activeFields.shift();
+    }
+
+    removeWord(index: string) {
+        const field = this.fields[+index];
+        this.activeFields.push(field);
+        this.sortFields(this.activeFields);
+        field.setAttribute('style', 'width: 0');
     }
 }
