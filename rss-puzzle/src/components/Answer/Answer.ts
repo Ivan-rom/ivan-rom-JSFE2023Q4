@@ -22,8 +22,11 @@ export class Answer extends BaseComponent {
         this.fields.sort((a, b) => +(a.dataset.index as string) - +(b.dataset.index as string));
     }
 
-    appendWord(children: HTMLElement | BaseComponent<HTMLElement>): void {
-        this.fields[0].append(children instanceof BaseComponent ? children.getComponent() : children);
+    appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
+        const field = this.fields[0];
+        const component = child instanceof BaseComponent ? child.getComponent() : child;
+        field.append(component);
+        field.setAttribute('style', `width: ${component.dataset.width}px`);
         this.fields.shift();
     }
 }

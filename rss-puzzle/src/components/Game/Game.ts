@@ -15,7 +15,6 @@ export class Game extends BaseComponent {
         super({ className: 'game' });
 
         this.data = data;
-        this.createDataSource(data.words[0]);
     }
 
     createDataSource(sentence: Word) {
@@ -24,15 +23,23 @@ export class Game extends BaseComponent {
             this.moveWord(component, component.parentElement?.className as string);
         };
 
-        const randomizedWords = randomizeArray<string>(sentence.textExample.split(' ')).map(
-            (word) => new WordComponent(word, { onclick: clickHandler })
-        );
+        const words = sentence.textExample.split(' ').map((word, i) => {
+            const wordComponent = new WordComponent(word, { onclick: clickHandler });
+            wordComponent.setDataset('index', i.toString());
+            return wordComponent;
+        });
+
+        const randomizedWords = randomizeArray<WordComponent>(words);
 
         this.createAnswer(randomizedWords.length);
 
         const dataSource = new BaseComponent({ className: 'data-source' }, randomizedWords);
         this.dataSource = dataSource;
         this.append([dataSource]);
+
+        words.map((word) => word.setDataset('width', word.getComponent().offsetWidth.toString()));
+        words.map((word) => word.getComponent().setAttribute('style', `width: ${word.getComponent().dataset.width}px`));
+        console.log(words.map((word) => word.getComponent().dataset.width));
     }
 
     createAnswer(length: number) {
