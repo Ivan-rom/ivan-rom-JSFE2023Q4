@@ -6,6 +6,13 @@
     background-color: rgb(48, 16, 35);
     padding: 10px;
     border-radius: 10px;
+    width: 700px;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .data-source {

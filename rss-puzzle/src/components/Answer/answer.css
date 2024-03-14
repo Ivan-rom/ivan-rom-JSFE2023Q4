@@ -1,7 +1,11 @@
 .answer {
+    margin: 0 auto;
     display: flex;
+    background-color: rgb(106, 32, 45);
 }
 
 .field {
-    padding: 10px;
+    box-shadow: 0 0 0 5px rgb(60, 18, 42) inset;
+    min-width: 20px;
+    min-height: 28px;
 }

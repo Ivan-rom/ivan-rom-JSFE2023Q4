@@ -21,7 +21,9 @@ export class GamePage extends Page {
         if (!round) {
             console.log('There is no such round');
         } else {
-            this.append([new Game(round)]);
+            const game = new Game(round);
+            this.append([game]);
+            game.createDataSource(round.words[0]);
         }
     }
 }
