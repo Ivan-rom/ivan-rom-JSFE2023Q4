@@ -18,6 +18,8 @@ export default class Game extends BaseComponent {
 
     continueButton?: Button;
 
+    checkButton?: Button;
+
     sentence?: Word;
 
     words?: WordComponent[];
@@ -45,9 +47,10 @@ export default class Game extends BaseComponent {
         this.dataSource = new BaseComponent({ className: 'data-source' }, this.words);
 
         this.continueButton = this.createContinueButton();
+        this.checkButton = this.createCheckButton();
 
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.continueButton]);
+        this.append([this.answers, this.dataSource, this.continueButton, this.checkButton]);
 
         this.words.forEach((word) => word.setWidth());
     }
@@ -73,7 +76,7 @@ export default class Game extends BaseComponent {
             this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
-        this.continueButton?.setDisabled(!(this.answer as Answer).isSolved());
+        this.checkButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
     nextSentence() {
@@ -85,6 +88,7 @@ export default class Game extends BaseComponent {
         this.dataSource?.append(this.words);
         this.words.forEach((word) => word.setWidth());
         this.continueButton?.setDisabled(true);
+        this.checkButton?.setDisabled(true);
     }
 
     nextLevel() {
@@ -102,6 +106,14 @@ export default class Game extends BaseComponent {
             }
         };
         const button = new Button('Continue', callback, 'continue', true);
+        return button;
+    }
+
+    createCheckButton(): Button {
+        const callback = () => {
+            this.continueButton?.setDisabled(!this.answer?.isSolved());
+        };
+        const button = new Button('Check', callback, 'check', true);
         return button;
     }
 }
