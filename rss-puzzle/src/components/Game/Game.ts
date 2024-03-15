@@ -8,47 +8,51 @@ import { WordComponent } from '../WordComponent/WordComponent';
 import './Game.css';
 
 export class Game extends BaseComponent {
-    data: Round;
+    data?: Round;
     answer?: Answer;
     answers: BaseComponent;
     dataSource?: BaseComponent;
     continueButton?: Button;
+    sentence?: Word;
+    words?: WordComponent[];
 
-    constructor(data: Round) {
+    constructor() {
         super({ className: 'game' });
-
         this.answers = new BaseComponent({ className: 'answers' });
         this.append([this.answers]);
-
-        this.data = data;
     }
 
-    createDataSource(sentence: Word) {
+    renderGame(data: Round) {
+        this.data = data;
+        this.sentence = data.words[0];
+        this.words = this.createWords(this.sentence);
+        this.answer = this.createAnswer(this.words.length);
+
+        this.dataSource = new BaseComponent({ className: 'data-source' }, this.words);
+
+        this.continueButton = this.createContinueButton();
+
+        this.answers.append([this.answer]);
+        this.append([this.answers, this.dataSource, this.continueButton]);
+
+        this.words.forEach((word) => word.setWidth());
+    }
+
+    createWords(sentence: Word): WordComponent[] {
         const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
         const words = sentence.textExample.split(' ').map((word, i) => {
             const wordComponent = new WordComponent(word, { onclick: clickHandler });
             wordComponent.setDataset('index', i.toString());
             return wordComponent;
         });
-
         const randomizedWords = randomizeArray<WordComponent>(words);
-
-        this.createAnswer(randomizedWords.length);
-
-        const dataSource = new BaseComponent({ className: 'data-source' }, randomizedWords);
-        this.dataSource = dataSource;
-        this.append([dataSource]);
-
-        words.map((word) => word.setDataset('width', word.getComponent().offsetWidth.toString()));
-        words.map((word) => word.getComponent().setAttribute('style', `width: ${word.getComponent().dataset.width}px`));
-
-        this.createContinueButton();
+        return randomizedWords;
     }
 
-    createAnswer(length: number) {
+    createAnswer(length: number): Answer {
         const answer = new Answer(length);
         this.answer = answer;
-        this.answers.append([answer]);
+        return answer;
     }
 
     moveWord(component: HTMLElement) {
@@ -62,7 +66,7 @@ export class Game extends BaseComponent {
         this.continueButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
-    createContinueButton() {
+    createContinueButton(): Button {
         const callback = (e: Event) => {
             if (this.answer?.isSolved()) {
                 console.log('next');
@@ -71,7 +75,6 @@ export class Game extends BaseComponent {
             }
         };
         const button = new Button('Continue', callback, 'continue', true);
-        this.continueButton = button;
-        this.append([button]);
+        return button;
     }
 }
