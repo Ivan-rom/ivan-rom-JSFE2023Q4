@@ -1,4 +1,4 @@
-import { ComponentEvent } from './types.ts';
+import { ComponentEvent } from './types';
 
 export type Params<T extends HTMLElement = HTMLElement> = Partial<
     Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName' | 'className'>

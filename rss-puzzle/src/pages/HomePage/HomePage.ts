@@ -1,6 +1,6 @@
-import { BaseComponent } from '../../BaseComponent.ts';
-import Button from '../../components/Button/Button.ts';
-import Page from '../Page.ts';
+import { BaseComponent } from '../../BaseComponent';
+import Button from '../../components/Button/Button';
+import Page from '../Page';
 
 import './homePage.css';
 

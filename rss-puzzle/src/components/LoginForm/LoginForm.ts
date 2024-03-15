@@ -1,6 +1,6 @@
-import { BaseComponent } from '../../BaseComponent.ts';
-import { toCapitalize } from '../../utils/utils.ts';
-import Button from '../Button/Button.ts';
+import { BaseComponent } from '../../BaseComponent';
+import { toCapitalize } from '../../utils/utils';
+import Button from '../Button/Button';
 
 import './loginForm.css';
 

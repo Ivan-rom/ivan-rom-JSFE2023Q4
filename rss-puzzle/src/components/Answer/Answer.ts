@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../BaseComponent.ts';
+import { BaseComponent } from '../../BaseComponent';
 
 import './answer.css';
 
@@ -7,7 +7,7 @@ export default class Answer extends BaseComponent {
 
     activeFields: HTMLElement[];
 
-    words: (string | null)[];
+    words: (HTMLElement | null)[];
 
     sentence: string;
 
@@ -43,13 +43,17 @@ export default class Answer extends BaseComponent {
     appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
         const activeField = this.activeFields[0];
         const component = child instanceof BaseComponent ? child.getComponent() : child;
-        this.words[+(activeField.dataset.index as string)] = component.textContent;
+        this.words[+(activeField.dataset.index as string)] = component;
         activeField.append(component);
         activeField.setAttribute('style', `width: ${component.dataset.width}px`);
         this.activeFields.shift();
     }
 
     removeWord(index: string) {
+        this.words.forEach((word) => {
+            word?.classList.remove('correct');
+            word?.classList.remove('wrong');
+        });
         const field = this.fields[+index];
         this.words[+index] = null;
         this.activeFields.push(field);
@@ -58,6 +62,17 @@ export default class Answer extends BaseComponent {
     }
 
     isSolved(): boolean {
-        return this.sentence === this.words.join(' ');
+        let result = true;
+        const words = this.sentence.split(' ');
+        for (let i = 0; i < this.words.length; i += 1) {
+            const element = this.words[i];
+            if (element?.textContent !== words[i]) {
+                element?.classList.add('wrong');
+                result = false;
+            } else {
+                element?.classList.add('correct');
+            }
+        }
+        return result;
     }
 }
