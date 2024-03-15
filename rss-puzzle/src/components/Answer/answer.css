@@ -2,6 +2,9 @@
     margin: 0 auto;
     display: flex;
     background-color: rgb(106, 32, 45);
+    &.disabled {
+        pointer-events: none;
+    }
 }
 
 .field {

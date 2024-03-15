@@ -5,14 +5,20 @@ import './answer.css';
 export class Answer extends BaseComponent {
     fields: HTMLElement[];
     activeFields: HTMLElement[];
-    constructor(length: number) {
+    words: (string | null)[];
+    sentence: string;
+    constructor(length: number, sentence: string) {
         super({ className: 'answer' });
+        this.sentence = sentence;
+
+        this.words = [];
 
         this.fields = [];
         this.activeFields = [];
 
         for (let i = 0; i < length; i++) {
             this.createField(i);
+            this.words[i] = null;
         }
     }
 
@@ -33,6 +39,7 @@ export class Answer extends BaseComponent {
     appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
         const activeField = this.activeFields[0];
         const component = child instanceof BaseComponent ? child.getComponent() : child;
+        this.words[+(activeField.dataset.index as string)] = component.textContent;
         activeField.append(component);
         activeField.setAttribute('style', `width: ${component.dataset.width}px`);
         this.activeFields.shift();
@@ -40,8 +47,13 @@ export class Answer extends BaseComponent {
 
     removeWord(index: string) {
         const field = this.fields[+index];
+        this.words[+index] = null;
         this.activeFields.push(field);
         this.sortFields(this.activeFields);
         field.setAttribute('style', 'width: 0');
+    }
+
+    isSolved(): boolean {
+        return this.sentence === this.words.join(' ');
     }
 }

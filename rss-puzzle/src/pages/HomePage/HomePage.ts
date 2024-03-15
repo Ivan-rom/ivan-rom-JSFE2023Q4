@@ -43,7 +43,7 @@ export class HomePage extends Page {
         ];
 
         const clickHandler = (event: Event) => {
-            window.location.hash = 'game';
+            window.location.hash = 'game/1_01';
         };
 
         const button = new Button('Start', clickHandler, 'start-button');

@@ -32,8 +32,6 @@ export class Router {
         this.routes = routes;
         this.hash = window.location.hash.slice(1);
 
-        this.render();
-
         window.addEventListener('hashchange', this.hashChangeHandler);
     }
 
@@ -46,18 +44,29 @@ export class Router {
         const user = JSON.parse(localStorage.getItem('user') as string);
 
         if (!this.hash || (user && this.hash === 'login')) {
-            window.location.hash = 'home';
+            this.setHash('home');
         }
 
         if (!user) {
-            window.location.hash = 'login';
+            this.setHash('login');
         }
 
-        const currentPage = this.routes.find((route) => route.path === this.hash);
+        let currentPage;
+        if (this.hash.startsWith('game')) {
+            currentPage = this.routes.find((route) => route.path === 'game');
+            currentPage?.page.render();
+        } else {
+            currentPage = this.routes.find((route) => route.path === this.hash);
+        }
 
         document.body.innerHTML = '';
 
         window.location.hash.slice(1) != 'login' && document.body.append(new Header().getComponent());
         document.body.append(currentPage?.page.getComponent() as Node);
+    }
+
+    setHash(hash: string) {
+        window.location.hash = hash;
+        this.hash = hash;
     }
 }
