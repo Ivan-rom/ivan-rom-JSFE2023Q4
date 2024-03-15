@@ -50,6 +50,10 @@ export default class Answer extends BaseComponent {
     }
 
     removeWord(index: string) {
+        this.words.forEach((word) => {
+            word?.classList.remove('correct');
+            word?.classList.remove('wrong');
+        });
         const field = this.fields[+index];
         this.words[+index] = null;
         this.activeFields.push(field);

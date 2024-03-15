@@ -6,4 +6,11 @@
     background-color: rgb(254, 212, 164);
     flex-grow: 1;
     text-align: center;
+
+    &.wrong {
+        outline: 1px solid red;
+    }
+    &.correct {
+        outline: 1px solid green;
+    }
 }
