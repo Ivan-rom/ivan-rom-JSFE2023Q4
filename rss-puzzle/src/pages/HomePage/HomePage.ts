@@ -1,10 +1,10 @@
-import { BaseComponent } from '../../BaseComponent';
-import { Button } from '../../components/Button/Button';
-import { Page } from '../Page';
+import { BaseComponent } from '../../BaseComponent.ts';
+import Button from '../../components/Button/Button.ts';
+import Page from '../Page.ts';
 
 import './homePage.css';
 
-export class HomePage extends Page {
+export default class HomePage extends Page {
     user: { name: string; surname: string } | null;
 
     constructor() {
@@ -42,7 +42,7 @@ export class HomePage extends Page {
             }),
         ];
 
-        const clickHandler = (event: Event) => {
+        const clickHandler = () => {
             window.location.hash = 'game/1_01';
         };
 

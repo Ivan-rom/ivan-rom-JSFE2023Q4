@@ -1,22 +1,31 @@
-import { BaseComponent } from '../../BaseComponent';
-import { Round, Word } from '../../types';
-import { randomizeArray, updateRoundId } from '../../utils/utils';
-import { Answer } from '../Answer/Answer';
-import { Button } from '../Button/Button';
-import { WordComponent } from '../WordComponent/WordComponent';
+import { BaseComponent } from '../../BaseComponent.ts';
+import { Round, Word } from '../../types.ts';
+import { randomizeArray, updateRoundId } from '../../utils/utils.ts';
+import Answer from '../Answer/Answer.ts';
+import Button from '../Button/Button.ts';
+import WordComponent from '../WordComponent/WordComponent.ts';
 
 import './Game.css';
 
-export class Game extends BaseComponent {
+export default class Game extends BaseComponent {
     data?: Round;
+
     answer?: Answer;
+
     answers: BaseComponent;
+
     dataSource?: BaseComponent;
+
     continueButton?: Button;
+
     sentence?: Word;
+
     words?: WordComponent[];
+
     currentWord: number = 0;
+
     levelId: string;
+
     roundId: string;
 
     constructor(levelId: string, roundId: string) {
@@ -79,12 +88,13 @@ export class Game extends BaseComponent {
     }
 
     nextLevel() {
-        window.location.hash = 'game/' + updateRoundId(+this.levelId, +this.roundId + 1);
+        const newHash = `game/${updateRoundId(+this.levelId, +this.roundId + 1)}`;
+        window.location.hash = newHash;
     }
 
     createContinueButton(): Button {
-        const callback = (e: Event) => {
-            this.currentWord++;
+        const callback = () => {
+            this.currentWord += 1;
             if (this.currentWord === 10) {
                 this.nextLevel();
             } else {

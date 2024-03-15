@@ -1,6 +1,6 @@
-import { BaseComponent } from '../../BaseComponent';
-import { toCapitalize } from '../../utils/utils';
-import { Button } from '../Button/Button';
+import { BaseComponent } from '../../BaseComponent.ts';
+import { toCapitalize } from '../../utils/utils.ts';
+import Button from '../Button/Button.ts';
 
 import './loginForm.css';
 
@@ -33,7 +33,7 @@ const fields: {
         },
         {
             type: 'symbols',
-            test: /^[a-zA-Z\-]+$/,
+            test: /^[a-zA-Z-]+$/,
             message: 'Use only English alphabet letters and the hyphen (" - ") symbol',
         },
         {
@@ -44,11 +44,15 @@ const fields: {
     ],
 };
 
-export class LoginForm extends BaseComponent<HTMLFormElement> {
+export default class LoginForm extends BaseComponent<HTMLFormElement> {
     hasErrors: boolean;
+
     submitButton: Button;
+
     fields: BaseComponent[];
+
     inputs: HTMLInputElement[];
+
     user: {
         name: string;
         surname: string;
@@ -77,7 +81,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
         const ul = new BaseComponent<HTMLUListElement>({ tag: 'ul', className: 'error-list' });
         const label = new BaseComponent<HTMLLabelElement>({
             tag: 'div',
-            textContent: toCapitalize(name + ':'),
+            textContent: toCapitalize(`${name}:`),
             className: 'label label-required',
         });
 
@@ -109,7 +113,7 @@ export class LoginForm extends BaseComponent<HTMLFormElement> {
 
         const input = new BaseComponent<HTMLInputElement>({
             tag: 'input',
-            name: name,
+            name,
             className: 'login-input',
             oninput: inputHandler,
             required: true,

@@ -1,15 +1,15 @@
-import { BaseComponent } from '../../BaseComponent';
+import { BaseComponent } from '../../BaseComponent.ts';
 
 import './button.css';
 
-export class Button extends BaseComponent<HTMLButtonElement> {
+export default class Button extends BaseComponent<HTMLButtonElement> {
     constructor(
         textContent: string,
         callback: (event: Event) => void,
         className: string = '',
         disabled: boolean = false
     ) {
-        super({ tag: 'button', className: 'button ' + className, onclick: callback, textContent });
+        super({ tag: 'button', className: `button  ${className}`, onclick: callback, textContent });
 
         this.setDisabled(disabled);
     }

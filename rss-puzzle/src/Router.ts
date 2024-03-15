@@ -1,8 +1,8 @@
-import { Header } from './components/Header/Header';
-import { GamePage } from './pages/GamePage/GamePage';
-import { HomePage } from './pages/HomePage/HomePage';
-import { LoginPage } from './pages/LoginPage/LoginPage';
-import { Page } from './pages/Page';
+import Header from './components/Header/Header.ts';
+import GamePage from './pages/GamePage/GamePage.ts';
+import HomePage from './pages/HomePage/HomePage.ts';
+import LoginPage from './pages/LoginPage/LoginPage.ts';
+import Page from './pages/Page.ts';
 
 type Route<T extends Page = Page> = {
     path: string;
@@ -24,8 +24,9 @@ const routes: Route[] = [
     },
 ];
 
-export class Router {
+export default class Router {
     routes: Route[];
+
     hash: string;
 
     constructor() {
@@ -35,7 +36,7 @@ export class Router {
         window.addEventListener('hashchange', this.hashChangeHandler);
     }
 
-    hashChangeHandler = (e: Event) => {
+    hashChangeHandler = () => {
         this.render();
     };
 
@@ -61,7 +62,7 @@ export class Router {
 
         document.body.innerHTML = '';
 
-        window.location.hash.slice(1) != 'login' && document.body.append(new Header().getComponent());
+        if (window.location.hash.slice(1) !== 'login') document.body.append(new Header().getComponent());
         document.body.append(currentPage?.page.getComponent() as Node);
     }
 

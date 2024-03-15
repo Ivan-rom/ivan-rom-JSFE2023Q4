@@ -1,13 +1,17 @@
-import { Api } from '../../API/api';
-import { Game } from '../../components/Game/Game';
-import { GameData, Round } from '../../types';
-import { Page } from '../Page';
+import Api from '../../API/api.ts';
+import Game from '../../components/Game/Game.ts';
+import { GameData, Round } from '../../types.ts';
+import Page from '../Page.ts';
 
-export class GamePage extends Page {
+export default class GamePage extends Page {
     api: Api;
+
     game?: Game;
+
     round?: Round;
+
     levelId?: string;
+
     roundId?: string;
 
     constructor() {
