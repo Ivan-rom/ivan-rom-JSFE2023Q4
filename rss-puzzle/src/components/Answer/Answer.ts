@@ -1,12 +1,16 @@
-import { BaseComponent } from '../../BaseComponent';
+import { BaseComponent } from '../../BaseComponent.ts';
 
 import './answer.css';
 
-export class Answer extends BaseComponent {
+export default class Answer extends BaseComponent {
     fields: HTMLElement[];
+
     activeFields: HTMLElement[];
+
     words: (string | null)[];
+
     sentence: string;
+
     constructor(length: number, sentence: string) {
         super({ className: 'answer' });
         this.sentence = sentence;
@@ -16,7 +20,7 @@ export class Answer extends BaseComponent {
         this.fields = [];
         this.activeFields = [];
 
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < length; i += 1) {
             this.createField(i);
             this.words[i] = null;
         }

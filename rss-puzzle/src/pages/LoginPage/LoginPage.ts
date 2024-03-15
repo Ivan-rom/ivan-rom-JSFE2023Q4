@@ -1,9 +1,9 @@
-import { LoginForm } from '../../components/LoginForm/LoginForm';
-import { Page } from '../Page';
+import LoginForm from '../../components/LoginForm/LoginForm.ts';
+import Page from '../Page.ts';
 
 import './loginPage.css';
 
-export class LoginPage extends Page {
+export default class LoginPage extends Page {
     constructor() {
         super({ className: 'login-page' });
 
