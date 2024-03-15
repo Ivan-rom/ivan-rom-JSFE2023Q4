@@ -68,6 +68,7 @@ export class Game extends BaseComponent {
     }
 
     nextSentence() {
+        this.answer?.getComponent().classList.add('disabled');
         this.sentence = (this.data as Round).words[this.currentWord];
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length);
