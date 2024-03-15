@@ -15,6 +15,7 @@ export class Game extends BaseComponent {
     continueButton?: Button;
     sentence?: Word;
     words?: WordComponent[];
+    currentWord: number = 0;
 
     constructor() {
         super({ className: 'game' });
@@ -24,7 +25,7 @@ export class Game extends BaseComponent {
 
     renderGame(data: Round) {
         this.data = data;
-        this.sentence = data.words[0];
+        this.sentence = data.words[this.currentWord];
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length);
 
@@ -66,10 +67,21 @@ export class Game extends BaseComponent {
         this.continueButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
+    nextSentence() {
+        this.sentence = (this.data as Round).words[this.currentWord];
+        this.words = this.createWords(this.sentence);
+        this.answer = this.createAnswer(this.words.length);
+        this.answers.append([this.answer]);
+        this.dataSource?.append(this.words);
+        this.words.forEach((word) => word.setWidth());
+        this.continueButton?.setDisabled(true);
+    }
+
     createContinueButton(): Button {
         const callback = (e: Event) => {
             if (this.answer?.isSolved()) {
-                console.log('next');
+                this.currentWord++;
+                this.nextSentence();
             } else {
                 console.log('no');
             }
