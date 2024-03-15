@@ -27,7 +27,7 @@ export class Game extends BaseComponent {
         this.data = data;
         this.sentence = data.words[this.currentWord];
         this.words = this.createWords(this.sentence);
-        this.answer = this.createAnswer(this.words.length);
+        this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
 
         this.dataSource = new BaseComponent({ className: 'data-source' }, this.words);
 
@@ -41,17 +41,13 @@ export class Game extends BaseComponent {
 
     createWords(sentence: Word): WordComponent[] {
         const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
-        const words = sentence.textExample.split(' ').map((word, i) => {
-            const wordComponent = new WordComponent(word, { onclick: clickHandler });
-            wordComponent.setDataset('index', i.toString());
-            return wordComponent;
-        });
+        const words = sentence.textExample.split(' ').map((word) => new WordComponent(word, { onclick: clickHandler }));
         const randomizedWords = randomizeArray<WordComponent>(words);
         return randomizedWords;
     }
 
-    createAnswer(length: number): Answer {
-        const answer = new Answer(length);
+    createAnswer(length: number, sentence: string): Answer {
+        const answer = new Answer(length, sentence);
         this.answer = answer;
         return answer;
     }
@@ -71,7 +67,7 @@ export class Game extends BaseComponent {
         this.answer?.getComponent().classList.add('disabled');
         this.sentence = (this.data as Round).words[this.currentWord];
         this.words = this.createWords(this.sentence);
-        this.answer = this.createAnswer(this.words.length);
+        this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
         this.answers.append([this.answer]);
         this.dataSource?.append(this.words);
         this.words.forEach((word) => word.setWidth());

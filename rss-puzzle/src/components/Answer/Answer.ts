@@ -5,9 +5,11 @@ import './answer.css';
 export class Answer extends BaseComponent {
     fields: HTMLElement[];
     activeFields: HTMLElement[];
-    words: (HTMLElement | null)[];
-    constructor(length: number) {
+    words: (string | null)[];
+    sentence: string;
+    constructor(length: number, sentence: string) {
         super({ className: 'answer' });
+        this.sentence = sentence;
 
         this.words = [];
 
@@ -37,7 +39,7 @@ export class Answer extends BaseComponent {
     appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
         const activeField = this.activeFields[0];
         const component = child instanceof BaseComponent ? child.getComponent() : child;
-        this.words[+(activeField.dataset.index as string)] = component;
+        this.words[+(activeField.dataset.index as string)] = component.textContent;
         activeField.append(component);
         activeField.setAttribute('style', `width: ${component.dataset.width}px`);
         this.activeFields.shift();
@@ -52,17 +54,6 @@ export class Answer extends BaseComponent {
     }
 
     isSolved(): boolean {
-        for (let i = 0; i < this.words.length; i++) {
-            const element = this.words[i];
-            if (
-                (i !== this.words.length - 1 &&
-                    element &&
-                    +(element.dataset.index as string) !== +(this.words[i + 1]?.dataset.index as string) - 1) ||
-                !element
-            ) {
-                return false;
-            }
-        }
-        return true;
+        return this.sentence === this.words.join(' ');
     }
 }
