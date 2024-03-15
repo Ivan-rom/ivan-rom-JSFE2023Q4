@@ -17,7 +17,6 @@
 
 .data-source {
     display: flex;
-    gap: 5px;
     padding: 5px;
     justify-content: center;
     background-color: rgb(60, 18, 42);

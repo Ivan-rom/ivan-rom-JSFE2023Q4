@@ -10,6 +10,6 @@ export class WordComponent extends BaseComponent {
     setWidth() {
         const word = this.component;
         this.setDataset('width', word.offsetWidth.toString());
-        word.setAttribute('style', `width: ${word.dataset.width}px`);
+        word.setAttribute('style', `width: ${word.dataset.width}px; flex-grow: 0`);
     }
 }
