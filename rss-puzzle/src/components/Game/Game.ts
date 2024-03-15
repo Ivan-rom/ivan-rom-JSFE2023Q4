@@ -1,6 +1,6 @@
 import { BaseComponent } from '../../BaseComponent';
 import { Round, Word } from '../../types';
-import { randomizeArray, updateRoundId } from '../../utils/utils';
+import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
 import WordComponent from '../WordComponent/WordComponent';
@@ -16,9 +16,7 @@ export default class Game extends BaseComponent {
 
     dataSource?: BaseComponent;
 
-    continueButton?: Button;
-
-    checkButton?: Button;
+    button?: Button;
 
     sentence?: Word;
 
@@ -46,11 +44,10 @@ export default class Game extends BaseComponent {
 
         this.dataSource = new BaseComponent({ className: 'data-source' }, this.words);
 
-        this.continueButton = this.createContinueButton();
-        this.checkButton = this.createCheckButton();
+        this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
 
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.continueButton, this.checkButton]);
+        this.append([this.answers, this.dataSource, this.button]);
 
         this.words.forEach((word) => word.setWidth());
     }
@@ -76,7 +73,7 @@ export default class Game extends BaseComponent {
             this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
-        this.checkButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
+        this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
     nextSentence() {
@@ -87,8 +84,8 @@ export default class Game extends BaseComponent {
         this.answers.append([this.answer]);
         this.dataSource?.append(this.words);
         this.words.forEach((word) => word.setWidth());
-        this.continueButton?.setDisabled(true);
-        this.checkButton?.setDisabled(true);
+        this.button?.setDisabled(true);
+        this.updateButton();
     }
 
     nextLevel() {
@@ -96,24 +93,23 @@ export default class Game extends BaseComponent {
         window.location.hash = newHash;
     }
 
-    createContinueButton(): Button {
-        const callback = () => {
-            this.currentWord += 1;
-            if (this.currentWord === 10) {
-                this.nextLevel();
-            } else {
-                this.nextSentence();
-            }
-        };
-        const button = new Button('Continue', callback, 'continue', true);
-        return button;
-    }
+    updateButton(isContinue: boolean = false) {
+        let callback: () => void = () => this.answer?.isSolved() && this.updateButton(true);
+        let text: string = 'check';
 
-    createCheckButton(): Button {
-        const callback = () => {
-            this.continueButton?.setDisabled(!this.answer?.isSolved());
-        };
-        const button = new Button('Check', callback, 'check', true);
-        return button;
+        if (isContinue) {
+            text = 'continue';
+            callback = () => {
+                this.currentWord += 1;
+                if (this.currentWord === 10) {
+                    this.nextLevel();
+                } else {
+                    this.nextSentence();
+                }
+            };
+        }
+        (this.button as Button).getComponent().textContent = toCapitalize(text);
+        (this.button as Button).getComponent().className = `button ${text}`;
+        (this.button as Button).getComponent().onclick = callback;
     }
 }
