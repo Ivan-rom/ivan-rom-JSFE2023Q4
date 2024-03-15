@@ -20,7 +20,7 @@ export class GamePage extends Page {
         this.component.innerHTML = '';
         this.getRound().then((round) => {
             this.round = round;
-            this.game = new Game();
+            this.game = new Game(this.levelId as string, this.roundId as string);
             this.append([this.game]);
             this.game.renderGame(this.round);
         });

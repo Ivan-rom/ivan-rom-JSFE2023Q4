@@ -1,6 +1,6 @@
 import { BaseComponent } from '../../BaseComponent';
 import { Round, Word } from '../../types';
-import { randomizeArray } from '../../utils/utils';
+import { randomizeArray, updateRoundId } from '../../utils/utils';
 import { Answer } from '../Answer/Answer';
 import { Button } from '../Button/Button';
 import { WordComponent } from '../WordComponent/WordComponent';
@@ -16,9 +16,13 @@ export class Game extends BaseComponent {
     sentence?: Word;
     words?: WordComponent[];
     currentWord: number = 0;
+    levelId: string;
+    roundId: string;
 
-    constructor() {
+    constructor(levelId: string, roundId: string) {
         super({ className: 'game' });
+        this.levelId = levelId;
+        this.roundId = roundId;
         this.answers = new BaseComponent({ className: 'answers' });
         this.append([this.answers]);
     }
@@ -74,10 +78,18 @@ export class Game extends BaseComponent {
         this.continueButton?.setDisabled(true);
     }
 
+    nextLevel() {
+        window.location.hash = 'game/' + updateRoundId(+this.levelId, +this.roundId + 1);
+    }
+
     createContinueButton(): Button {
         const callback = (e: Event) => {
             this.currentWord++;
-            this.nextSentence();
+            if (this.currentWord === 10) {
+                this.nextLevel();
+            } else {
+                this.nextSentence();
+            }
         };
         const button = new Button('Continue', callback, 'continue', true);
         return button;
