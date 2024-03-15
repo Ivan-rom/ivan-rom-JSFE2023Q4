@@ -64,7 +64,7 @@ export class Game extends BaseComponent {
             this.answer?.removeWord(parent?.dataset.index as string);
             this.dataSource?.append([component]);
         }
-        this.continueButton?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
+        this.continueButton?.setDisabled(!(this.answer as Answer).isSolved());
     }
 
     nextSentence() {
@@ -80,12 +80,8 @@ export class Game extends BaseComponent {
 
     createContinueButton(): Button {
         const callback = (e: Event) => {
-            if (this.answer?.isSolved()) {
-                this.currentWord++;
-                this.nextSentence();
-            } else {
-                console.log('no');
-            }
+            this.currentWord++;
+            this.nextSentence();
         };
         const button = new Button('Continue', callback, 'continue', true);
         return button;
