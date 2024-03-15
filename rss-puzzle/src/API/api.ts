@@ -1,4 +1,4 @@
-import { GameData } from '../types.ts';
+import { GameData } from '../types';
 
 export default class Api {
     static path: string;

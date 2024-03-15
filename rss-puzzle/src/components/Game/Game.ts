@@ -1,9 +1,9 @@
-import { BaseComponent } from '../../BaseComponent.ts';
-import { Round, Word } from '../../types.ts';
-import { randomizeArray, updateRoundId } from '../../utils/utils.ts';
-import Answer from '../Answer/Answer.ts';
-import Button from '../Button/Button.ts';
-import WordComponent from '../WordComponent/WordComponent.ts';
+import { BaseComponent } from '../../BaseComponent';
+import { Round, Word } from '../../types';
+import { randomizeArray, updateRoundId } from '../../utils/utils';
+import Answer from '../Answer/Answer';
+import Button from '../Button/Button';
+import WordComponent from '../WordComponent/WordComponent';
 
 import './Game.css';
 

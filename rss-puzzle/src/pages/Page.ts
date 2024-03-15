@@ -1,4 +1,4 @@
-import { BaseComponent, Params } from '../BaseComponent.ts';
+import { BaseComponent, Params } from '../BaseComponent';
 
 export default class Page<T extends HTMLElement = HTMLElement> extends BaseComponent<T> {
     constructor(params?: Params<T>, content?: HTMLElement | BaseComponent) {

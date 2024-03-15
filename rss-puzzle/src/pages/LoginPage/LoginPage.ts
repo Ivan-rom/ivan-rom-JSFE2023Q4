@@ -1,5 +1,5 @@
-import LoginForm from '../../components/LoginForm/LoginForm.ts';
-import Page from '../Page.ts';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import Page from '../Page';
 
 import './loginPage.css';
 

@@ -1,4 +1,4 @@
-import { BaseComponent, Params } from '../../BaseComponent.ts';
+import { BaseComponent, Params } from '../../BaseComponent';
 
 import './WordComponent.css';
 

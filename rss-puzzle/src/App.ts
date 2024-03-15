@@ -1,4 +1,4 @@
-import Router from './Router.ts';
+import Router from './Router';
 
 const router = new Router();
 
