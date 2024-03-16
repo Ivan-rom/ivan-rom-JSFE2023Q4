@@ -47,7 +47,7 @@ export default class Game extends BaseComponent {
         this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
 
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.button]);
+        this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
 
         this.words.forEach((word) => word.setWidth());
     }
@@ -94,22 +94,50 @@ export default class Game extends BaseComponent {
     }
 
     updateButton(isContinue: boolean = false) {
-        let callback: () => void = () => this.answer?.isSolved() && this.updateButton(true);
         let text: string = 'check';
+        let callback = this.checkHandler;
 
         if (isContinue) {
             text = 'continue';
-            callback = () => {
-                this.currentWord += 1;
-                if (this.currentWord === 10) {
-                    this.nextLevel();
-                } else {
-                    this.nextSentence();
-                }
-            };
+            callback = this.continueHandler;
         }
         (this.button as Button).getComponent().textContent = toCapitalize(text);
         (this.button as Button).getComponent().className = `button ${text}`;
-        (this.button as Button).getComponent().onclick = callback;
+        (this.button as Button).getComponent().onclick = callback.bind(this);
+    }
+
+    checkHandler() {
+        if (this.answer?.isSolved()) this.updateButton(true);
+    }
+
+    continueHandler() {
+        this.currentWord += 1;
+        if (this.currentWord === 10) {
+            this.nextLevel();
+        } else {
+            this.nextSentence();
+        }
+    }
+
+    createSkipButton(): Button {
+        const callback = () => {
+            this.checkHandler();
+            const wrongWords = this.words?.filter((word) => word.getComponent().classList.contains('wrong'));
+            const filteredWords = this.words?.filter((word) => !word.getComponent().classList.contains('correct'));
+
+            wrongWords?.forEach((word) => this.moveWord(word.getComponent()));
+
+            this.sentence?.textExample.split(' ').forEach((text) => {
+                const wordIndex = filteredWords?.findIndex((word) => word.getComponent().textContent === text);
+                const word = (filteredWords as WordComponent[])[wordIndex as number];
+                if (word) {
+                    this.moveWord(word.getComponent());
+                    filteredWords?.splice(wordIndex as number, 1);
+                }
+            });
+
+            this.updateButton(true);
+        };
+        return new Button("I don't know", callback, 'skip');
     }
 }
