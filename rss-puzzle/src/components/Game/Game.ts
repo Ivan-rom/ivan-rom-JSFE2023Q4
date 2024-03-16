@@ -1,4 +1,5 @@
 import { BaseComponent } from '../../BaseComponent';
+import Page from '../../pages/Page';
 import { Round, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
@@ -30,8 +31,13 @@ export default class Game extends BaseComponent {
 
     current?: HTMLElement;
 
-    constructor(levelId: string, roundId: string) {
+    page: Page;
+
+    dropElement?: HTMLElement;
+
+    constructor(levelId: string, roundId: string, page: Page) {
         super({ className: 'game' });
+        this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
         this.answers = new BaseComponent({ className: 'answers' });
@@ -56,9 +62,16 @@ export default class Game extends BaseComponent {
 
     createWords(sentence: Word): WordComponent[] {
         const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
-        const words = sentence.textExample
-            .split(' ')
-            .map((word) => new WordComponent(word, { onclick: clickHandler, ondragstart: this.dragStart.bind(this) }));
+        const words = sentence.textExample.split(' ').map((word) => {
+            const wordComponent = new WordComponent(word, {
+                onclick: clickHandler,
+                ondragstart: this.dragStart.bind(this),
+                ontouchmove: this.dragMove,
+            });
+            wordComponent.getComponent().addEventListener('touchmove', this.dragMove);
+            wordComponent.getComponent().addEventListener('touchend', this.dragDrop);
+            return wordComponent;
+        });
         const randomizedWords = randomizeArray<WordComponent>(words);
         return randomizedWords;
     }
@@ -152,9 +165,10 @@ export default class Game extends BaseComponent {
         this.current = target;
     }
 
-    dragoverHandler(ev: DragEvent) {
+    dragoverHandler(ev: DragEvent, straightTarget?: HTMLElement) {
         ev.preventDefault();
-        const target = ev.target as HTMLElement;
+        let target = ev.target as HTMLElement;
+        if (straightTarget) target = straightTarget;
         if (target.className === 'field' && target.children.length === 0) {
             const width = this.current?.dataset.width;
             target.setAttribute('style', `width: ${width}px`);
@@ -183,4 +197,43 @@ export default class Game extends BaseComponent {
         }
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
+
+    dragMove = (e: TouchEvent) => {
+        e.preventDefault();
+        const word = e.target as HTMLElement;
+        this.current = word;
+        const { pageX, pageY } = e.changedTouches[0];
+
+        word.style.position = 'absolute';
+        word.style.pointerEvents = 'none';
+
+        word.style.top = `${pageY - this.component.offsetTop - word.offsetHeight / 2}px`;
+        word.style.left = `${pageX - this.component.offsetLeft - word.offsetWidth / 2}px`;
+
+        const dropElement = document.elementFromPoint(pageX, pageY) as HTMLElement;
+        if (this.dropElement !== dropElement) this.dropElement = dropElement;
+
+        if (this.dropElement?.className === 'field') {
+            this.dragoverHandler(e as unknown as DragEvent, this.dropElement as HTMLElement);
+            this.answer?.clearFields(this.dropElement);
+        }
+    };
+
+    dragDrop = (e: TouchEvent) => {
+        e.preventDefault();
+        const word = e.target as HTMLElement;
+        word.style.position = 'static';
+        word.style.pointerEvents = 'auto';
+        word.style.top = `0`;
+        word.style.left = `0`;
+
+        this.answer?.clearFields();
+
+        if (this.dropElement?.className === 'field') {
+            if (this.current!.parentElement?.className === 'field')
+                this.answer?.removeWord(this.current!.parentElement?.dataset.index as string);
+            this.answer?.appendWord(this.current!, this.dropElement?.dataset.index);
+        }
+        this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
+    };
 }

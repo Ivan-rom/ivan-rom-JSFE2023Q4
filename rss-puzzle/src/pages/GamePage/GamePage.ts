@@ -3,6 +3,8 @@ import Game from '../../components/Game/Game';
 import { GameData, Round } from '../../types';
 import Page from '../Page';
 
+import './gamePage.css';
+
 export default class GamePage extends Page {
     api: Api;
 
@@ -15,7 +17,7 @@ export default class GamePage extends Page {
     roundId?: string;
 
     constructor() {
-        super();
+        super({ className: 'game-page' });
 
         this.api = new Api();
     }
@@ -24,7 +26,7 @@ export default class GamePage extends Page {
         this.component.innerHTML = '';
         this.getRound().then((round) => {
             this.round = round;
-            this.game = new Game(this.levelId as string, this.roundId as string);
+            this.game = new Game(this.levelId as string, this.roundId as string, this);
             this.append([this.game]);
             this.game.renderGame(this.round);
         });

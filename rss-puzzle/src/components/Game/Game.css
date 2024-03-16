@@ -1,8 +1,5 @@
 .game {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     background-color: rgb(48, 16, 35);
     padding: 10px;
     border-radius: 10px;
@@ -16,8 +13,10 @@
 }
 
 .data-source {
+    margin-top: 20px;
     display: flex;
     padding: 5px;
     justify-content: center;
     background-color: rgb(60, 18, 42);
+    min-height: 40px;
 }

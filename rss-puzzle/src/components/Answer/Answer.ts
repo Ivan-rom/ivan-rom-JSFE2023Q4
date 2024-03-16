@@ -53,11 +53,13 @@ export default class Answer extends BaseComponent {
             activeFieldIndex = 0;
         }
         const activeField = this.activeFields[activeFieldIndex];
-        const component = child instanceof BaseComponent ? child.getComponent() : child;
-        this.words[+(activeField.dataset.index as string)] = component;
-        activeField.append(component);
-        activeField.setAttribute('style', `width: ${component.dataset.width}px`);
-        this.activeFields.splice(activeFieldIndex, 1);
+        if (activeField) {
+            const component = child instanceof BaseComponent ? child.getComponent() : child;
+            this.words[+(activeField.dataset.index as string)] = component;
+            activeField.append(component);
+            activeField.setAttribute('style', `width: ${component.dataset.width}px`);
+            this.activeFields.splice(activeFieldIndex, 1);
+        }
     }
 
     removeWord(index: string) {
@@ -90,6 +92,10 @@ export default class Answer extends BaseComponent {
     dragLeave(ev: DragEvent) {
         const target = ev.target as HTMLElement;
         if (target.className === 'field') target.removeAttribute('style');
+    }
+
+    clearFields(dropElement?: HTMLElement) {
+        this.activeFields.filter((field) => field !== dropElement).forEach((field) => field.removeAttribute('style'));
     }
 
     // dragoverHandler(ev: DragEvent) {
