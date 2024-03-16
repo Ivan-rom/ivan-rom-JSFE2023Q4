@@ -166,5 +166,21 @@ export default class Game extends BaseComponent {
 
         const target = ev.target as HTMLElement;
         if (target.className === 'field') this.answer?.appendWord(this.current!, target.dataset.index!);
+        else {
+            const targetId = target.parentElement!.dataset.index!;
+            this.answer?.removeWord(targetId);
+
+            if (this.current!.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+
+                this.answer?.removeWord(currentId);
+                this.answer?.appendWord(target, currentId);
+            } else {
+                this.dataSource?.append([target]);
+            }
+
+            this.answer?.appendWord(this.current!, targetId);
+        }
+        this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 }
