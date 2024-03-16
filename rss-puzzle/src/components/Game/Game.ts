@@ -137,6 +137,8 @@ export default class Game extends BaseComponent {
             });
 
             this.updateButton(true);
+            this.checkHandler();
+            this.answer?.getComponent().classList.add('skipped');
         };
         return new Button("I don't know", callback, 'skip');
     }
