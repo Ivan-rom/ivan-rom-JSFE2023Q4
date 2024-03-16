@@ -15,6 +15,6 @@
 
 .field {
     box-shadow: 0 0 0 5px rgb(60, 18, 42) inset;
-    min-width: 20px;
+    min-width: 30px;
     min-height: 28px;
 }

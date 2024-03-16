@@ -53,6 +53,7 @@ export default class Answer extends BaseComponent {
             activeFieldIndex = 0;
         }
         const activeField = this.activeFields[activeFieldIndex];
+        console.log(activeField);
         if (activeField) {
             const component = child instanceof BaseComponent ? child.getComponent() : child;
             this.words[+(activeField.dataset.index as string)] = component;

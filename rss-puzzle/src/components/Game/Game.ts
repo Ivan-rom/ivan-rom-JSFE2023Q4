@@ -70,6 +70,7 @@ export default class Game extends BaseComponent {
             });
             wordComponent.getComponent().addEventListener('touchmove', this.dragMove);
             wordComponent.getComponent().addEventListener('touchend', this.dragDrop);
+            // wordComponent.getComponent().addEventListener('touchstart', clickHandler);
             return wordComponent;
         });
         const randomizedWords = randomizeArray<WordComponent>(words);
@@ -202,6 +203,7 @@ export default class Game extends BaseComponent {
         e.preventDefault();
         const word = e.target as HTMLElement;
         this.current = word;
+
         const { pageX, pageY } = e.changedTouches[0];
 
         word.style.position = 'absolute';
@@ -229,14 +231,27 @@ export default class Game extends BaseComponent {
 
         this.answer?.clearFields();
 
-        if (this.current!.parentElement?.className === 'field') {
-            this.answer?.removeWord(this.current!.parentElement?.dataset.index as string);
-            this.dataSource?.append([this.current!]);
+        if (this.current) {
+            if (this.dropElement?.className === 'field') {
+                this.answer?.appendWord(this.current, this.dropElement?.dataset.index);
+            } else if (
+                this.dropElement?.classList.contains('word') &&
+                this.dropElement?.parentElement?.className === 'field'
+            ) {
+                const targetId = this.dropElement.parentElement!.dataset.index!;
+
+                if (this.current!.parentElement?.className === 'field') {
+                    const currentId = this.current!.parentElement!.dataset.index!;
+
+                    this.answer?.removeWord(currentId);
+                    this.answer?.appendWord(this.dropElement, currentId);
+                } else {
+                    this.dataSource?.append([this.dropElement]);
+                }
+                this.answer?.removeWord(targetId);
+                this.answer?.appendWord(this.current!, targetId);
+            }
         }
-
-        if (this.dropElement?.className === 'field')
-            this.answer?.appendWord(this.current!, this.dropElement?.dataset.index);
-
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     };
 }
