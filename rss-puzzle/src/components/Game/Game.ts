@@ -229,11 +229,14 @@ export default class Game extends BaseComponent {
 
         this.answer?.clearFields();
 
-        if (this.dropElement?.className === 'field') {
-            if (this.current!.parentElement?.className === 'field')
-                this.answer?.removeWord(this.current!.parentElement?.dataset.index as string);
-            this.answer?.appendWord(this.current!, this.dropElement?.dataset.index);
+        if (this.current!.parentElement?.className === 'field') {
+            this.answer?.removeWord(this.current!.parentElement?.dataset.index as string);
+            this.dataSource?.append([this.current!]);
         }
+
+        if (this.dropElement?.className === 'field')
+            this.answer?.appendWord(this.current!, this.dropElement?.dataset.index);
+
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     };
 }
