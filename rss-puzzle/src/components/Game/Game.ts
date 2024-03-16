@@ -28,6 +28,8 @@ export default class Game extends BaseComponent {
 
     roundId: string;
 
+    current?: HTMLElement;
+
     constructor(levelId: string, roundId: string) {
         super({ className: 'game' });
         this.levelId = levelId;
@@ -54,13 +56,15 @@ export default class Game extends BaseComponent {
 
     createWords(sentence: Word): WordComponent[] {
         const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
-        const words = sentence.textExample.split(' ').map((word) => new WordComponent(word, { onclick: clickHandler }));
+        const words = sentence.textExample
+            .split(' ')
+            .map((word) => new WordComponent(word, { onclick: clickHandler, ondragstart: this.dragStart.bind(this) }));
         const randomizedWords = randomizeArray<WordComponent>(words);
         return randomizedWords;
     }
 
     createAnswer(length: number, sentence: string): Answer {
-        const answer = new Answer(length, sentence);
+        const answer = new Answer(length, sentence, this.dragoverHandler.bind(this), this.dropHandler.bind(this));
         this.answer = answer;
         return answer;
     }
@@ -141,5 +145,26 @@ export default class Game extends BaseComponent {
             this.answer?.getComponent().classList.add('skipped');
         };
         return new Button("I don't know", callback, 'skip');
+    }
+
+    dragStart(ev: DragEvent) {
+        const target = ev.target as HTMLElement;
+        this.current = target;
+    }
+
+    dragoverHandler(ev: DragEvent) {
+        ev.preventDefault();
+        const target = ev.target as HTMLElement;
+        if (target.className === 'field' && target.children.length === 0) {
+            const width = this.current?.dataset.width;
+            target.setAttribute('style', `width: ${width}px`);
+        }
+    }
+
+    dropHandler(ev: DragEvent) {
+        ev.preventDefault();
+
+        const target = ev.target as HTMLElement;
+        if (target.className === 'field') this.answer?.appendWord(this.current!, target.dataset.index!);
     }
 }

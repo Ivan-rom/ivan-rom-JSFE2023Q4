@@ -6,6 +6,9 @@
     background-color: rgb(254, 212, 164);
     flex-grow: 1;
     text-align: center;
+    position: relative;
+    top: 0;
+    left: 0;
 
     &.wrong {
         outline: 1px solid red;
