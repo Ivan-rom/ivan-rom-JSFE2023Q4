@@ -53,7 +53,6 @@ export default class Answer extends BaseComponent {
             activeFieldIndex = 0;
         }
         const activeField = this.activeFields[activeFieldIndex];
-        console.log(activeField);
         if (activeField) {
             const component = child instanceof BaseComponent ? child.getComponent() : child;
             this.words[+(activeField.dataset.index as string)] = component;
@@ -98,26 +97,4 @@ export default class Answer extends BaseComponent {
     clearFields(dropElement?: HTMLElement) {
         this.activeFields.filter((field) => field !== dropElement).forEach((field) => field.removeAttribute('style'));
     }
-
-    // dragoverHandler(ev: DragEvent) {
-    //     ev.preventDefault();
-
-    //     const target = ev.target as HTMLElement;
-    //     // eslint-disable-next-line no-param-reassign
-    //     if (ev.dataTransfer) ev.dataTransfer.dropEffect = 'move';
-    //     if (target.children.length === 0) {
-    //         const width = ev.dataTransfer?.getData('text');
-    //         console.log(ev.dataTransfer);
-    //         target.setAttribute('style', `width: ${width}px`);
-    //     }
-    // }
-
-    // dropHandler(ev: DragEvent) {
-    //     ev.preventDefault();
-    //     // Get the id of the target and add the moved element to the target's DOM
-    //     // if (this.component.children) {
-    //     //     const width = (ev.dataTransfer as DataTransfer).getData('width');
-    //     //     this.component.setAttribute('style', `width: ${width}px`);
-    //     // }
-    // }
 }

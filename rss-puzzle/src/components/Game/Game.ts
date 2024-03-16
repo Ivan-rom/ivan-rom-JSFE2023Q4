@@ -35,6 +35,8 @@ export default class Game extends BaseComponent {
 
     dropElement?: HTMLElement;
 
+    touches?: { pageX: number; pageY: number };
+
     constructor(levelId: string, roundId: string, page: Page) {
         super({ className: 'game' });
         this.page = page;
@@ -61,16 +63,15 @@ export default class Game extends BaseComponent {
     }
 
     createWords(sentence: Word): WordComponent[] {
-        const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
         const words = sentence.textExample.split(' ').map((word) => {
             const wordComponent = new WordComponent(word, {
-                onclick: clickHandler,
+                onclick: this.clickHandler,
                 ondragstart: this.dragStart.bind(this),
                 ontouchmove: this.dragMove,
             });
             wordComponent.getComponent().addEventListener('touchmove', this.dragMove);
             wordComponent.getComponent().addEventListener('touchend', this.dragDrop);
-            // wordComponent.getComponent().addEventListener('touchstart', clickHandler);
+            wordComponent.getComponent().addEventListener('touchstart', this.touchStart);
             return wordComponent;
         });
         const randomizedWords = randomizeArray<WordComponent>(words);
@@ -122,6 +123,10 @@ export default class Game extends BaseComponent {
         (this.button as Button).getComponent().textContent = toCapitalize(text);
         (this.button as Button).getComponent().className = `button ${text}`;
         (this.button as Button).getComponent().onclick = callback.bind(this);
+    }
+
+    clickHandler(e: Event) {
+        this.moveWord(e.target as HTMLElement);
     }
 
     checkHandler() {
@@ -199,6 +204,11 @@ export default class Game extends BaseComponent {
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
+    touchStart = (e: TouchEvent) => {
+        const { pageX, pageY } = e.changedTouches[0];
+        this.touches = { pageX, pageY };
+    };
+
     dragMove = (e: TouchEvent) => {
         e.preventDefault();
         const word = e.target as HTMLElement;
@@ -229,6 +239,13 @@ export default class Game extends BaseComponent {
         word.style.top = `0`;
         word.style.left = `0`;
 
+        const newX = e.changedTouches[0].pageX;
+        const newY = e.changedTouches[0].pageY;
+
+        if (newX === this.touches?.pageX && newY === this.touches?.pageY) {
+            this.clickHandler(e);
+            return;
+        }
         this.answer?.clearFields();
 
         if (this.current) {
