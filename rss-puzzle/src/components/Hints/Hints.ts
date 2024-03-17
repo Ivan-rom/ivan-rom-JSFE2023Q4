@@ -21,7 +21,12 @@ export default class Hints extends BaseComponent {
         super({ className: 'hints' });
         this.parent = parent;
         this.translationHint = new BaseComponent({ className: 'hint translation' });
-        this.audioHint = new Button('play', () => this.audio?.play(), 'hint audio shown');
+        const audioCallback = () => {
+            this.audio?.play();
+            this.audioHint.getComponent().classList.add('playing');
+            this.audioHint.setDisabled(true);
+        };
+        this.audioHint = new Button('play', audioCallback, 'hint audio shown');
 
         this.isTranslation = false;
         const translationButton = this.createTranslationButton();
@@ -51,6 +56,10 @@ export default class Hints extends BaseComponent {
 
     setAudio(audioPath: string) {
         this.audio = new Audio(`${Api.path}/${audioPath}`);
+        this.audio?.addEventListener('ended', () => {
+            this.audioHint.getComponent().classList.remove('playing');
+            this.audioHint.setDisabled(false);
+        });
     }
 
     createTranslationButton(): Button {
