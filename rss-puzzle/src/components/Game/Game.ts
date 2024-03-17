@@ -63,7 +63,7 @@ export default class Game extends BaseComponent {
     }
 
     createWords(sentence: Word): WordComponent[] {
-        const words = sentence.textExample.split(' ').map((word) => {
+        const words = sentence.textExample.split(' ').map((word, i, arr) => {
             const wordComponent = new WordComponent(word, {
                 onclick: this.clickHandler.bind(this),
                 ondragstart: this.dragStart.bind(this),
@@ -71,6 +71,8 @@ export default class Game extends BaseComponent {
                 ontouchend: this.dragDrop.bind(this),
                 ontouchstart: this.touchStart.bind(this),
             });
+            if (i === 0) wordComponent.getComponent().classList.add('first');
+            else if (i === arr.length - 1) wordComponent.getComponent().classList.add('last');
             return wordComponent;
         });
         const randomizedWords = randomizeArray<WordComponent>(words);

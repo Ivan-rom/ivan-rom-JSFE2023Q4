@@ -17,6 +17,7 @@
     display: flex;
     padding: 5px;
     justify-content: center;
+    align-items: center;
     background-color: rgb(60, 18, 42);
     min-height: 40px;
 }

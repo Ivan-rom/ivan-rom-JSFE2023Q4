@@ -4,7 +4,10 @@ import './WordComponent.css';
 
 export default class WordComponent extends BaseComponent {
     constructor(text: string, params?: Params) {
-        super({ ...params, tag: 'span', className: 'word', textContent: text, draggable: true });
+        super({ ...params, className: 'word', draggable: true });
+        const content = new BaseComponent({ className: 'word-content', textContent: text });
+        const after = new BaseComponent({ className: 'after' });
+        this.append([content, after]);
     }
 
     setWidth() {
