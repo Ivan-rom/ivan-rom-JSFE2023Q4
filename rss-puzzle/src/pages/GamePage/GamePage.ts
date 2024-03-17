@@ -1,4 +1,5 @@
 import Api from '../../API/api';
+import { BaseComponent } from '../../BaseComponent';
 import Game from '../../components/Game/Game';
 import { GameData, Round } from '../../types';
 import Page from '../Page';
@@ -16,18 +17,24 @@ export default class GamePage extends Page {
 
     roundId?: string;
 
+    content: BaseComponent;
+
     constructor() {
         super({ className: 'game-page' });
+
+        this.content = new BaseComponent({ className: 'content' });
 
         this.api = new Api();
     }
 
     render(): void {
         this.component.innerHTML = '';
+        this.append([this.content]);
+
         this.getRound().then((round) => {
             this.round = round;
-            this.game = new Game(this.levelId as string, this.roundId as string, this);
-            this.append([this.game]);
+            this.game = new Game(this.levelId as string, this.roundId as string, this.content);
+            this.content.append([this.game]);
             this.game.renderGame(this.round);
         });
     }

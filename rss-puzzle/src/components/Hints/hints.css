@@ -1,3 +1,49 @@
 .hints {
+    width: 100%;
     margin-bottom: 20px;
+}
+
+.hints-content {
+    width: 100%;
+    position: relative;
+    top: 10px;
+    z-index: 0;
+}
+
+.hints-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.hint {
+    z-index: 2;
+    border-radius: 15px 15px 0 0;
+    text-align: center;
+    position: absolute;
+    transition: 0.2s;
+    padding: 15px;
+    top: 0;
+    /* &:not(.button) { */
+    background-color: rgb(48, 16, 35);
+    color: #fff;
+    /* } */
+
+    &.translation {
+        left: 0;
+        right: 80px;
+    }
+
+    &.audio {
+        margin: 0;
+        right: 0;
+        box-shadow: none;
+
+        &:active {
+            translate: 0 10px;
+        }
+    }
+
+    &.shown {
+        transform: translateY(-100%);
+    }
 }

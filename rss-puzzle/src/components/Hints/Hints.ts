@@ -1,3 +1,4 @@
+import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
 import Button from '../Button/Button';
 
@@ -6,22 +7,50 @@ import './hints.css';
 export default class Hints extends BaseComponent {
     translationHint: BaseComponent;
 
+    audioHint: Button;
+
     isTranslation: boolean;
 
-    TranslationButton: Button;
+    isAudio: boolean;
 
-    constructor(translationHint: BaseComponent) {
+    audio?: HTMLAudioElement;
+
+    parent: BaseComponent;
+
+    constructor(parent: BaseComponent) {
         super({ className: 'hints' });
-        this.translationHint = translationHint;
-        this.isTranslation = false;
-        this.TranslationButton = this.createTranslationButton();
+        this.parent = parent;
+        this.translationHint = new BaseComponent({ className: 'hint translation' });
+        this.audioHint = new Button('play', () => this.audio?.play(), 'hint audio shown');
 
-        this.append([this.TranslationButton]);
+        this.isTranslation = false;
+        const translationButton = this.createTranslationButton();
+
+        this.isAudio = true;
+
+        const hints = new BaseComponent({ className: 'hints-content' }, [this.translationHint, this.audioHint]);
+        const buttons = new BaseComponent({ className: 'hints-buttons' }, [translationButton]);
+
+        this.append([buttons]);
+        this.parent.append([hints]);
     }
 
     showTranslation(isForced: boolean = false) {
         if (this.isTranslation || isForced) this.translationHint.getComponent().classList.add('shown');
         else this.translationHint.getComponent().classList.remove('shown');
+    }
+
+    showAudio() {
+        if (this.isAudio) this.audioHint.getComponent().classList.add('shown');
+        else this.audioHint.getComponent().classList.remove('shown');
+    }
+
+    setText(text: string) {
+        this.translationHint.getComponent().textContent = text;
+    }
+
+    setAudio(audioPath: string) {
+        this.audio = new Audio(`${Api.path}/${audioPath}`);
     }
 
     createTranslationButton(): Button {
