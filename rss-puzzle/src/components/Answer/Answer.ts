@@ -11,7 +11,7 @@ export default class Answer extends BaseComponent {
 
     sentence: string;
 
-    constructor(length: number, sentence: string) {
+    constructor(length: number, sentence: string, dragOver: (e: DragEvent) => void, drop: (e: DragEvent) => void) {
         super({ className: 'answer' });
         this.sentence = sentence;
 
@@ -21,13 +21,18 @@ export default class Answer extends BaseComponent {
         this.activeFields = [];
 
         for (let i = 0; i < length; i += 1) {
-            this.createField(i);
+            this.createField(i, dragOver, drop);
             this.words[i] = null;
         }
     }
 
-    createField(index: number) {
-        const field = new BaseComponent({ className: 'field' });
+    createField(index: number, dragOver: (e: DragEvent) => void, drop: (e: DragEvent) => void) {
+        const field = new BaseComponent({
+            className: 'field',
+            ondrop: drop,
+            ondragover: dragOver,
+            ondragleave: this.dragLeave,
+        });
         field.setDataset('index', index.toString());
         this.append([field]);
 
@@ -40,13 +45,21 @@ export default class Answer extends BaseComponent {
         return fields.sort((a, b) => +(a.dataset.index as string) - +(b.dataset.index as string));
     }
 
-    appendWord(child: HTMLElement | BaseComponent<HTMLElement>): void {
-        const activeField = this.activeFields[0];
-        const component = child instanceof BaseComponent ? child.getComponent() : child;
-        this.words[+(activeField.dataset.index as string)] = component;
-        activeField.append(component);
-        activeField.setAttribute('style', `width: ${component.dataset.width}px`);
-        this.activeFields.shift();
+    appendWord(child: HTMLElement | BaseComponent<HTMLElement>, index?: string): void {
+        let activeFieldIndex: number;
+        if (index) {
+            activeFieldIndex = this.activeFields.findIndex((field) => field.dataset.index === index);
+        } else {
+            activeFieldIndex = 0;
+        }
+        const activeField = this.activeFields[activeFieldIndex];
+        if (activeField) {
+            const component = child instanceof BaseComponent ? child.getComponent() : child;
+            this.words[+(activeField.dataset.index as string)] = component;
+            activeField.append(component);
+            activeField.setAttribute('style', `width: ${component.dataset.width}px`);
+            this.activeFields.splice(activeFieldIndex, 1);
+        }
     }
 
     removeWord(index: string) {
@@ -74,5 +87,23 @@ export default class Answer extends BaseComponent {
             }
         }
         return result;
+    }
+
+    dragLeave(ev: DragEvent) {
+        const target = ev.target as HTMLElement;
+        if (target.className === 'field') target.removeAttribute('style');
+    }
+
+    clearFields(dropElement?: HTMLElement) {
+        this.activeFields.filter((field) => field !== dropElement).forEach((field) => field.removeAttribute('style'));
+    }
+
+    disable() {
+        this.fields.forEach((el) => {
+            const field = el;
+            field.ondrop = null;
+            field.ondragover = null;
+            field.ondragleave = null;
+        });
     }
 }

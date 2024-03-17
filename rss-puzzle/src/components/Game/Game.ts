@@ -1,4 +1,5 @@
 import { BaseComponent } from '../../BaseComponent';
+import Page from '../../pages/Page';
 import { Round, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
@@ -28,8 +29,17 @@ export default class Game extends BaseComponent {
 
     roundId: string;
 
-    constructor(levelId: string, roundId: string) {
+    current?: HTMLElement;
+
+    page: Page;
+
+    dropElement?: HTMLElement;
+
+    touches?: { pageX: number; pageY: number };
+
+    constructor(levelId: string, roundId: string, page: Page) {
         super({ className: 'game' });
+        this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
         this.answers = new BaseComponent({ className: 'answers' });
@@ -53,14 +63,22 @@ export default class Game extends BaseComponent {
     }
 
     createWords(sentence: Word): WordComponent[] {
-        const clickHandler = (e: Event) => this.moveWord(e.target as HTMLElement);
-        const words = sentence.textExample.split(' ').map((word) => new WordComponent(word, { onclick: clickHandler }));
+        const words = sentence.textExample.split(' ').map((word) => {
+            const wordComponent = new WordComponent(word, {
+                onclick: this.clickHandler.bind(this),
+                ondragstart: this.dragStart.bind(this),
+                ontouchmove: this.dragMove.bind(this),
+                ontouchend: this.dragDrop.bind(this),
+                ontouchstart: this.touchStart.bind(this),
+            });
+            return wordComponent;
+        });
         const randomizedWords = randomizeArray<WordComponent>(words);
         return randomizedWords;
     }
 
     createAnswer(length: number, sentence: string): Answer {
-        const answer = new Answer(length, sentence);
+        const answer = new Answer(length, sentence, this.dragoverHandler.bind(this), this.dropHandler.bind(this));
         this.answer = answer;
         return answer;
     }
@@ -78,6 +96,8 @@ export default class Game extends BaseComponent {
 
     nextSentence() {
         this.answer?.getComponent().classList.add('disabled');
+        this.answer?.disable();
+        this.words?.forEach((word) => word.disable());
         this.sentence = (this.data as Round).words[this.currentWord];
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
@@ -106,6 +126,10 @@ export default class Game extends BaseComponent {
         (this.button as Button).getComponent().onclick = callback.bind(this);
     }
 
+    clickHandler(e: Event) {
+        this.moveWord(e.target as HTMLElement);
+    }
+
     checkHandler() {
         if (this.answer?.isSolved()) this.updateButton(true);
     }
@@ -122,6 +146,7 @@ export default class Game extends BaseComponent {
     createSkipButton(): Button {
         const callback = () => {
             this.checkHandler();
+            this.words?.forEach((word) => word.disable());
             const wrongWords = this.words?.filter((word) => word.getComponent().classList.contains('wrong'));
             const filteredWords = this.words?.filter((word) => !word.getComponent().classList.contains('correct'));
 
@@ -141,5 +166,122 @@ export default class Game extends BaseComponent {
             this.answer?.getComponent().classList.add('skipped');
         };
         return new Button("I don't know", callback, 'skip');
+    }
+
+    dragStart(ev: DragEvent) {
+        const target = ev.target as HTMLElement;
+        this.current = target;
+    }
+
+    dragoverHandler(ev: DragEvent, straightTarget?: HTMLElement) {
+        ev.preventDefault();
+        let target = ev.target as HTMLElement;
+        if (straightTarget) target = straightTarget;
+        if (target.className === 'field' && target.children.length === 0) {
+            const width = this.current?.dataset.width;
+            target.setAttribute('style', `width: ${width}px`);
+        }
+    }
+
+    dropHandler(ev: DragEvent) {
+        ev.preventDefault();
+
+        const target = ev.target as HTMLElement;
+        if (target.className === 'field') {
+            if (this.current!.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+                this.answer?.removeWord(currentId);
+            }
+            this.answer?.appendWord(this.current!, target.dataset.index!);
+        } else {
+            if (target.classList.contains('disabled')) return;
+            const targetId = target.parentElement!.dataset.index!;
+            this.answer?.removeWord(targetId);
+
+            if (this.current!.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+
+                this.answer?.removeWord(currentId);
+                this.answer?.appendWord(target, currentId);
+            } else {
+                this.dataSource?.append([target]);
+            }
+
+            this.answer?.appendWord(this.current!, targetId);
+        }
+        this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
+    }
+
+    touchStart(e: TouchEvent) {
+        const { pageX, pageY } = e.changedTouches[0];
+        this.touches = { pageX, pageY };
+    }
+
+    dragMove(e: TouchEvent) {
+        e.preventDefault();
+        const word = e.target as HTMLElement;
+        this.current = word;
+
+        const { pageX, pageY } = e.changedTouches[0];
+
+        word.style.position = 'absolute';
+        word.style.pointerEvents = 'none';
+
+        word.style.top = `${pageY - this.component.offsetTop - word.offsetHeight / 2}px`;
+        word.style.left = `${pageX - this.component.offsetLeft - word.offsetWidth / 2}px`;
+
+        const dropElement = document.elementFromPoint(pageX, pageY) as HTMLElement;
+        if (this.dropElement !== dropElement) this.dropElement = dropElement;
+
+        if (this.dropElement?.className === 'field') {
+            this.dragoverHandler(e as unknown as DragEvent, this.dropElement as HTMLElement);
+            this.answer?.clearFields(this.dropElement);
+        }
+    }
+
+    dragDrop(e: TouchEvent) {
+        e.preventDefault();
+        const word = e.target as HTMLElement;
+        word.style.position = 'static';
+        word.style.pointerEvents = 'auto';
+        word.style.top = `0`;
+        word.style.left = `0`;
+
+        const newX = e.changedTouches[0].pageX;
+        const newY = e.changedTouches[0].pageY;
+
+        if (newX === this.touches?.pageX && newY === this.touches?.pageY) {
+            this.clickHandler(e);
+            return;
+        }
+        this.answer?.clearFields();
+
+        if (this.current) {
+            if (this.current.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+                this.answer?.removeWord(currentId);
+            }
+            if (this.dropElement?.className === 'field') {
+                this.answer?.appendWord(this.current, this.dropElement?.dataset.index);
+            } else if (
+                this.dropElement?.classList.contains('word') &&
+                this.dropElement?.parentElement?.className === 'field'
+            ) {
+                const targetId = this.dropElement.parentElement!.dataset.index!;
+
+                if (this.current!.parentElement?.className === 'field') {
+                    const currentId = this.current!.parentElement!.dataset.index!;
+                    this.answer?.appendWord(this.dropElement, currentId);
+                } else {
+                    this.dataSource?.append([this.dropElement]);
+                }
+
+                this.answer?.removeWord(targetId);
+                this.answer?.appendWord(this.current!, targetId);
+            } else {
+                this.dataSource?.append([this.current]);
+            }
+        }
+        this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 }
