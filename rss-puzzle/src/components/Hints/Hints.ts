@@ -26,15 +26,16 @@ export default class Hints extends BaseComponent {
             this.audioHint.getComponent().classList.add('playing');
             this.audioHint.setDisabled(true);
         };
-        this.audioHint = new Button('play', audioCallback, 'hint audio shown');
+        this.audioHint = new Button('play', audioCallback, 'hint audio');
 
         this.isTranslation = false;
         const translationButton = this.createTranslationButton();
 
-        this.isAudio = true;
+        this.isAudio = false;
+        const audioButton = this.createAudioButton();
 
         const hints = new BaseComponent({ className: 'hints-content' }, [this.translationHint, this.audioHint]);
-        const buttons = new BaseComponent({ className: 'hints-buttons' }, [translationButton]);
+        const buttons = new BaseComponent({ className: 'hints-buttons' }, [translationButton, audioButton]);
 
         this.append([buttons]);
         this.parent.append([hints]);
@@ -68,6 +69,16 @@ export default class Hints extends BaseComponent {
             this.showTranslation();
         };
         const button = new Button('Translation hint', callback, 'hint-button');
+
+        return button;
+    }
+
+    createAudioButton(): Button {
+        const callback = () => {
+            this.isAudio = !this.isAudio;
+            this.showAudio();
+        };
+        const button = new Button('Audio hint', callback, 'audio-button');
 
         return button;
     }
