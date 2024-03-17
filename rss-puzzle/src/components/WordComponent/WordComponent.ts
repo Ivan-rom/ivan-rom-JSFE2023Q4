@@ -13,13 +13,12 @@ export default class WordComponent extends BaseComponent {
         word.setAttribute('style', `width: ${word.dataset.width}px; flex-grow: 0`);
     }
 
-    // dragStart(ev: DragEvent) {
-    //     // eslint-disable-next-line no-param-reassign
-    //     ev.dataTransfer!.dropEffect = 'move';
-    //     console.log(this.component.dataset.width);
-
-    //     ev.dataTransfer!.setData('text', this.component.dataset.width!);
-    //     ev.dataTransfer?.items.add(this.component.dataset.width!, 'width');
-    //     console.log(ev.dataTransfer);
-    // }
+    disable() {
+        this.component.classList.add('disabled');
+        this.component.onclick = null;
+        this.component.ondragstart = null;
+        this.component.ontouchmove = null;
+        this.component.ontouchend = null;
+        this.component.ontouchstart = null;
+    }
 }

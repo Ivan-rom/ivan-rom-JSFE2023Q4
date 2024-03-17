@@ -65,13 +65,12 @@ export default class Game extends BaseComponent {
     createWords(sentence: Word): WordComponent[] {
         const words = sentence.textExample.split(' ').map((word) => {
             const wordComponent = new WordComponent(word, {
-                onclick: this.clickHandler,
+                onclick: this.clickHandler.bind(this),
                 ondragstart: this.dragStart.bind(this),
-                ontouchmove: this.dragMove,
+                ontouchmove: this.dragMove.bind(this),
+                ontouchend: this.dragDrop.bind(this),
+                ontouchstart: this.touchStart.bind(this),
             });
-            wordComponent.getComponent().addEventListener('touchmove', this.dragMove);
-            wordComponent.getComponent().addEventListener('touchend', this.dragDrop);
-            wordComponent.getComponent().addEventListener('touchstart', this.touchStart);
             return wordComponent;
         });
         const randomizedWords = randomizeArray<WordComponent>(words);
@@ -97,6 +96,8 @@ export default class Game extends BaseComponent {
 
     nextSentence() {
         this.answer?.getComponent().classList.add('disabled');
+        this.answer?.disable();
+        this.words?.forEach((word) => word.disable());
         this.sentence = (this.data as Round).words[this.currentWord];
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
@@ -145,6 +146,7 @@ export default class Game extends BaseComponent {
     createSkipButton(): Button {
         const callback = () => {
             this.checkHandler();
+            this.words?.forEach((word) => word.disable());
             const wrongWords = this.words?.filter((word) => word.getComponent().classList.contains('wrong'));
             const filteredWords = this.words?.filter((word) => !word.getComponent().classList.contains('correct'));
 
@@ -185,8 +187,14 @@ export default class Game extends BaseComponent {
         ev.preventDefault();
 
         const target = ev.target as HTMLElement;
-        if (target.className === 'field') this.answer?.appendWord(this.current!, target.dataset.index!);
-        else {
+        if (target.className === 'field') {
+            if (this.current!.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+                this.answer?.removeWord(currentId);
+            }
+            this.answer?.appendWord(this.current!, target.dataset.index!);
+        } else {
+            if (target.classList.contains('disabled')) return;
             const targetId = target.parentElement!.dataset.index!;
             this.answer?.removeWord(targetId);
 
@@ -204,12 +212,12 @@ export default class Game extends BaseComponent {
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
     }
 
-    touchStart = (e: TouchEvent) => {
+    touchStart(e: TouchEvent) {
         const { pageX, pageY } = e.changedTouches[0];
         this.touches = { pageX, pageY };
-    };
+    }
 
-    dragMove = (e: TouchEvent) => {
+    dragMove(e: TouchEvent) {
         e.preventDefault();
         const word = e.target as HTMLElement;
         this.current = word;
@@ -229,9 +237,9 @@ export default class Game extends BaseComponent {
             this.dragoverHandler(e as unknown as DragEvent, this.dropElement as HTMLElement);
             this.answer?.clearFields(this.dropElement);
         }
-    };
+    }
 
-    dragDrop = (e: TouchEvent) => {
+    dragDrop(e: TouchEvent) {
         e.preventDefault();
         const word = e.target as HTMLElement;
         word.style.position = 'static';
@@ -249,6 +257,10 @@ export default class Game extends BaseComponent {
         this.answer?.clearFields();
 
         if (this.current) {
+            if (this.current.parentElement?.className === 'field') {
+                const currentId = this.current!.parentElement!.dataset.index!;
+                this.answer?.removeWord(currentId);
+            }
             if (this.dropElement?.className === 'field') {
                 this.answer?.appendWord(this.current, this.dropElement?.dataset.index);
             } else if (
@@ -259,16 +271,17 @@ export default class Game extends BaseComponent {
 
                 if (this.current!.parentElement?.className === 'field') {
                     const currentId = this.current!.parentElement!.dataset.index!;
-
-                    this.answer?.removeWord(currentId);
                     this.answer?.appendWord(this.dropElement, currentId);
                 } else {
                     this.dataSource?.append([this.dropElement]);
                 }
+
                 this.answer?.removeWord(targetId);
                 this.answer?.appendWord(this.current!, targetId);
+            } else {
+                this.dataSource?.append([this.current]);
             }
         }
         this.button?.setDisabled(this.dataSource?.getComponent().childNodes.length !== 0);
-    };
+    }
 }

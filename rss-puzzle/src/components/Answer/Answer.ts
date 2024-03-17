@@ -97,4 +97,13 @@ export default class Answer extends BaseComponent {
     clearFields(dropElement?: HTMLElement) {
         this.activeFields.filter((field) => field !== dropElement).forEach((field) => field.removeAttribute('style'));
     }
+
+    disable() {
+        this.fields.forEach((el) => {
+            const field = el;
+            field.ondrop = null;
+            field.ondragover = null;
+            field.ondragleave = null;
+        });
+    }
 }

@@ -17,4 +17,5 @@
     box-shadow: 0 0 0 5px rgb(60, 18, 42) inset;
     min-width: 30px;
     min-height: 28px;
+    z-index: 999;
 }
