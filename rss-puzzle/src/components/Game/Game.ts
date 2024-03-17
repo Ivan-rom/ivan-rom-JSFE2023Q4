@@ -37,6 +37,8 @@ export default class Game extends BaseComponent {
 
     touches?: { pageX: number; pageY: number };
 
+    hint?: BaseComponent;
+
     constructor(levelId: string, roundId: string, page: Page) {
         super({ className: 'game' });
         this.page = page;
@@ -49,6 +51,9 @@ export default class Game extends BaseComponent {
     renderGame(data: Round) {
         this.data = data;
         this.sentence = data.words[this.currentWord];
+        this.hint = new BaseComponent({ className: 'hint shown' });
+        this.hint.getComponent().textContent = this.sentence.textExampleTranslate;
+
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
 
@@ -57,8 +62,7 @@ export default class Game extends BaseComponent {
         this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
 
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
-
+        this.append([this.answers, this.dataSource, this.hint, this.button, this.createSkipButton()]);
         this.words.forEach((word) => word.setWidth());
     }
 
@@ -101,6 +105,7 @@ export default class Game extends BaseComponent {
         this.answer?.disable();
         this.words?.forEach((word) => word.disable());
         this.sentence = (this.data as Round).words[this.currentWord];
+        this.hint!.getComponent().textContent = this.sentence.textExampleTranslate;
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
         this.answers.append([this.answer]);
