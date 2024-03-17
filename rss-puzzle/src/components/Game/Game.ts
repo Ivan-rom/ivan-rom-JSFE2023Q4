@@ -4,6 +4,7 @@ import { Round, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
+import Hints from '../Hints/Hints';
 import WordComponent from '../WordComponent/WordComponent';
 
 import './Game.css';
@@ -37,22 +38,26 @@ export default class Game extends BaseComponent {
 
     touches?: { pageX: number; pageY: number };
 
-    hint?: BaseComponent;
+    translationHint: BaseComponent;
+
+    hints: Hints;
 
     constructor(levelId: string, roundId: string, page: Page) {
         super({ className: 'game' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
+        this.translationHint = new BaseComponent({ className: 'hint' });
+        this.hints = new Hints(this.translationHint);
         this.answers = new BaseComponent({ className: 'answers' });
-        this.append([this.answers]);
+        this.append([this.hints, this.answers]);
     }
 
     renderGame(data: Round) {
         this.data = data;
         this.sentence = data.words[this.currentWord];
-        this.hint = new BaseComponent({ className: 'hint shown' });
-        this.hint.getComponent().textContent = this.sentence.textExampleTranslate;
+
+        this.translationHint.getComponent().textContent = this.sentence.textExampleTranslate;
 
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
@@ -62,7 +67,7 @@ export default class Game extends BaseComponent {
         this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
 
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.hint, this.button, this.createSkipButton()]);
+        this.append([this.answers, this.dataSource, this.translationHint, this.button, this.createSkipButton()]);
         this.words.forEach((word) => word.setWidth());
     }
 
@@ -105,7 +110,7 @@ export default class Game extends BaseComponent {
         this.answer?.disable();
         this.words?.forEach((word) => word.disable());
         this.sentence = (this.data as Round).words[this.currentWord];
-        this.hint!.getComponent().textContent = this.sentence.textExampleTranslate;
+        this.translationHint.getComponent().textContent = this.sentence.textExampleTranslate;
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
         this.answers.append([this.answer]);
@@ -138,10 +143,14 @@ export default class Game extends BaseComponent {
     }
 
     checkHandler() {
-        if (this.answer?.isSolved()) this.updateButton(true);
+        if (this.answer?.isSolved()) {
+            this.updateButton(true);
+            this.hints.showTranslation(true);
+        }
     }
 
     continueHandler() {
+        this.hints.showTranslation();
         this.currentWord += 1;
         if (this.currentWord === 10) {
             this.nextLevel();
