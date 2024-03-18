@@ -20,7 +20,7 @@
         font-weight: 400;
         pointer-events: none;
         display: block;
-        /* background-color: rgb(254, 212, 164); */
+        background-color: rgb(254, 212, 164);
         padding: 5px;
         color: #fff;
         text-shadow:
@@ -75,11 +75,16 @@
     }
 
     &.wrong {
-        /* outline: 1px solid red; */
         box-shadow: 1px 0 red;
     }
     &.correct {
-        /* outline: 1px solid green; */
         box-shadow: 0 1px green;
+    }
+
+    &:not(.shown) {
+        .word-content,
+        .after {
+            background-image: none !important;
+        }
     }
 }

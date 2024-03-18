@@ -1,6 +1,7 @@
 import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
 import Button from '../Button/Button';
+import WordComponent from '../WordComponent/WordComponent';
 
 import './hints.css';
 
@@ -9,7 +10,11 @@ export default class Hints extends BaseComponent {
 
     audioHint: Button;
 
+    words?: WordComponent[];
+
     isTranslation: boolean;
+
+    isImage: boolean;
 
     isAudio: boolean;
 
@@ -34,8 +39,15 @@ export default class Hints extends BaseComponent {
         this.isAudio = false;
         const audioButton = this.createAudioButton();
 
+        this.isImage = false;
+        const ImageButton = this.createImageButton();
+
         const hints = new BaseComponent({ className: 'hints-content' }, [this.translationHint, this.audioHint]);
-        const buttons = new BaseComponent({ className: 'hints-buttons' }, [translationButton, audioButton]);
+        const buttons = new BaseComponent({ className: 'hints-buttons' }, [
+            translationButton,
+            audioButton,
+            ImageButton,
+        ]);
 
         this.append([buttons]);
         this.parent.append([hints]);
@@ -51,6 +63,11 @@ export default class Hints extends BaseComponent {
         else this.audioHint.getComponent().classList.remove('shown');
     }
 
+    showImage(isForced: boolean = false) {
+        if (this.isImage || isForced) this.words?.forEach((word) => word.getComponent().classList.add('shown'));
+        else this.words?.forEach((word) => word.getComponent().classList.remove('shown'));
+    }
+
     setText(text: string) {
         this.translationHint.getComponent().textContent = text;
     }
@@ -63,6 +80,12 @@ export default class Hints extends BaseComponent {
             this.audioHint.getComponent().classList.remove('playing');
             this.audioHint.setDisabled(false);
         });
+    }
+
+    setWords(words: WordComponent[]) {
+        console.log(words);
+
+        this.words = words;
     }
 
     createTranslationButton(): Button {
@@ -81,6 +104,16 @@ export default class Hints extends BaseComponent {
             this.showAudio();
         };
         const button = new Button('Audio hint', callback, 'audio-button');
+
+        return button;
+    }
+
+    createImageButton(): Button {
+        const callback = () => {
+            this.isImage = !this.isImage;
+            this.showImage();
+        };
+        const button = new Button('Image hint', callback, 'image-button');
 
         return button;
     }

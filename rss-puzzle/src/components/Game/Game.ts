@@ -57,9 +57,6 @@ export default class Game extends BaseComponent {
 
         this.imageSrc = this.data.levelData.imageSrc;
 
-        this.hints.setText(this.sentence.textExampleTranslate);
-        this.hints.setAudio(this.sentence.audioExample);
-
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
 
@@ -71,6 +68,11 @@ export default class Game extends BaseComponent {
         this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
         this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
         const arr = this.dataSource.getComponent().childNodes as unknown as Node[];
+
+        this.hints.setText(this.sentence.textExampleTranslate);
+        this.hints.setAudio(this.sentence.audioExample);
+        this.hints.setWords(this.words);
+        this.hints.showImage();
 
         this.dataSource.getComponent().append(...randomizeArray([...arr]));
     }
@@ -114,8 +116,6 @@ export default class Game extends BaseComponent {
         this.answer?.disable();
         this.words?.forEach((word) => word.disable());
         this.sentence = (this.data as Round).words[this.currentWord];
-        this.hints.setText(this.sentence.textExampleTranslate);
-        this.hints.setAudio(this.sentence.audioExample);
         this.words = this.createWords(this.sentence);
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
         this.answers.append([this.answer]);
@@ -125,6 +125,10 @@ export default class Game extends BaseComponent {
         this.dataSource!.getComponent().append(...randomizeArray([...arr]));
         this.button?.setDisabled(true);
         this.updateButton();
+        this.hints.setText(this.sentence.textExampleTranslate);
+        this.hints.setAudio(this.sentence.audioExample);
+        this.hints.setWords(this.words!);
+        this.hints.showImage();
     }
 
     nextLevel() {
@@ -154,6 +158,7 @@ export default class Game extends BaseComponent {
             this.updateButton(true);
             this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
+            this.hints.showImage(true);
         }
     }
 
