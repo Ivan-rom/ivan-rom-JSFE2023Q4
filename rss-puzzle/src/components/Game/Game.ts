@@ -39,6 +39,8 @@ export default class Game extends BaseComponent {
 
     hints: Hints;
 
+    imageSrc?: string;
+
     constructor(levelId: string, roundId: string, page: BaseComponent) {
         super({ className: 'game' });
         this.page = page;
@@ -53,6 +55,8 @@ export default class Game extends BaseComponent {
         this.data = data;
         this.sentence = data.words[this.currentWord];
 
+        this.imageSrc = this.data.levelData.imageSrc;
+
         this.hints.setText(this.sentence.textExampleTranslate);
         this.hints.setAudio(this.sentence.audioExample);
 
@@ -65,7 +69,10 @@ export default class Game extends BaseComponent {
 
         this.answers.append([this.answer]);
         this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
-        this.words.forEach((word) => word.setWidth());
+        this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
+        const arr = this.dataSource.getComponent().childNodes as unknown as Node[];
+
+        this.dataSource.getComponent().append(...randomizeArray([...arr]));
     }
 
     createWords(sentence: Word): WordComponent[] {
@@ -81,8 +88,8 @@ export default class Game extends BaseComponent {
             else if (i === arr.length - 1) wordComponent.getComponent().classList.add('last');
             return wordComponent;
         });
-        const randomizedWords = randomizeArray<WordComponent>(words);
-        return randomizedWords;
+        // const randomizedWords = randomizeArray<WordComponent>(words);
+        return words;
     }
 
     createAnswer(length: number, sentence: string): Answer {
@@ -113,7 +120,9 @@ export default class Game extends BaseComponent {
         this.answer = this.createAnswer(this.words.length, this.sentence.textExample);
         this.answers.append([this.answer]);
         this.dataSource?.append(this.words);
-        this.words.forEach((word) => word.setWidth());
+        this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
+        const arr = this.dataSource!.getComponent().childNodes as unknown as Node[];
+        this.dataSource!.getComponent().append(...randomizeArray([...arr]));
         this.button?.setDisabled(true);
         this.updateButton();
     }
@@ -143,6 +152,7 @@ export default class Game extends BaseComponent {
     checkHandler() {
         if (this.answer?.isSolved()) {
             this.updateButton(true);
+            this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
         }
     }

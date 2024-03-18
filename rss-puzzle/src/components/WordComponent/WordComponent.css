@@ -8,12 +8,46 @@
     left: 0;
     z-index: 999;
     filter: drop-shadow(-1px 0px rgb(48, 16, 35));
+    min-width: 30px;
+
+    .word-content,
+    .after {
+        background-repeat: no-repeat;
+        background-size: 680px 284px;
+    }
 
     .word-content {
+        font-weight: 400;
         pointer-events: none;
         display: block;
-        background-color: rgb(254, 212, 164);
+        /* background-color: rgb(254, 212, 164); */
         padding: 5px;
+        color: #fff;
+        text-shadow:
+            -0 -2px 0 #000000,
+            0 -2px 0 #000000,
+            -0 2px 0 #000000,
+            0 2px 0 #000000,
+            -2px -0 0 #000000,
+            2px -0 0 #000000,
+            -2px 0 0 #000000,
+            2px 0 0 #000000,
+            -1px -2px 0 #000000,
+            1px -2px 0 #000000,
+            -1px 2px 0 #000000,
+            1px 2px 0 #000000,
+            -2px -1px 0 #000000,
+            2px -1px 0 #000000,
+            -2px 1px 0 #000000,
+            2px 1px 0 #000000,
+            -2px -2px 0 #000000,
+            2px -2px 0 #000000,
+            -2px 2px 0 #000000,
+            2px 2px 0 #000000,
+            -2px -2px 0 #000000,
+            2px -2px 0 #000000,
+            -2px 2px 0 #000000,
+            2px 2px 0 #000000;
     }
 
     &:not(.first) {
@@ -33,18 +67,19 @@
         top: 50%;
         left: 100%;
         transform: translateY(calc(-50%));
-        z-index: 3;
+        z-index: 999;
         width: 10px;
         height: 10px;
         background-color: rgb(254, 212, 164);
         clip-path: circle(50% at 0 50%);
-        text-shadow: 0 0 0 1px rgb(48, 16, 35);
     }
 
     &.wrong {
-        outline: 1px solid red;
+        /* outline: 1px solid red; */
+        box-shadow: 1px 0 red;
     }
     &.correct {
-        outline: 1px solid green;
+        /* outline: 1px solid green; */
+        box-shadow: 0 1px green;
     }
 }
