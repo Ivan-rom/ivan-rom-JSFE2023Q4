@@ -1,6 +1,7 @@
 import { BaseComponent } from '../../BaseComponent';
 import { toCapitalize } from '../../utils/utils';
 import Button from '../Button/Button';
+import { HintsType } from '../Hints/Hints';
 
 import './loginForm.css';
 
@@ -56,6 +57,7 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
     user: {
         name: string;
         surname: string;
+        hints: HintsType;
     };
 
     constructor() {
@@ -65,6 +67,11 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
         this.user = {
             name: '',
             surname: '',
+            hints: {
+                isAudio: true,
+                isTranslation: true,
+                isImage: true,
+            },
         };
 
         this.inputs = [];
@@ -72,6 +79,8 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
 
         this.submitButton = this.createButton();
         this.hasErrors = false;
+
+        this.component.onsubmit = this.submitHandler.bind(this);
 
         this.render();
     }
@@ -128,16 +137,16 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
         return div;
     }
 
-    createButton(): Button {
-        const clickHandler = (event: Event) => {
-            event.preventDefault();
-            if (!this.hasErrors) {
-                localStorage.setItem('user', JSON.stringify(this.user));
-                window.location.hash = 'home';
-            }
-        };
+    submitHandler(event: Event) {
+        event.preventDefault();
+        if (!this.hasErrors) {
+            localStorage.setItem('user', JSON.stringify(this.user));
+            window.location.hash = 'home';
+        }
+    }
 
-        return new Button('Login', clickHandler, 'login-button', this.hasErrors);
+    createButton(): Button {
+        return new Button('Login', this.submitHandler.bind(this), 'login-button', this.hasErrors);
     }
 
     checkValues() {

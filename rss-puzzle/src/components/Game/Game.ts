@@ -73,6 +73,8 @@ export default class Game extends BaseComponent {
         this.hints.setAudio(this.sentence.audioExample);
         this.hints.setWords(this.words);
         this.hints.showImage();
+        this.hints.showAudio();
+        this.hints.showTranslation();
 
         this.dataSource.getComponent().append(...randomizeArray([...arr]));
     }
@@ -129,6 +131,8 @@ export default class Game extends BaseComponent {
         this.hints.setAudio(this.sentence.audioExample);
         this.hints.setWords(this.words!);
         this.hints.showImage();
+        this.hints.showAudio();
+        this.hints.showTranslation();
     }
 
     nextLevel() {

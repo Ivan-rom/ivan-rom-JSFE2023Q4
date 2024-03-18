@@ -13,6 +13,10 @@
 .hints-buttons {
     display: flex;
     gap: 5px;
+
+    :not(.active) {
+        filter: grayscale(0.8);
+    }
 }
 
 .hint {

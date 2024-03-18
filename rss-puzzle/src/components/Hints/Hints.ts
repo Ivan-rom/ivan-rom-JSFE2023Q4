@@ -5,6 +5,12 @@ import WordComponent from '../WordComponent/WordComponent';
 
 import './hints.css';
 
+export type HintsType = {
+    isImage: boolean;
+    isAudio: boolean;
+    isTranslation: boolean;
+};
+
 export default class Hints extends BaseComponent {
     translationHint: BaseComponent;
 
@@ -22,8 +28,26 @@ export default class Hints extends BaseComponent {
 
     parent: BaseComponent;
 
+    user: {
+        name: string;
+        surname: string;
+        hints: HintsType;
+    };
+
+    translationButton: Button;
+
+    audioButton: Button;
+
+    imageButton: Button;
+
     constructor(parent: BaseComponent) {
         super({ className: 'hints' });
+
+        this.user = JSON.parse(localStorage.getItem('user') as string);
+        this.isTranslation = this.user.hints.isTranslation;
+        this.isAudio = this.user.hints.isAudio;
+        this.isImage = this.user.hints.isImage;
+
         this.parent = parent;
         this.translationHint = new BaseComponent({ className: 'hint translation' });
         const audioCallback = () => {
@@ -33,20 +57,15 @@ export default class Hints extends BaseComponent {
         };
         this.audioHint = new Button('play', audioCallback, 'hint audio');
 
-        this.isTranslation = false;
-        const translationButton = this.createTranslationButton();
-
-        this.isAudio = false;
-        const audioButton = this.createAudioButton();
-
-        this.isImage = false;
-        const ImageButton = this.createImageButton();
+        this.translationButton = this.createTranslationButton();
+        this.audioButton = this.createAudioButton();
+        this.imageButton = this.createImageButton();
 
         const hints = new BaseComponent({ className: 'hints-content' }, [this.translationHint, this.audioHint]);
         const buttons = new BaseComponent({ className: 'hints-buttons' }, [
-            translationButton,
-            audioButton,
-            ImageButton,
+            this.translationButton,
+            this.audioButton,
+            this.imageButton,
         ]);
 
         this.append([buttons]);
@@ -83,17 +102,18 @@ export default class Hints extends BaseComponent {
     }
 
     setWords(words: WordComponent[]) {
-        console.log(words);
-
         this.words = words;
     }
 
     createTranslationButton(): Button {
         const callback = () => {
             this.isTranslation = !this.isTranslation;
+            this.translationButton.getComponent().classList.toggle('active');
+            this.saveHints();
             this.showTranslation();
         };
         const button = new Button('Translation hint', callback, 'hint-button');
+        if (this.isTranslation) button.getComponent().classList.add('active');
 
         return button;
     }
@@ -101,9 +121,12 @@ export default class Hints extends BaseComponent {
     createAudioButton(): Button {
         const callback = () => {
             this.isAudio = !this.isAudio;
+            this.audioButton.getComponent().classList.toggle('active');
+            this.saveHints();
             this.showAudio();
         };
         const button = new Button('Audio hint', callback, 'audio-button');
+        if (this.isAudio) button.getComponent().classList.add('active');
 
         return button;
     }
@@ -111,10 +134,22 @@ export default class Hints extends BaseComponent {
     createImageButton(): Button {
         const callback = () => {
             this.isImage = !this.isImage;
+            this.imageButton.getComponent().classList.toggle('active');
+            this.saveHints();
             this.showImage();
         };
         const button = new Button('Image hint', callback, 'image-button');
+        if (this.isImage) button.getComponent().classList.add('active');
 
         return button;
+    }
+
+    saveHints() {
+        this.user.hints.isAudio = this.isAudio;
+        this.user.hints.isImage = this.isImage;
+        this.user.hints.isTranslation = this.isTranslation;
+        console.log(JSON.stringify(this.user));
+
+        localStorage.setItem('user', JSON.stringify(this.user));
     }
 }
