@@ -1,0 +1,24 @@
+.game {
+    background-color: rgb(48, 16, 35);
+    padding: 10px;
+    border-radius: 10px;
+    width: 700px;
+    position: relative;
+    z-index: 2;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.data-source {
+    margin-top: 20px;
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(60, 18, 42);
+    min-height: 40px;
+}
