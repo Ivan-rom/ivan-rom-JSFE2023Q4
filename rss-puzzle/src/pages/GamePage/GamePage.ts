@@ -33,6 +33,7 @@ export default class GamePage extends Page {
 
         this.getRound().then((round) => {
             this.round = round;
+            this.content.clear();
             this.game = new Game(this.levelId as string, this.roundId as string, this.content);
             this.content.append([this.game]);
             this.game.renderGame(this.round);

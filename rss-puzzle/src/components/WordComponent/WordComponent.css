@@ -8,11 +8,15 @@
     left: 0;
     z-index: 999;
     filter: drop-shadow(-1px 0px rgb(48, 16, 35));
+    min-width: 30px;
+    background-repeat: no-repeat;
+    background-size: 680px 284px;
 
     .word-content {
+        text-shadow: 0 0 2px white;
         pointer-events: none;
         display: block;
-        background-color: rgb(254, 212, 164);
+        /* background-color: rgb(254, 212, 164); */
         padding: 5px;
     }
 
@@ -38,7 +42,6 @@
         height: 10px;
         background-color: rgb(254, 212, 164);
         clip-path: circle(50% at 0 50%);
-        text-shadow: 0 0 0 1px rgb(48, 16, 35);
     }
 
     &.wrong {

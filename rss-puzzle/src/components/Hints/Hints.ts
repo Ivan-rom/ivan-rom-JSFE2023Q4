@@ -56,7 +56,9 @@ export default class Hints extends BaseComponent {
     }
 
     setAudio(audioPath: string) {
-        this.audio = new Audio(`${Api.path}/${audioPath}`);
+        this.audio = new Audio(`${Api.path}${audioPath}`);
+        console.log(this.audio);
+
         this.audio?.addEventListener('ended', () => {
             this.audioHint.getComponent().classList.remove('playing');
             this.audioHint.setDisabled(false);

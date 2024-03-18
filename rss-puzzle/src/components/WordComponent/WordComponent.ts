@@ -1,3 +1,4 @@
+import Api from '../../API/api';
 import { BaseComponent, Params } from '../../BaseComponent';
 
 import './WordComponent.css';
@@ -10,10 +11,16 @@ export default class WordComponent extends BaseComponent {
         this.append([content, after]);
     }
 
-    setWidth() {
+    setWidth(image: string, rowIndex: number) {
         const word = this.component;
         this.setDataset('width', word.offsetWidth.toString());
-        word.setAttribute('style', `width: ${word.dataset.width}px; flex-grow: 0`);
+        word.style.width = `${word.dataset.width}px`;
+        word.style.flexGrow = `0`;
+        const imagePath = `${Api.path}images/${image}`;
+        console.log(word.offsetLeft);
+
+        word.style.backgroundImage = `url(${imagePath})`;
+        word.style.backgroundPosition = `-${word.offsetLeft - 15}px -${word.offsetHeight * rowIndex}px`;
     }
 
     disable() {
