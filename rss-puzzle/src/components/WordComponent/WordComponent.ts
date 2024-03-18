@@ -12,15 +12,21 @@ export default class WordComponent extends BaseComponent {
     }
 
     setWidth(image: string, rowIndex: number) {
-        const word = this.component;
-        this.setDataset('width', word.offsetWidth.toString());
-        word.style.width = `${word.dataset.width}px`;
-        word.style.flexGrow = `0`;
+        const wordComponent = this.component;
+        const [word, after] = this.component.children as unknown as HTMLElement[];
+        this.setDataset('width', wordComponent.offsetWidth.toString());
+        wordComponent.style.width = `${wordComponent.dataset.width}px`;
+        wordComponent.style.flexGrow = `0`;
         const imagePath = `${Api.path}images/${image}`;
-        console.log(word.offsetLeft);
+
+        const offsetLeft = wordComponent.offsetLeft - 15;
+        const offsetTop = wordComponent.offsetHeight * rowIndex;
 
         word.style.backgroundImage = `url(${imagePath})`;
-        word.style.backgroundPosition = `-${word.offsetLeft - 15}px -${word.offsetHeight * rowIndex}px`;
+        word.style.backgroundPosition = `-${offsetLeft}px -${offsetTop}px`;
+        after.style.backgroundImage = `url(${imagePath})`;
+        after.style.backgroundPositionX = `${-(offsetLeft + word.offsetWidth)}px`;
+        after.style.backgroundPositionY = `${-(offsetTop + wordComponent.offsetHeight / 2 - after.offsetHeight / 2)}px`;
     }
 
     disable() {
