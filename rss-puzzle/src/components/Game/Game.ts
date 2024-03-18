@@ -152,6 +152,7 @@ export default class Game extends BaseComponent {
     checkHandler() {
         if (this.answer?.isSolved()) {
             this.updateButton(true);
+            this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
         }
     }
