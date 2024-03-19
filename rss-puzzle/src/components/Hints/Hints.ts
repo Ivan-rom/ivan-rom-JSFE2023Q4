@@ -26,7 +26,7 @@ export default class Hints extends BaseComponent {
 
     audio?: HTMLAudioElement;
 
-    parent: BaseComponent;
+    page: BaseComponent;
 
     user: {
         name: string;
@@ -40,7 +40,7 @@ export default class Hints extends BaseComponent {
 
     imageButton: Button;
 
-    constructor(parent: BaseComponent) {
+    constructor(page: BaseComponent, parent: BaseComponent) {
         super({ className: 'hints' });
 
         this.user = JSON.parse(localStorage.getItem('user') as string);
@@ -48,7 +48,7 @@ export default class Hints extends BaseComponent {
         this.isAudio = this.user.hints.isAudio;
         this.isImage = this.user.hints.isImage;
 
-        this.parent = parent;
+        this.page = page;
         this.translationHint = new BaseComponent({ className: 'hint translation' });
         const audioCallback = () => {
             this.audio?.play();
@@ -68,8 +68,8 @@ export default class Hints extends BaseComponent {
             this.imageButton,
         ]);
 
-        this.append([buttons]);
-        this.parent.append([hints]);
+        parent.append([buttons]);
+        this.page.append([hints]);
     }
 
     showTranslation(isForced: boolean = false) {

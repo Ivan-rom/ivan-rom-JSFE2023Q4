@@ -41,14 +41,17 @@ export default class Game extends BaseComponent {
 
     imageSrc?: string;
 
+    buttons: BaseComponent;
+
     roundTransition: (id: string) => void;
 
     constructor(levelId: string, roundId: string, page: BaseComponent, roundTransition: (id: string) => void) {
         super({ className: 'game' });
+        this.buttons = new BaseComponent({ className: 'buttons' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
-        this.hints = new Hints(this.page);
+        this.hints = new Hints(this.page, this.buttons);
         this.answers = new BaseComponent({ className: 'answers' });
         this.roundTransition = roundTransition;
         this.append([this.hints, this.answers]);
@@ -67,8 +70,9 @@ export default class Game extends BaseComponent {
 
         this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
 
+        this.buttons.append([this.button, this.createSkipButton()]);
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
+        this.append([this.answers, this.dataSource, this.buttons]);
         this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
         const arr = this.dataSource.getComponent().childNodes as unknown as Node[];
 
