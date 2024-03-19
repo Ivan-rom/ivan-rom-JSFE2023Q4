@@ -17,6 +17,31 @@
     :not(.active) {
         filter: grayscale(0.8);
     }
+
+    .image::after {
+        content: '';
+        width: 25px;
+        height: 25px;
+        display: block;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+    }
+
+    .button {
+        padding: 5px;
+    }
+
+    .hint-button .image::after {
+        background-image: url(../../public/button-translation.png);
+    }
+
+    .audio-button .image::after {
+        background-image: url(../../public/button-audio.png);
+    }
+    .image-button .image::after {
+        background-image: url(../../public/button-image.png);
+    }
 }
 
 .hint {
@@ -39,6 +64,7 @@
 
     &.audio {
         margin: 0;
+        padding: 0;
         right: 0;
         box-shadow: none;
 
@@ -69,6 +95,18 @@
 
     &.shown {
         transform: translateY(-100%);
+    }
+
+    &.audio .image::after {
+        content: '';
+        width: 40px;
+        height: 40px;
+        margin: 2px 7px 8px;
+        display: block;
+        background-image: url(../../public/hint-audio.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
     }
 }
 

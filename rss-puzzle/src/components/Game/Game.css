@@ -22,3 +22,13 @@
     background-color: rgb(60, 18, 42);
     min-height: 40px;
 }
+
+.buttons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    .hints-buttons {
+        margin-right: auto;
+    }
+}
