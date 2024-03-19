@@ -41,13 +41,16 @@ export default class Game extends BaseComponent {
 
     imageSrc?: string;
 
-    constructor(levelId: string, roundId: string, page: BaseComponent) {
+    roundTransition: (id: string) => void;
+
+    constructor(levelId: string, roundId: string, page: BaseComponent, roundTransition: (id: string) => void) {
         super({ className: 'game' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
         this.hints = new Hints(this.page);
         this.answers = new BaseComponent({ className: 'answers' });
+        this.roundTransition = roundTransition;
         this.append([this.hints, this.answers]);
     }
 
@@ -92,7 +95,6 @@ export default class Game extends BaseComponent {
             else if (i === arr.length - 1) wordComponent.getComponent().classList.add('last');
             return wordComponent;
         });
-        // const randomizedWords = randomizeArray<WordComponent>(words);
         return words;
     }
 
@@ -138,6 +140,7 @@ export default class Game extends BaseComponent {
     nextLevel() {
         const newHash = `game/${updateRoundId(+this.levelId, +this.roundId + 1)}`;
         window.location.hash = newHash;
+        this.roundTransition(newHash);
     }
 
     updateButton(isContinue: boolean = false) {

@@ -13,7 +13,6 @@ export default class HomePage extends Page {
         this.user = JSON.parse(localStorage.getItem('user') as string);
 
         this.clear();
-        this.append([this.createContent()]);
     }
 
     createContent(): BaseComponent {
@@ -49,5 +48,10 @@ export default class HomePage extends Page {
         const button = new Button('Start', clickHandler, 'start-button');
 
         return new BaseComponent({ className: 'home-content' }, [h1, greeting, ...text, button]);
+    }
+
+    render() {
+        this.append([this.createContent()]);
+        super.render();
     }
 }

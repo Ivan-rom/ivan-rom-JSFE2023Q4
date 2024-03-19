@@ -4,32 +4,30 @@ import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import Page from './pages/Page';
 
-type Route<T extends Page = Page> = {
-    path: string;
-    page: T;
+type Routes<T extends Page = Page> = {
+    login: T;
+    home: T;
+    game: T;
 };
 
-const routes: Route[] = [
-    {
-        path: 'login',
-        page: new LoginPage(),
-    },
-    {
-        path: 'home',
-        page: new HomePage(),
-    },
-    {
-        path: 'game',
-        page: new GamePage(),
-    },
-];
+const routes: Routes = {
+    login: new LoginPage(),
+    home: new HomePage(),
+    game: new GamePage(),
+};
 
 export default class Router {
-    routes: Route[];
+    routes: Routes;
 
     hash: string;
 
+    header: Header;
+
+    currentPage?: Page;
+
     constructor() {
+        this.header = new Header();
+        document.body.appendChild(this.header.getComponent());
         this.routes = routes;
         this.hash = window.location.hash.slice(1);
 
@@ -44,30 +42,30 @@ export default class Router {
         this.hash = window.location.hash.slice(1);
         const user = JSON.parse(localStorage.getItem('user') as string);
 
-        if (!this.hash || (user && this.hash === 'login')) {
-            this.setHash('home');
-        }
-
-        if (!user) {
+        if (!user || (user && this.hash === 'login')) {
             this.setHash('login');
-        }
-
-        let currentPage;
-        if (this.hash.startsWith('game')) {
-            currentPage = this.routes.find((route) => route.path === 'game');
-            currentPage?.page.render();
+            this.header.getComponent().classList.add('hidden');
+            this.updatePage('login');
         } else {
-            currentPage = this.routes.find((route) => route.path === this.hash);
+            this.header.getComponent().classList.remove('hidden');
+            if (this.hash === 'home') {
+                this.updatePage('home');
+            }
+            if (this.hash.startsWith('game')) {
+                this.updatePage('game');
+            }
         }
-
-        document.body.innerHTML = '';
-
-        if (window.location.hash.slice(1) !== 'login') document.body.append(new Header().getComponent());
-        document.body.append(currentPage?.page.getComponent() as Node);
     }
 
     setHash(hash: string) {
         window.location.hash = hash;
         this.hash = hash;
+    }
+
+    updatePage(pageName: 'login' | 'home' | 'game') {
+        if (this.currentPage === this.routes[pageName]) return;
+        this.currentPage?.clear();
+        this.currentPage = this.routes[pageName];
+        this.currentPage.render();
     }
 }
