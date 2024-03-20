@@ -1,6 +1,8 @@
 import { BaseComponent } from '../../BaseComponent';
 import { toCapitalize } from '../../utils/utils';
 
+import './selector.css';
+
 export default class Selector extends BaseComponent {
     currentRound: number;
 
@@ -17,6 +19,8 @@ export default class Selector extends BaseComponent {
         currentLevel: number = 1
     ) {
         super({ className: 'selector' });
+
+        console.log();
 
         this.roundsCount = roundsCount;
 
@@ -53,13 +57,12 @@ export default class Selector extends BaseComponent {
 
     changeHandler(e: Event) {
         const target = e.target as HTMLSelectElement;
-        console.log(target.name);
         if (target.name === 'rounds') {
             const newHash = `game/${target.value}_01`;
             window.location.hash = newHash;
             this.roundTransition(newHash);
         } else {
-            const newHash = `game/${this.currentLevel}_${target.value.padStart(2, '0')}`;
+            const newHash = `game/${this.currentRound}_${target.value.padStart(2, '0')}`;
             window.location.hash = newHash;
             this.roundTransition(newHash);
         }
