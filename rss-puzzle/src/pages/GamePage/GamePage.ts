@@ -1,6 +1,7 @@
 import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
 import Game from '../../components/Game/Game';
+import Selector from '../../components/Selector/Selector';
 import { GameData, Round } from '../../types';
 import Page from '../Page';
 
@@ -21,6 +22,8 @@ export default class GamePage extends Page {
 
     content?: BaseComponent;
 
+    roundsCount?: number;
+
     constructor() {
         super({ className: 'game-page' });
 
@@ -38,13 +41,11 @@ export default class GamePage extends Page {
         this.getRound().then((round) => {
             this.game?.getComponent().remove();
             this.round = round;
-            this.game = new Game(
-                this.levelId as string,
-                this.roundId as string,
-                this.content!,
-                this.roundTransition.bind(this)
-            );
-            this.content!.append([this.game]);
+            this.game = new Game(this.levelId!, this.roundId!, this.content!, this.roundTransition.bind(this));
+            this.content!.append([
+                this.game,
+                new Selector(this.roundsCount!, this.roundTransition.bind(this), +this.levelId!, +this.roundId!),
+            ]);
             this.game.renderGame(this.round);
             this.content!.render(this.component);
         });
@@ -72,7 +73,8 @@ export default class GamePage extends Page {
     }
 
     async getRound(): Promise<Round> {
-        const { rounds }: GameData = await this.api.getRounds();
+        const { rounds, roundsCount }: GameData = await this.api.getRounds();
+        this.roundsCount = roundsCount;
         const roundId = this.hash.split('/')[1];
         const round = rounds.find((el) => el.levelData.id === roundId);
         [this.levelId, this.roundId] = roundId.split('_');

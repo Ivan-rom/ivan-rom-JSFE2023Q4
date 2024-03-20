@@ -1,0 +1,13 @@
+.selector {
+    display: inline-flex;
+    background-color: rgb(48, 16, 35);
+    padding: 10px;
+    color: #fff;
+    gap: 20px;
+    border-radius: 0 0 10px 10px;
+
+    .select {
+        margin-left: 10px;
+        background-color: rgb(254, 212, 164);
+    }
+}
