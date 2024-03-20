@@ -95,7 +95,7 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
         });
 
         const inputHandler = (event: Event) => {
-            ul.clear();
+            ul.getComponent().innerHTML = '';
             this.hasErrors = false;
             this.submitButton.setDisabled(this.hasErrors);
 
