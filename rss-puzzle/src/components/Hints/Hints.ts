@@ -94,8 +94,6 @@ export default class Hints extends BaseComponent {
 
     setAudio(audioPath: string) {
         this.audio = new Audio(`${Api.path}${audioPath}`);
-        console.log(this.audio);
-
         this.audio?.addEventListener('ended', () => {
             this.audioHint.getComponent().classList.remove('playing');
             this.audioHint.setDisabled(false);
@@ -152,8 +150,6 @@ export default class Hints extends BaseComponent {
         this.user.hints.isAudio = this.isAudio;
         this.user.hints.isImage = this.isImage;
         this.user.hints.isTranslation = this.isTranslation;
-        console.log(JSON.stringify(this.user));
-
         localStorage.setItem('user', JSON.stringify(this.user));
     }
 }

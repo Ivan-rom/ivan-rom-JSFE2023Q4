@@ -52,8 +52,6 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     }
 
     clear() {
-        console.log(this);
-
         this.component.classList.remove('in');
         this.component.classList.add('out');
         this.component.onanimationend = () => {
