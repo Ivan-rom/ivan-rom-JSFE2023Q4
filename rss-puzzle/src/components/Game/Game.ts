@@ -19,6 +19,8 @@ export default class Game extends BaseComponent {
 
     button?: Button;
 
+    skipButton?: Button;
+
     sentence?: Word;
 
     words?: WordComponent[];
@@ -41,13 +43,19 @@ export default class Game extends BaseComponent {
 
     imageSrc?: string;
 
-    constructor(levelId: string, roundId: string, page: BaseComponent) {
+    buttons: BaseComponent;
+
+    roundTransition: (id: string) => void;
+
+    constructor(levelId: string, roundId: string, page: BaseComponent, roundTransition: (id: string) => void) {
         super({ className: 'game' });
+        this.buttons = new BaseComponent({ className: 'buttons' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
-        this.hints = new Hints(this.page);
+        this.hints = new Hints(this.page, this.buttons);
         this.answers = new BaseComponent({ className: 'answers' });
+        this.roundTransition = roundTransition;
         this.append([this.hints, this.answers]);
     }
 
@@ -62,10 +70,14 @@ export default class Game extends BaseComponent {
 
         this.dataSource = new BaseComponent({ className: 'data-source' }, this.words);
 
-        this.button = new Button('Check', () => this.answer?.isSolved() && this.updateButton(true), 'check', true);
+        this.button = new Button('Check', () => {}, 'check', true);
+        this.updateButton();
 
+        this.skipButton = this.createSkipButton();
+
+        this.buttons.append([this.button, this.skipButton]);
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.button, this.createSkipButton()]);
+        this.append([this.answers, this.dataSource, this.buttons]);
         this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
         const arr = this.dataSource.getComponent().childNodes as unknown as Node[];
 
@@ -92,7 +104,6 @@ export default class Game extends BaseComponent {
             else if (i === arr.length - 1) wordComponent.getComponent().classList.add('last');
             return wordComponent;
         });
-        // const randomizedWords = randomizeArray<WordComponent>(words);
         return words;
     }
 
@@ -138,6 +149,7 @@ export default class Game extends BaseComponent {
     nextLevel() {
         const newHash = `game/${updateRoundId(+this.levelId, +this.roundId + 1)}`;
         window.location.hash = newHash;
+        this.roundTransition(newHash);
     }
 
     updateButton(isContinue: boolean = false) {
@@ -159,6 +171,7 @@ export default class Game extends BaseComponent {
 
     checkHandler() {
         if (this.answer?.isSolved()) {
+            this.skipButton?.setDisabled(true);
             this.updateButton(true);
             this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
@@ -168,6 +181,7 @@ export default class Game extends BaseComponent {
 
     continueHandler() {
         this.hints.showTranslation();
+        this.skipButton?.setDisabled(false);
         this.currentWord += 1;
         if (this.currentWord === 10) {
             this.nextLevel();

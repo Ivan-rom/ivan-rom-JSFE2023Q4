@@ -41,8 +41,23 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
         return this.component;
     }
 
-    clear(): T {
-        this.component.innerHTML = '';
-        return this.component;
+    render(parent: HTMLElement = document.body) {
+        this.component.classList.remove('out');
+        this.component.classList.add('in');
+        parent.appendChild(this.component);
+        this.component.onanimationend = () => {
+            this.component.classList.remove('in');
+            this.component.onanimationend = null;
+        };
+    }
+
+    clear() {
+        this.component.classList.remove('in');
+        this.component.classList.add('out');
+        this.component.onanimationend = () => {
+            this.component.classList.remove('out');
+            this.component.remove();
+            this.component.onanimationend = null;
+        };
     }
 }
