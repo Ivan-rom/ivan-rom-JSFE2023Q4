@@ -26,7 +26,7 @@ export default class Hints extends BaseComponent {
 
     audio?: HTMLAudioElement;
 
-    parent: BaseComponent;
+    page: BaseComponent;
 
     user: {
         name: string;
@@ -40,7 +40,7 @@ export default class Hints extends BaseComponent {
 
     imageButton: Button;
 
-    constructor(parent: BaseComponent) {
+    constructor(page: BaseComponent, parent: BaseComponent) {
         super({ className: 'hints' });
 
         this.user = JSON.parse(localStorage.getItem('user') as string);
@@ -48,14 +48,15 @@ export default class Hints extends BaseComponent {
         this.isAudio = this.user.hints.isAudio;
         this.isImage = this.user.hints.isImage;
 
-        this.parent = parent;
+        this.page = page;
         this.translationHint = new BaseComponent({ className: 'hint translation' });
         const audioCallback = () => {
             this.audio?.play();
             this.audioHint.getComponent().classList.add('playing');
             this.audioHint.setDisabled(true);
         };
-        this.audioHint = new Button('play', audioCallback, 'hint audio');
+        this.audioHint = new Button('', audioCallback, 'hint audio');
+        this.audioHint.append([new BaseComponent({ className: 'image' })]);
 
         this.translationButton = this.createTranslationButton();
         this.audioButton = this.createAudioButton();
@@ -68,8 +69,8 @@ export default class Hints extends BaseComponent {
             this.imageButton,
         ]);
 
-        this.append([buttons]);
-        this.parent.append([hints]);
+        parent.append([buttons]);
+        this.page.append([hints]);
     }
 
     showTranslation(isForced: boolean = false) {
@@ -93,8 +94,6 @@ export default class Hints extends BaseComponent {
 
     setAudio(audioPath: string) {
         this.audio = new Audio(`${Api.path}${audioPath}`);
-        console.log(this.audio);
-
         this.audio?.addEventListener('ended', () => {
             this.audioHint.getComponent().classList.remove('playing');
             this.audioHint.setDisabled(false);
@@ -112,7 +111,8 @@ export default class Hints extends BaseComponent {
             this.saveHints();
             this.showTranslation();
         };
-        const button = new Button('Translation hint', callback, 'hint-button');
+        const button = new Button('', callback, 'hint-button');
+        button.append([new BaseComponent({ className: 'image' })]);
         if (this.isTranslation) button.getComponent().classList.add('active');
 
         return button;
@@ -125,7 +125,8 @@ export default class Hints extends BaseComponent {
             this.saveHints();
             this.showAudio();
         };
-        const button = new Button('Audio hint', callback, 'audio-button');
+        const button = new Button('', callback, 'audio-button');
+        button.append([new BaseComponent({ className: 'image' })]);
         if (this.isAudio) button.getComponent().classList.add('active');
 
         return button;
@@ -138,7 +139,8 @@ export default class Hints extends BaseComponent {
             this.saveHints();
             this.showImage();
         };
-        const button = new Button('Image hint', callback, 'image-button');
+        const button = new Button('', callback, 'image-button');
+        button.append([new BaseComponent({ className: 'image' })]);
         if (this.isImage) button.getComponent().classList.add('active');
 
         return button;
@@ -148,8 +150,6 @@ export default class Hints extends BaseComponent {
         this.user.hints.isAudio = this.isAudio;
         this.user.hints.isImage = this.isImage;
         this.user.hints.isTranslation = this.isTranslation;
-        console.log(JSON.stringify(this.user));
-
         localStorage.setItem('user', JSON.stringify(this.user));
     }
 }
