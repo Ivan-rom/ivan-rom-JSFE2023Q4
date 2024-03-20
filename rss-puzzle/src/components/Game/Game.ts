@@ -4,7 +4,6 @@ import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
 import Hints from '../Hints/Hints';
-import Selector from '../Selector/Selector';
 import WordComponent from '../WordComponent/WordComponent';
 
 import './Game.css';
@@ -76,11 +75,9 @@ export default class Game extends BaseComponent {
 
         this.skipButton = this.createSkipButton();
 
-        const selector = new Selector(+this.levelId, +this.roundId);
-
         this.buttons.append([this.button, this.skipButton]);
         this.answers.append([this.answer]);
-        this.append([this.answers, this.dataSource, this.buttons, selector]);
+        this.append([this.answers, this.dataSource, this.buttons]);
         this.words.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
         const arr = this.dataSource.getComponent().childNodes as unknown as Node[];
 
