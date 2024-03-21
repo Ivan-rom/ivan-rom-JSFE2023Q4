@@ -187,7 +187,10 @@ export default class Game extends BaseComponent {
                         rounds: [+this.roundId],
                         roundsCount: this.roundsCount,
                     };
-                } else user.completedRounds[+this.levelId].rounds.push(+this.roundId);
+                } else {
+                    const arr = Array.from(new Set(user.completedRounds[+this.levelId].rounds));
+                    user.completedRounds[+this.levelId].rounds = arr;
+                }
                 user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
                 localStorage.setItem('user', JSON.stringify(user));
             }
