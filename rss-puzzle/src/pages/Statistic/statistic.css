@@ -1,3 +1,12 @@
+.statistic {
+    &.in {
+        animation: insideContent ease-in-out var(--transition-duration);
+    }
+    &.out {
+        animation: insideContent ease-in-out var(--transition-duration) alternate-reverse;
+    }
+}
+
 .statistic-content {
     position: absolute;
     top: 50%;
@@ -7,6 +16,18 @@
     color: #fff;
     padding: 15px;
     border-radius: 10px;
+
+    .artwork-wrapper {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .artwork {
+            width: 250px;
+            margin-bottom: 10px;
+        }
+    }
 
     .list-wrapper {
         margin-bottom: 20px;
@@ -86,5 +107,16 @@
         border-radius: 5px;
         opacity: 0;
         transform: scale(3);
+    }
+}
+
+@keyframes insideContent {
+    from {
+        opacity: 0;
+        filter: blur(100px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
     }
 }

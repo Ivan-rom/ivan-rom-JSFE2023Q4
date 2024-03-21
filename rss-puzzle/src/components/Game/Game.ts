@@ -207,7 +207,7 @@ export default class Game extends BaseComponent {
                 localStorage.setItem('user', JSON.stringify(user));
                 const info = new BaseComponent({
                     className: 'info',
-                    textContent: `${this.data?.levelData.name} - ${this.data?.levelData.author} (${this.data?.levelData.year} y.)`,
+                    textContent: `${this.data?.levelData.name} - ${this.data?.levelData.author} (${this.data?.levelData.year})`,
                 });
                 this.dataSource!.append([info]);
                 this.answers.getComponent().style.backgroundImage = `url("${Api.path}images/${this.data!.levelData.imageSrc}")`;
