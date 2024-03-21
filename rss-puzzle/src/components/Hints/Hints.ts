@@ -1,15 +1,10 @@
 import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
+import { HintsType } from '../../types';
 import Button from '../Button/Button';
 import WordComponent from '../WordComponent/WordComponent';
 
 import './hints.css';
-
-export type HintsType = {
-    isImage: boolean;
-    isAudio: boolean;
-    isTranslation: boolean;
-};
 
 export default class Hints extends BaseComponent {
     translationHint: BaseComponent;

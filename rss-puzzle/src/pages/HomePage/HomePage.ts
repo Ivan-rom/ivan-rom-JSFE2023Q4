@@ -1,11 +1,12 @@
 import { BaseComponent } from '../../BaseComponent';
 import Button from '../../components/Button/Button';
+import { User } from '../../types';
 import Page from '../Page';
 
 import './homePage.css';
 
 export default class HomePage extends Page {
-    user: { name: string; surname: string } | null;
+    user?: User;
 
     constructor() {
         super({ className: 'home' });
@@ -42,7 +43,8 @@ export default class HomePage extends Page {
         ];
 
         const clickHandler = () => {
-            window.location.hash = 'game/1_01';
+            const { lastRound } = JSON.parse(localStorage.getItem('user')!) as User;
+            window.location.hash = `game/${lastRound}`;
         };
 
         const button = new Button('Start', clickHandler, 'start-button');

@@ -3,17 +3,20 @@ import GamePage from './pages/GamePage/GamePage';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import Page from './pages/Page';
+import Statistic from './pages/Statistic/Statistic';
 
 type Routes<T extends Page = Page> = {
     login: T;
     home: T;
     game: T;
+    statistic: T;
 };
 
 const routes: Routes = {
     login: new LoginPage(),
     home: new HomePage(),
     game: new GamePage(),
+    statistic: new Statistic(),
 };
 
 export default class Router {
@@ -50,9 +53,12 @@ export default class Router {
             this.header.getComponent().classList.remove('hidden');
             if (this.hash === 'home') {
                 this.updatePage('home');
-            }
-            if (this.hash.startsWith('game')) {
+            } else if (this.hash.startsWith('game')) {
                 this.updatePage('game');
+            } else if (this.hash === 'statistic') {
+                this.updatePage('statistic');
+            } else {
+                this.setHash('home');
             }
         }
     }
@@ -62,7 +68,7 @@ export default class Router {
         this.hash = hash;
     }
 
-    updatePage(pageName: 'login' | 'home' | 'game') {
+    updatePage(pageName: 'login' | 'home' | 'game' | 'statistic') {
         if (this.currentPage === this.routes[pageName]) return;
         this.currentPage?.clear();
         this.currentPage = this.routes[pageName];

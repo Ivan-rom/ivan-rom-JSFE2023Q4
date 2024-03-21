@@ -1,5 +1,6 @@
+import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
-import { Round, Word } from '../../types';
+import { Round, StatisticType, User, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
@@ -10,6 +11,8 @@ import './Game.css';
 
 export default class Game extends BaseComponent {
     data?: Round;
+
+    statistic?: StatisticType;
 
     answer?: Answer;
 
@@ -31,6 +34,8 @@ export default class Game extends BaseComponent {
 
     roundId: string;
 
+    roundsCount: number;
+
     current?: HTMLElement;
 
     page: BaseComponent;
@@ -47,12 +52,19 @@ export default class Game extends BaseComponent {
 
     roundTransition: (id: string) => void;
 
-    constructor(levelId: string, roundId: string, page: BaseComponent, roundTransition: (id: string) => void) {
+    constructor(
+        levelId: string,
+        roundId: string,
+        page: BaseComponent,
+        roundTransition: (id: string) => void,
+        roundsCount: number
+    ) {
         super({ className: 'game' });
         this.buttons = new BaseComponent({ className: 'buttons' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
+        this.roundsCount = roundsCount;
         this.hints = new Hints(this.page, this.buttons);
         this.answers = new BaseComponent({ className: 'answers' });
         this.roundTransition = roundTransition;
@@ -61,6 +73,7 @@ export default class Game extends BaseComponent {
 
     renderGame(data: Round) {
         this.data = data;
+        this.statistic = { levelData: data.levelData, words: [] };
         this.sentence = data.words[this.currentWord];
 
         this.imageSrc = this.data.levelData.imageSrc;
@@ -169,13 +182,54 @@ export default class Game extends BaseComponent {
         this.moveWord(e.target as HTMLElement);
     }
 
-    checkHandler() {
+    checkHandler(e: Event, isSkipped: boolean = false) {
         if (this.answer?.isSolved()) {
             this.skipButton?.setDisabled(true);
             this.updateButton(true);
             this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
             this.hints.showImage(true);
+            this.statistic?.words.push({ ...this.sentence!, isSkipped });
+            if (this.currentWord === 9) {
+                const user = JSON.parse(localStorage.getItem('user')!) as User;
+                if (!user.completedRounds[+this.levelId]) {
+                    user.completedRounds[+this.levelId] = {
+                        rounds: [+this.roundId],
+                        roundsCount: this.roundsCount,
+                    };
+                } else {
+                    user.completedRounds[+this.levelId].rounds.push(+this.roundId);
+                    const arr = Array.from(new Set(user.completedRounds[+this.levelId].rounds));
+                    user.completedRounds[+this.levelId].rounds = arr;
+                }
+                user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
+                user.lastRound = `${this.levelId}_${(+this.roundId + 1).toString().padStart(2, '0')}`;
+                localStorage.setItem('user', JSON.stringify(user));
+                const info = new BaseComponent({
+                    className: 'info',
+                    textContent: `${this.data?.levelData.name} - ${this.data?.levelData.author} (${this.data?.levelData.year})`,
+                });
+                this.dataSource!.append([info]);
+                this.answers.getComponent().style.backgroundImage = `url("${Api.path}images/${this.data!.levelData.imageSrc}")`;
+                this.answers.getComponent().childNodes.forEach((answer, i) => {
+                    setTimeout(() => {
+                        (answer as HTMLElement).classList.add('completed');
+                        if (i === 9) info.getComponent().classList.add('reveal');
+                    }, 50 * i);
+                });
+                this.button!.getComponent().textContent = 'Next round';
+                this.skipButton?.getComponent().remove();
+                localStorage.setItem('statistic', JSON.stringify(this.statistic));
+                this.buttons.append([
+                    new Button(
+                        'Results',
+                        () => {
+                            window.location.hash = 'statistic';
+                        },
+                        'result'
+                    ),
+                ]);
+            }
         }
     }
 
@@ -191,8 +245,8 @@ export default class Game extends BaseComponent {
     }
 
     createSkipButton(): Button {
-        const callback = () => {
-            this.checkHandler();
+        const callback = (e: Event) => {
+            this.checkHandler(e);
             this.words?.forEach((word) => word.disable());
             const wrongWords = this.words?.filter((word) => word.getComponent().classList.contains('wrong'));
             const filteredWords = this.words?.filter((word) => !word.getComponent().classList.contains('correct'));
@@ -209,7 +263,7 @@ export default class Game extends BaseComponent {
             });
 
             this.updateButton(true);
-            this.checkHandler();
+            this.checkHandler(e, true);
             this.answer?.getComponent().classList.add('skipped');
         };
         return new Button("I don't know", callback, 'skip');
