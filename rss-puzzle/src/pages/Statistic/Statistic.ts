@@ -1,3 +1,4 @@
+import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
 import Button from '../../components/Button/Button';
 import { StatisticType, User, Word } from '../../types';
@@ -39,12 +40,23 @@ export default class Statistic extends Page {
         });
         const ul = new BaseComponent({ tag: 'ul', className: 'words' });
         words.forEach((word) => {
-            const wordComponent = new BaseComponent({
-                tag: 'li',
-                className: 'sentence',
-                textContent: word.textExample,
+            const audio = new Audio(`${Api.path}${word.audioExample}`);
+            const button = new Button('', () => {}, 'audio');
+            audio.addEventListener('ended', () => {
+                button.getComponent().classList.remove('playing');
+                button.setDisabled(false);
             });
-            ul.append([wordComponent]);
+
+            const callback = () => {
+                audio.play();
+                button.getComponent().classList.add('playing');
+                button.setDisabled(true);
+            };
+            button.getComponent().onclick = callback;
+            button.append([new BaseComponent({ className: 'image' })]);
+            const sentence = new BaseComponent({ className: 'sentence', textContent: word.textExample });
+            const li = new BaseComponent({ tag: 'li', className: 'element' }, [button, sentence]);
+            ul.append([li]);
         });
         const wrapper = new BaseComponent({ className: 'list-wrapper' }, [title, ul]);
         return wrapper;
