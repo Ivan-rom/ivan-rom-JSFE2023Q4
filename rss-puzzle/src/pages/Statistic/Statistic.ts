@@ -1,5 +1,6 @@
 import { BaseComponent } from '../../BaseComponent';
-import { StatisticType } from '../../types';
+import Button from '../../components/Button/Button';
+import { StatisticType, User } from '../../types';
 import Page from '../Page';
 
 import './statistic.css';
@@ -10,11 +11,10 @@ export default class Statistic extends Page {
     constructor() {
         super({ className: 'statistic' });
         this.data = JSON.parse(localStorage.getItem('statistic')!);
-
-        this.createContent();
     }
 
-    createContent() {
+    render() {
+        super.render();
         this.data = JSON.parse(localStorage.getItem('statistic')!);
         const content = new BaseComponent({ className: 'statistic-content' });
         const ul = new BaseComponent({ tag: 'ul', className: 'words' });
@@ -26,7 +26,14 @@ export default class Statistic extends Page {
             });
             ul.append([wordComponent]);
         });
-        content.append([ul]);
+        const button = new Button(
+            'Continue',
+            () => {
+                window.location.hash = `game/${(JSON.parse(localStorage.getItem('user')!) as User).lastRound}`;
+            },
+            'continue'
+        );
+        content.append([ul, button]);
         this.append([content]);
     }
 }
