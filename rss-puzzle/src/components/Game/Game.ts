@@ -192,6 +192,7 @@ export default class Game extends BaseComponent {
                     user.completedRounds[+this.levelId].rounds = arr;
                 }
                 user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
+                user.lastRound = `${this.levelId}_${(+this.roundId + 1).toString().padStart(2, '0')}`;
                 localStorage.setItem('user', JSON.stringify(user));
             }
             this.skipButton?.setDisabled(true);

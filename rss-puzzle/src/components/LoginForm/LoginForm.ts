@@ -69,6 +69,7 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
                 isImage: true,
             },
             completedRounds: {},
+            lastRound: '',
         };
 
         this.inputs = [];
