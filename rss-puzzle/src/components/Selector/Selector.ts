@@ -1,4 +1,5 @@
 import { BaseComponent } from '../../BaseComponent';
+import { User } from '../../types';
 import { toCapitalize } from '../../utils/utils';
 
 import './selector.css';
@@ -20,13 +21,9 @@ export default class Selector extends BaseComponent {
     ) {
         super({ className: 'selector' });
 
-        console.log();
-
         this.roundsCount = roundsCount;
-
         this.currentRound = currentRound;
         this.currentLevel = currentLevel;
-
         this.roundTransition = roundTransition;
 
         this.append([this.createSelector(), this.createSelector('levels', 45)]);
@@ -40,11 +37,13 @@ export default class Selector extends BaseComponent {
         });
         const selector = new BaseComponent<HTMLSelectElement>({ tag: 'select', className: `select ${name}`, name });
         const optionsCount = name === 'rounds' ? count : this.roundsCount;
+        const { completedRounds } = JSON.parse(localStorage.getItem('user')!) as User;
+        const rounds = completedRounds[this.currentRound];
         for (let i = 1; i <= optionsCount; i += 1) {
             selector.append([
                 new BaseComponent<HTMLOptionElement>({
                     tag: 'option',
-                    className: 'option',
+                    className: `option ${name === 'levels' && rounds?.includes(i) ? 'completed' : ''}`,
                     value: `${i}`,
                     textContent: `${i}`,
                     selected: name === 'rounds' ? i === this.currentRound : i === this.currentLevel,
