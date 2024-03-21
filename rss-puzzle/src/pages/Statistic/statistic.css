@@ -8,7 +8,32 @@
     padding: 15px;
     border-radius: 10px;
 
+    .list-wrapper {
+        margin-bottom: 20px;
+
+        .list-title {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .words {
+            padding: 10px;
+            background-color: rgb(60, 18, 42);
+            border-radius: 10px;
+
+            .sentence {
+                margin: 20px;
+                list-style: '- ';
+                &:first-of-type {
+                    margin-top: 5px;
+                }
+                &:last-of-type {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
     .continue {
-        margin: 20px auto 0;
+        margin: 10px auto 0;
     }
 }
