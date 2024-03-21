@@ -9,5 +9,11 @@
     .select {
         margin-left: 10px;
         background-color: rgb(254, 212, 164);
+
+        .option {
+            &.completed {
+                background-color: rgb(227, 254, 164);
+            }
+        }
     }
 }

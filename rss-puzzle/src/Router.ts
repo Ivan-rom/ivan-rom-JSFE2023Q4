@@ -53,6 +53,8 @@ export default class Router {
             }
             if (this.hash.startsWith('game')) {
                 this.updatePage('game');
+            } else {
+                this.setHash('home');
             }
         }
     }

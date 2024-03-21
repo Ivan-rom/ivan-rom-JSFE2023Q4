@@ -1,7 +1,7 @@
 import { BaseComponent } from '../../BaseComponent';
+import { User } from '../../types';
 import { toCapitalize } from '../../utils/utils';
 import Button from '../Button/Button';
-import { HintsType } from '../Hints/Hints';
 
 import './loginForm.css';
 
@@ -54,11 +54,7 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
 
     inputs: HTMLInputElement[];
 
-    user: {
-        name: string;
-        surname: string;
-        hints: HintsType;
-    };
+    user: User;
 
     constructor() {
         super({ tag: 'form', classList: ['login-form'] });
@@ -72,6 +68,7 @@ export default class LoginForm extends BaseComponent<HTMLFormElement> {
                 isTranslation: true,
                 isImage: true,
             },
+            completedRounds: {},
         };
 
         this.inputs = [];
