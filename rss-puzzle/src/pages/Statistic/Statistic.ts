@@ -15,7 +15,6 @@ export default class Statistic extends Page {
     }
 
     render() {
-        super.render();
         this.component.innerHTML = '';
         this.data = JSON.parse(localStorage.getItem('statistic')!);
         const content = new BaseComponent({ className: 'statistic-content' });
@@ -31,6 +30,8 @@ export default class Statistic extends Page {
         );
         content.append([this.createImage(), this.createList(knownWords), this.createList(unknownWords, true), button]);
         this.append([content]);
+
+        super.render();
     }
 
     createList(words: (Word & { isSkipped: boolean })[], isSkipped: boolean = false): BaseComponent {
