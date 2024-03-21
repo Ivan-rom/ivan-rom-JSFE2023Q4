@@ -23,6 +23,10 @@
 
             .element {
                 margin: 20px;
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
 
                 &:first-of-type {
                     margin-top: 5px;
@@ -30,10 +34,57 @@
                 &:last-of-type {
                     margin-bottom: 5px;
                 }
+
+                .audio {
+                    padding: 3px;
+                    margin-top: 0;
+                    margin-right: 10px;
+                    .image::after {
+                        content: '';
+                        width: 15px;
+                        height: 15px;
+                        display: block;
+                        background-image: url(../../public/hint-audio.png);
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: 100%;
+                    }
+
+                    &.playing {
+                        &::before,
+                        &::after {
+                            animation: ripple 1s ease-out infinite;
+                            border: solid 2px var(--button-bg-color);
+                            border-radius: 5px;
+                            bottom: 0;
+                            box-sizing: border-box;
+                            content: '';
+                            left: 0;
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                        }
+
+                        &::after {
+                            animation-delay: 0.5s;
+                        }
+                    }
+                }
             }
         }
     }
     .continue {
         margin: 10px auto 0;
+    }
+}
+
+@keyframes ripple {
+    0% {
+        opacity: 0.25;
+    }
+    100% {
+        border-radius: 5px;
+        opacity: 0;
+        transform: scale(3);
     }
 }

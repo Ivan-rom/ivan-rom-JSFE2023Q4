@@ -41,12 +41,18 @@ export default class Statistic extends Page {
         const ul = new BaseComponent({ tag: 'ul', className: 'words' });
         words.forEach((word) => {
             const audio = new Audio(`${Api.path}${word.audioExample}`);
-            const callback = (e: Event) => {
+            const button = new Button('', () => {}, 'audio');
+            audio.addEventListener('ended', () => {
+                button.getComponent().classList.remove('playing');
+                button.setDisabled(false);
+            });
+
+            const callback = () => {
                 audio.play();
-                const target = e.target as HTMLElement;
-                target.classList.add('playing');
+                button.getComponent().classList.add('playing');
+                button.setDisabled(true);
             };
-            const button = new Button('', callback, 'audio');
+            button.getComponent().onclick = callback;
             button.append([new BaseComponent({ className: 'image' })]);
             const sentence = new BaseComponent({ className: 'sentence', textContent: word.textExample });
             const li = new BaseComponent({ tag: 'li', className: 'element' }, [button, sentence]);
