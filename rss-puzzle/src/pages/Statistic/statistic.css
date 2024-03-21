@@ -1,0 +1,10 @@
+.statistic-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(48, 16, 35);
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+}

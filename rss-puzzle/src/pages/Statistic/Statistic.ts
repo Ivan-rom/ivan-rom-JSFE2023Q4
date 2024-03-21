@@ -2,6 +2,8 @@ import { BaseComponent } from '../../BaseComponent';
 import { StatisticType } from '../../types';
 import Page from '../Page';
 
+import './statistic.css';
+
 export default class Statistic extends Page {
     data: StatisticType;
 
@@ -17,7 +19,11 @@ export default class Statistic extends Page {
         const content = new BaseComponent({ className: 'statistic-content' });
         const ul = new BaseComponent({ tag: 'ul', className: 'words' });
         this.data.words.forEach((word) => {
-            const wordComponent = new BaseComponent({ tag: 'li', className: 'word', textContent: word.textExample });
+            const wordComponent = new BaseComponent({
+                tag: 'li',
+                className: 'sentence',
+                textContent: word.textExample,
+            });
             ul.append([wordComponent]);
         });
         content.append([ul]);
