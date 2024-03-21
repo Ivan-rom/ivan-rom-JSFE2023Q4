@@ -21,9 +21,9 @@
             background-color: rgb(60, 18, 42);
             border-radius: 10px;
 
-            .sentence {
+            .element {
                 margin: 20px;
-                list-style: '- ';
+
                 &:first-of-type {
                     margin-top: 5px;
                 }
