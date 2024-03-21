@@ -189,15 +189,24 @@ export default class Game extends BaseComponent {
                         roundsCount: this.roundsCount,
                     };
                 } else {
+                    user.completedRounds[+this.levelId].rounds.push(+this.roundId);
                     const arr = Array.from(new Set(user.completedRounds[+this.levelId].rounds));
                     user.completedRounds[+this.levelId].rounds = arr;
                 }
                 user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
                 user.lastRound = `${this.levelId}_${(+this.roundId + 1).toString().padStart(2, '0')}`;
                 localStorage.setItem('user', JSON.stringify(user));
+                const info = new BaseComponent({
+                    className: 'info',
+                    textContent: `${this.data?.levelData.name} - ${this.data?.levelData.author} (${this.data?.levelData.year} y.)`,
+                });
+                this.dataSource!.append([info]);
                 this.answers.getComponent().style.backgroundImage = `url("${Api.path}images/${this.data!.levelData.imageSrc}")`;
                 this.answers.getComponent().childNodes.forEach((answer, i) => {
-                    setTimeout(() => (answer as HTMLElement).classList.add('completed'), 100 * i);
+                    setTimeout(() => {
+                        (answer as HTMLElement).classList.add('completed');
+                        if (i === 9) info.getComponent().classList.add('reveal');
+                    }, 50 * i);
                 });
             }
             this.skipButton?.setDisabled(true);

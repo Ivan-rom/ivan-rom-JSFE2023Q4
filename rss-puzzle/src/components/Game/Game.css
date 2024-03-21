@@ -35,3 +35,12 @@
         margin-right: auto;
     }
 }
+
+.info {
+    color: #fff;
+    opacity: 0;
+    transition: 0.2s;
+    &.reveal {
+        opacity: 1;
+    }
+}
