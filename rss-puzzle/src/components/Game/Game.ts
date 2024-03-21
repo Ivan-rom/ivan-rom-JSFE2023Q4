@@ -181,6 +181,11 @@ export default class Game extends BaseComponent {
 
     checkHandler() {
         if (this.answer?.isSolved()) {
+            this.skipButton?.setDisabled(true);
+            this.updateButton(true);
+            this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
+            this.hints.showTranslation(true);
+            this.hints.showImage(true);
             if (this.currentWord === 9) {
                 const user = JSON.parse(localStorage.getItem('user')!) as User;
                 if (!user.completedRounds[+this.levelId]) {
@@ -208,12 +213,8 @@ export default class Game extends BaseComponent {
                         if (i === 9) info.getComponent().classList.add('reveal');
                     }, 50 * i);
                 });
+                this.button!.getComponent().textContent = 'Next round';
             }
-            this.skipButton?.setDisabled(true);
-            this.updateButton(true);
-            this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
-            this.hints.showTranslation(true);
-            this.hints.showImage(true);
         }
     }
 
