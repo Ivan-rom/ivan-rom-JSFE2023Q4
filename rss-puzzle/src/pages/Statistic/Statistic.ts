@@ -29,7 +29,7 @@ export default class Statistic extends Page {
             },
             'continue'
         );
-        content.append([this.createList(knownWords), this.createList(unknownWords, true), button]);
+        content.append([this.createImage(), this.createList(knownWords), this.createList(unknownWords, true), button]);
         this.append([content]);
     }
 
@@ -59,6 +59,22 @@ export default class Statistic extends Page {
             ul.append([li]);
         });
         const wrapper = new BaseComponent({ className: 'list-wrapper' }, [title, ul]);
+        return wrapper;
+    }
+
+    createImage(): BaseComponent {
+        const text = `${this.data.levelData.name} - ${this.data.levelData.author} (${this.data.levelData.year} y.)`;
+
+        const information = new BaseComponent({ className: 'artwork-information', textContent: text });
+        const image = new BaseComponent<HTMLImageElement>({
+            tag: 'img',
+            className: 'artwork',
+            src: `${Api.path}images/${this.data.levelData.cutSrc}`,
+            alt: text,
+        });
+
+        const wrapper = new BaseComponent({ className: 'artwork-wrapper' }, [image, information]);
+
         return wrapper;
     }
 }
