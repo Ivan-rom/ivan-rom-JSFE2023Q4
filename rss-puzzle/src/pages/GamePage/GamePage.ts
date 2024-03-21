@@ -82,8 +82,18 @@ export default class GamePage extends Page {
         const { rounds, roundsCount }: GameData = await this.api.getRounds();
         this.roundsCount = roundsCount;
         const roundId = this.hash.split('/')[1];
-        const round = rounds.find((el) => el.levelData.id === roundId);
         [this.levelId, this.roundId] = roundId.split('_');
+        if (+this.levelId > 6 || +this.levelId < 1) {
+            window.location.hash = `game/1_01`;
+            this.hash = `game/1_01`;
+            return this.getRound();
+        }
+        if (+this.roundId > roundsCount) {
+            window.location.hash = `game/${+this.levelId + 1}_01`;
+            this.hash = `game/${+this.levelId + 1}_01`;
+            return this.getRound();
+        }
+        const round = rounds.find((el) => el.levelData.id === roundId);
         return round as Round;
     }
 }
