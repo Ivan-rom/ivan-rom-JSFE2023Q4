@@ -45,4 +45,5 @@ export type User = {
             rounds: number[];
         };
     };
+    lastRound: string;
 };
