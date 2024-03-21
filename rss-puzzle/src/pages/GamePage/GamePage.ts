@@ -41,7 +41,13 @@ export default class GamePage extends Page {
         this.getRound().then((round) => {
             this.game?.getComponent().remove();
             this.round = round;
-            this.game = new Game(this.levelId!, this.roundId!, this.content!, this.roundTransition.bind(this));
+            this.game = new Game(
+                this.levelId!,
+                this.roundId!,
+                this.content!,
+                this.roundTransition.bind(this),
+                this.roundsCount!
+            );
             this.content!.append([
                 this.game,
                 new Selector(this.roundsCount!, this.roundTransition.bind(this), +this.levelId!, +this.roundId!),

@@ -31,6 +31,8 @@ export default class Game extends BaseComponent {
 
     roundId: string;
 
+    roundsCount: number;
+
     current?: HTMLElement;
 
     page: BaseComponent;
@@ -47,12 +49,19 @@ export default class Game extends BaseComponent {
 
     roundTransition: (id: string) => void;
 
-    constructor(levelId: string, roundId: string, page: BaseComponent, roundTransition: (id: string) => void) {
+    constructor(
+        levelId: string,
+        roundId: string,
+        page: BaseComponent,
+        roundTransition: (id: string) => void,
+        roundsCount: number
+    ) {
         super({ className: 'game' });
         this.buttons = new BaseComponent({ className: 'buttons' });
         this.page = page;
         this.levelId = levelId;
         this.roundId = roundId;
+        this.roundsCount = roundsCount;
         this.hints = new Hints(this.page, this.buttons);
         this.answers = new BaseComponent({ className: 'answers' });
         this.roundTransition = roundTransition;
@@ -173,9 +182,13 @@ export default class Game extends BaseComponent {
         if (this.answer?.isSolved()) {
             if (this.currentWord === 9) {
                 const user = JSON.parse(localStorage.getItem('user')!) as User;
-                if (!user.completedRounds[+this.levelId]) user.completedRounds[+this.levelId] = [+this.roundId];
-                else user.completedRounds[+this.levelId].push(+this.roundId);
-                user.completedRounds[+this.levelId].sort((a, b) => a - b);
+                if (!user.completedRounds[+this.levelId]) {
+                    user.completedRounds[+this.levelId] = {
+                        rounds: [+this.roundId],
+                        roundsCount: this.roundsCount,
+                    };
+                } else user.completedRounds[+this.levelId].rounds.push(+this.roundId);
+                user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
                 localStorage.setItem('user', JSON.stringify(user));
             }
             this.skipButton?.setDisabled(true);

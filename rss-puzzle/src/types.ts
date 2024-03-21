@@ -40,6 +40,9 @@ export type User = {
     surname: string;
     hints: HintsType;
     completedRounds: {
-        [key: number]: number[];
+        [key: number]: {
+            roundsCount: number;
+            rounds: number[];
+        };
     };
 };

@@ -40,10 +40,19 @@ export default class Selector extends BaseComponent {
         const { completedRounds } = JSON.parse(localStorage.getItem('user')!) as User;
         const rounds = completedRounds[this.currentRound];
         for (let i = 1; i <= optionsCount; i += 1) {
+            let className = 'option';
+            if (rounds) {
+                if (name === 'levels') {
+                    className += rounds.rounds.includes(i) ? ' completed' : '';
+                } else if (completedRounds[i]) {
+                    className +=
+                        completedRounds[i]?.roundsCount === completedRounds[i]?.rounds.length ? ' completed' : '';
+                }
+            }
             selector.append([
                 new BaseComponent<HTMLOptionElement>({
                     tag: 'option',
-                    className: `option ${name === 'levels' && rounds?.includes(i) ? 'completed' : ''}`,
+                    className,
                     value: `${i}`,
                     textContent: `${i}`,
                     selected: name === 'rounds' ? i === this.currentRound : i === this.currentLevel,
