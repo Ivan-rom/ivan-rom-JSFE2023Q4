@@ -1,6 +1,6 @@
 import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
-import { Round, User, Word } from '../../types';
+import { Round, StatisticType, User, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
@@ -11,6 +11,8 @@ import './Game.css';
 
 export default class Game extends BaseComponent {
     data?: Round;
+
+    statistic?: StatisticType;
 
     answer?: Answer;
 
@@ -71,6 +73,7 @@ export default class Game extends BaseComponent {
 
     renderGame(data: Round) {
         this.data = data;
+        this.statistic = { levelData: data.levelData, words: [] };
         this.sentence = data.words[this.currentWord];
 
         this.imageSrc = this.data.levelData.imageSrc;
@@ -179,13 +182,14 @@ export default class Game extends BaseComponent {
         this.moveWord(e.target as HTMLElement);
     }
 
-    checkHandler() {
+    checkHandler(e: Event, isSkipped: boolean = false) {
         if (this.answer?.isSolved()) {
             this.skipButton?.setDisabled(true);
             this.updateButton(true);
             this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
             this.hints.showTranslation(true);
             this.hints.showImage(true);
+            this.statistic?.words.push({ ...this.sentence!, isSkipped });
             if (this.currentWord === 9) {
                 const user = JSON.parse(localStorage.getItem('user')!) as User;
                 if (!user.completedRounds[+this.levelId]) {
@@ -214,6 +218,17 @@ export default class Game extends BaseComponent {
                     }, 50 * i);
                 });
                 this.button!.getComponent().textContent = 'Next round';
+                this.skipButton?.getComponent().remove();
+                localStorage.setItem('statistic', JSON.stringify(this.statistic));
+                this.buttons.append([
+                    new Button(
+                        'Results',
+                        () => {
+                            window.location.hash = 'statistic';
+                        },
+                        'result'
+                    ),
+                ]);
             }
         }
     }
@@ -230,8 +245,8 @@ export default class Game extends BaseComponent {
     }
 
     createSkipButton(): Button {
-        const callback = () => {
-            this.checkHandler();
+        const callback = (e: Event) => {
+            this.checkHandler(e);
             this.words?.forEach((word) => word.disable());
             const wrongWords = this.words?.filter((word) => word.getComponent().classList.contains('wrong'));
             const filteredWords = this.words?.filter((word) => !word.getComponent().classList.contains('correct'));
@@ -248,7 +263,7 @@ export default class Game extends BaseComponent {
             });
 
             this.updateButton(true);
-            this.checkHandler();
+            this.checkHandler(e, true);
             this.answer?.getComponent().classList.add('skipped');
         };
         return new Button("I don't know", callback, 'skip');
