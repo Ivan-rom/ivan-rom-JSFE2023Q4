@@ -63,7 +63,7 @@ export default class Statistic extends Page {
     }
 
     createImage(): BaseComponent {
-        const text = `${this.data.levelData.name} - ${this.data.levelData.author} (${this.data.levelData.year} y.)`;
+        const text = `${this.data.levelData.name} - ${this.data.levelData.author} (${this.data.levelData.year})`;
 
         const information = new BaseComponent({ className: 'artwork-information', textContent: text });
         const image = new BaseComponent<HTMLImageElement>({
