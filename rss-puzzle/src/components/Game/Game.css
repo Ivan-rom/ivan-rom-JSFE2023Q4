@@ -11,6 +11,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-repeat: no-repeat;
+    background-size: 670px 284px;
+    background-position: center;
 }
 
 .data-source {

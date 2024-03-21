@@ -1,3 +1,4 @@
+import Api from '../../API/api';
 import { BaseComponent } from '../../BaseComponent';
 import { Round, User, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
@@ -194,6 +195,10 @@ export default class Game extends BaseComponent {
                 user.completedRounds[+this.levelId].rounds.sort((a, b) => a - b);
                 user.lastRound = `${this.levelId}_${(+this.roundId + 1).toString().padStart(2, '0')}`;
                 localStorage.setItem('user', JSON.stringify(user));
+                this.answers.getComponent().style.backgroundImage = `url("${Api.path}images/${this.data!.levelData.imageSrc}")`;
+                this.answers.getComponent().childNodes.forEach((answer, i) => {
+                    setTimeout(() => (answer as HTMLElement).classList.add('completed'), 100 * i);
+                });
             }
             this.skipButton?.setDisabled(true);
             this.updateButton(true);
