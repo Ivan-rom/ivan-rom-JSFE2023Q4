@@ -28,3 +28,18 @@ export type GameData = {
     rounds: Round[];
     roundsCount: number;
 };
+
+export type HintsType = {
+    isImage: boolean;
+    isAudio: boolean;
+    isTranslation: boolean;
+};
+
+export type User = {
+    name: string;
+    surname: string;
+    hints: HintsType;
+    completedRounds: {
+        [key: number]: number[];
+    };
+};

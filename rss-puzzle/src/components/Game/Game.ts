@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../BaseComponent';
-import { Round, Word } from '../../types';
+import { Round, User, Word } from '../../types';
 import { randomizeArray, toCapitalize, updateRoundId } from '../../utils/utils';
 import Answer from '../Answer/Answer';
 import Button from '../Button/Button';
@@ -171,6 +171,13 @@ export default class Game extends BaseComponent {
 
     checkHandler() {
         if (this.answer?.isSolved()) {
+            if (this.currentWord === 9) {
+                const user = JSON.parse(localStorage.getItem('user')!) as User;
+                if (!user.completedRounds[+this.levelId]) user.completedRounds[+this.levelId] = [+this.roundId];
+                else user.completedRounds[+this.levelId].push(+this.roundId);
+                user.completedRounds[+this.levelId].sort((a, b) => a - b);
+                localStorage.setItem('user', JSON.stringify(user));
+            }
             this.skipButton?.setDisabled(true);
             this.updateButton(true);
             this.words?.forEach((word) => word.setWidth(this.imageSrc!, this.currentWord));
