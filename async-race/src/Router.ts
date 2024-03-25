@@ -1,7 +1,7 @@
 import Garage from "./views/GarageView/GarageView";
 
 const views = {
-  garage: new Garage(),
+  garage: Garage,
 };
 
 class Router {

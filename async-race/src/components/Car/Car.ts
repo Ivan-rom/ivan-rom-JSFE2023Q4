@@ -1,3 +1,4 @@
+import api from "../../api";
 import { CarType } from "../../types";
 import BaseComponent from "../BaseComponent";
 
@@ -19,5 +20,21 @@ export default class Car extends BaseComponent {
     this.component.style.backgroundColor = this.color;
     this.component.id = `${this.id}`;
     this.component.title = this.name;
+
+    this.createButtons();
+  }
+
+  createButtons() {
+    const deleteHandler = () => {
+      api.deleteCar(this.id);
+    };
+    const deleteButton = new BaseComponent<HTMLButtonElement>({
+      tag: "button",
+      className: "button delete-button",
+      textContent: "Remove car",
+      onclick: deleteHandler.bind(this),
+    });
+
+    this.append([deleteButton]);
   }
 }
