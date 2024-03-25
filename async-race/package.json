@@ -25,7 +25,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack serve --open",
+    "build": "webpack",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix --color",
+    "prepare": "cd .. && husky async-race/.husky"
+  },
+  "lint-staged": {
+    "*.{ts, js, css, html}": [
+      "npm run lint:fix"
+    ]
   },
   "author": "",
   "license": "ISC",
