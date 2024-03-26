@@ -15,8 +15,8 @@ class Api {
     this.getCars();
   }
 
-  async getCars(page: number = 1) {
-    await fetch(`${this.url}/garage?_page=${page}&_limit=10`)
+  async getCars(page: number = 2) {
+    await fetch(`${this.url}/garage?_page=${page}&_limit=7`)
       .then((response) => {
         this.totalCars = +response.headers.get("X-total-count")!;
         return response.json();

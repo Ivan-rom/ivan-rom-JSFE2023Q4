@@ -11,6 +11,10 @@ class Router {
     window.addEventListener("hashchange", this.changeHash.bind(this));
     this.path = window.location.hash.substring(1);
     this.updateView();
+    if (!localStorage.getItem("garage-page"))
+      localStorage.setItem("garage-page", "1");
+    if (!localStorage.getItem("winners-page"))
+      localStorage.setItem("winners-page", "1");
   }
 
   changeHash() {
