@@ -16,16 +16,18 @@ class Garage extends View {
     this.append([new CarForm(this.render.bind(this)), this.cars]);
   }
 
-  renderCars() {
-    this.carsComps = api.cars.map((car) => new Car(car));
+  async renderCars() {
+    await api.getCars();
+    this.carsComps = api.cars.map(
+      (car) => new Car(car, this.render.bind(this)),
+    );
     this.cars.component.innerHTML = "";
     this.cars.append(this.carsComps);
   }
 
   async render() {
     super.render();
-    await api.getCars();
-    this.renderCars();
+    await this.renderCars();
   }
 }
 
