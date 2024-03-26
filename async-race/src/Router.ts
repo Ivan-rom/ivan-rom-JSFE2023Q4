@@ -1,7 +1,9 @@
 import Garage from "./views/GarageView/GarageView";
+import WinnersView from "./views/WinnersView/WinnersView";
 
 const views = {
   garage: Garage,
+  winners: WinnersView,
 };
 
 class Router {
@@ -25,6 +27,8 @@ class Router {
   updateView() {
     if (this.path === "garage") {
       views.garage.render();
+    } else if (this.path === "winners") {
+      views.winners.render();
     } else {
       window.location.hash = "garage";
     }

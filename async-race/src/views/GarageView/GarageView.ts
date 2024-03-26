@@ -22,7 +22,7 @@ class Garage extends View {
     this.cars = new BaseComponent({ className: "cars" });
     this.count = new BaseComponent({
       tag: "span",
-      textContent: `${api.totalCars}`,
+      textContent: `${api.totalGarage}`,
     });
     this.currentPage = +localStorage.getItem("garage-page")!;
     const carsCount = new BaseComponent(
@@ -52,8 +52,8 @@ class Garage extends View {
   }
 
   async renderCars() {
-    await api.getCars(this.currentPage);
-    const pages = Math.ceil(api.totalCars / 7);
+    await api.getGarage(this.currentPage);
+    const pages = Math.ceil(api.totalGarage / 7);
     this.pagination.pagesCount = pages;
     if (this.currentPage > pages) {
       this.pagination.currentPage = pages;
@@ -63,8 +63,8 @@ class Garage extends View {
     this.pagination.updatePagination();
     console.log(this.pagination.pagesCount);
 
-    this.count.component.textContent = `${api.totalCars}`;
-    this.carsComps = api.cars.map(
+    this.count.component.textContent = `${api.totalGarage}`;
+    this.carsComps = api.garage.map(
       (car) => new Car(car, this.render.bind(this)),
     );
     this.cars.component.innerHTML = "";

@@ -38,8 +38,9 @@ export default class Car extends BaseComponent {
 
   createButtons() {
     const deleteHandler = () => {
-      api.deleteCar(this.id);
-      this.updateCallback();
+      api.deleteCar(this.id).then(() => {
+        this.updateCallback();
+      });
     };
     const deleteButton = new BaseComponent<HTMLButtonElement>({
       tag: "button",
