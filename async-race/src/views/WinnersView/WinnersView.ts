@@ -19,7 +19,13 @@ class WinnersView extends View {
     super("winners");
 
     this.carsComps = [];
-    this.cars = this.createTable();
+    this.cars = new BaseComponent<HTMLTableElement>(
+      {
+        tag: "table",
+        className: "winners",
+      },
+      [this.createTableHeader()],
+    );
     this.count = new BaseComponent({
       tag: "span",
       textContent: `${api.totalWinners}`,
@@ -46,8 +52,7 @@ class WinnersView extends View {
     this.renderCars();
   }
 
-  createTable(): BaseComponent<HTMLTableElement> {
-    const table = new BaseComponent<HTMLTableElement>({ tag: "table" });
+  createTableHeader(): BaseComponent<HTMLTableRowElement> {
     const header = new BaseComponent<HTMLTableRowElement>(
       { tag: "tr", className: "winners-header" },
       [
@@ -73,12 +78,13 @@ class WinnersView extends View {
         }),
       ],
     );
-    table.append([header]);
-    return table;
+    return header;
   }
 
   async renderCars() {
     await api.getWinners(this.currentPage);
+    this.cars.component.innerHTML = "";
+    this.cars.append([this.createTableHeader()]);
     const pages = Math.ceil(api.totalWinners / 10);
     this.pagination.pagesCount = pages;
     if (this.currentPage > pages) {
