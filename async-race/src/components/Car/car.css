@@ -1,0 +1,41 @@
+.car-wrapper {
+  margin-top: 10px;
+}
+
+.track {
+  display: flex;
+  align-items: end;
+  margin-top: 10px;
+  background-size: 25px;
+  background-position: bottom;
+  background-repeat: repeat-x;
+  background-image: url(../../public/road.svg);
+}
+
+.car-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.control-buttons {
+  margin-bottom: 30px;
+  align-self: start;
+}
+
+.car {
+  width: 100px;
+  height: 40px;
+  mask-image: url(../../public/car.svg);
+  mask-repeat: no-repeat;
+  mask-position: 0 0;
+}
+
+.finish {
+  width: 20px;
+  margin-left: auto;
+  margin-right: 120px;
+  align-self: stretch;
+  background: repeating-conic-gradient(#fff 0 90deg, rgb(0, 0, 0) 0 180deg) 0 0/50%
+    25%;
+}
