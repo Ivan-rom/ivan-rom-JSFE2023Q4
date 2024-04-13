@@ -8,17 +8,20 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private submitHandler: (e: SubmitEvent) => void;
 
+  private name: string;
+
   constructor(handler: Function) {
     super({ className: "form-login", tag: "form" });
 
     this.errors = { name: true, password: true };
+    this.name = "";
 
     this.submitButton = new Button("login-button", "Войти");
     this.submitButton.component.disabled = true;
 
     this.submitHandler = (e: SubmitEvent) => {
       e.preventDefault();
-      handler();
+      handler(this.name);
     };
 
     this.append(this.createContent());
@@ -35,6 +38,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
     const target = e.target as HTMLInputElement;
     const value = target.value;
     const errors: string[] = [];
+    this.name = value;
 
     if (value.length < 4) {
       errors.push("Длина имени должна быть не менее 4 символов");

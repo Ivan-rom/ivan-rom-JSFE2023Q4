@@ -24,7 +24,12 @@ module.exports = {
   },
   devtool: "inline-source-map",
   devServer: {
+    open: true,
+    host: "localhost",
+    port: 8080,
+    hot: true,
     static: path.resolve(__dirname, "./dist"),
+    historyApiFallback: true,
   },
   output: {
     filename: "index.js",
