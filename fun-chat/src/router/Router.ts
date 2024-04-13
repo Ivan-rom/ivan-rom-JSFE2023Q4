@@ -1,6 +1,4 @@
 import { Route } from "../types";
-import ChatView from "../views/ChatView/ChatView";
-import LoginView from "../views/LoginView/LoginView";
 
 class Router {
   private routes: Route[];
@@ -35,26 +33,8 @@ class Router {
       window.history.pushState(null, "", `/${page.path}`);
     } else {
       this.navigate("chat");
-      return;
     }
   }
 }
 
-const routes: Route[] = [
-  {
-    path: "login",
-    callback: () => {
-      document.body.innerHTML = "";
-      document.body.append(new LoginView().component);
-    },
-  },
-  {
-    path: "chat",
-    callback: () => {
-      document.body.innerHTML = "";
-      document.body.append(new ChatView().component);
-    },
-  },
-];
-
-export default new Router(routes);
+export default Router;

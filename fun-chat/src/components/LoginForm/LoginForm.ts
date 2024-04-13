@@ -10,7 +10,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private name: string;
 
-  constructor(handler: Function) {
+  constructor(handler: (name: string) => void) {
     super({ className: "form-login", tag: "form" });
 
     this.errors = { name: true, password: true };
@@ -36,7 +36,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private nameHandler(e: Event): string[] {
     const target = e.target as HTMLInputElement;
-    const value = target.value;
+    const { value } = target;
     const errors: string[] = [];
     this.name = value;
 
@@ -49,7 +49,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private passwordHandler(e: Event): string[] {
     const target = e.target as HTMLInputElement;
-    const value = target.value;
+    const { value } = target;
     const errors: string[] = [];
 
     if (value.length < 4) {
