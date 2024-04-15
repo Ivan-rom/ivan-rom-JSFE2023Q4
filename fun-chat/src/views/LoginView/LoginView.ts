@@ -1,3 +1,4 @@
+import Button from "../../components/Button/Button";
 import Component from "../../components/Component";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import Router from "../../router/Router";
@@ -9,9 +10,14 @@ export default class LoginView extends View {
   constructor(router: Router) {
     super("login");
     this.router = router;
-    localStorage.removeItem("chat-user");
 
-    this.append([this.createForm()]);
+    this.append([this.createForm(), this.createAboutButton()]);
+  }
+
+  createAboutButton(): Button {
+    return new Button("login-button login-about", "Инфо", () =>
+      this.router.navigate("about"),
+    );
   }
 
   private createForm(): Component<HTMLFormElement> {

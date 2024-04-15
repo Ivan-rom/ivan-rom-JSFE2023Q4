@@ -1,4 +1,4 @@
-import Component from "../../components/Component";
+import Header from "../../components/Header/Header";
 import Router from "../../router/Router";
 import View from "../View";
 
@@ -8,6 +8,7 @@ export default class ChatView extends View {
   constructor(router: Router) {
     super("chat");
     this.router = router;
-    this.append([new Component({ tag: "h2", textContent: "Fun chat" })]);
+    const header = new Header(router);
+    this.append([header]);
   }
 }

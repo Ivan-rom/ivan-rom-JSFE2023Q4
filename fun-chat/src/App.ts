@@ -1,10 +1,11 @@
 import Router from "./router/Router";
 
 import { Route } from "./types";
+import AboutView from "./views/AboutView/AboutView";
 import ChatView from "./views/ChatView/ChatView";
 import LoginView from "./views/LoginView/LoginView";
 
-export default class App {
+class App {
   routes: Route[];
 
   router: Router;
@@ -30,9 +31,16 @@ export default class App {
           document.body.append(new ChatView(this.router).component);
         },
       },
+      {
+        path: "about",
+        callback: () => {
+          document.body.innerHTML = "";
+          document.body.append(new AboutView(this.router).component);
+        },
+      },
     ];
     return routes;
   }
 }
 
-new App();
+export default new App();
