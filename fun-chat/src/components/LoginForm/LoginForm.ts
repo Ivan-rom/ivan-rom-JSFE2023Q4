@@ -10,18 +10,21 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private name: string;
 
-  constructor(handler: (name: string) => void) {
+  private password: string;
+
+  constructor(handler: (name: string, password: string) => void) {
     super({ className: "form-login", tag: "form" });
 
     this.errors = { name: true, password: true };
     this.name = "";
+    this.password = "";
 
     this.submitButton = new Button("login-button", "Войти");
     this.submitButton.component.disabled = true;
 
     this.submitHandler = (e: SubmitEvent) => {
       e.preventDefault();
-      handler(this.name);
+      handler(this.name, this.password);
     };
 
     this.append(this.createContent());
@@ -51,6 +54,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
     const target = e.target as HTMLInputElement;
     const { value } = target;
     const errors: string[] = [];
+    this.password = value;
 
     if (value.length < 4) {
       errors.push("Длина пароля должна быть не менее 6 символов");

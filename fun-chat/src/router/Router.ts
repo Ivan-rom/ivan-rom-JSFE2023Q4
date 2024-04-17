@@ -7,43 +7,51 @@ class Router {
 
   constructor(routes: Route[]) {
     this.routes = routes;
-    document.addEventListener("DOMContentLoaded", () => {
-      const path = window.location.pathname.slice(1);
-      this.navigate(path);
-    });
-    document.addEventListener("popstate", () => {
-      const path = window.location.pathname.slice(1);
-      this.navigate(path);
-    });
+    document.addEventListener("DOMContentLoaded", this.updateView.bind(this));
+    document.addEventListener("popstate", this.updateView.bind(this));
   }
 
-  navigate(path?: string) {
+  private updateView() {
+    const path = window.location.pathname.slice(1);
+    this.navigate(path);
+  }
+
+  private removeCurrentView() {
+    if (this.currentPath) {
+      this.routes
+        .find((route) => route.path === this.currentPath)
+        ?.getView()
+        .remove();
+    }
+  }
+
+  navigate(path: string = "") {
     if (path === this.currentPath) return;
-    if (path === "") this.currentPath = "chat";
-    else this.currentPath = path;
 
-    let page;
+    let newPath = "";
+    const user = sessionStorage.getItem("chat-user");
 
-    const user = localStorage.getItem("chat-user");
+    this.removeCurrentView();
+    if (!user && path !== "about") newPath = "login";
+    else if (path === "" || path === "login") newPath = "chat";
+    else newPath = path;
 
-    if (user || path === "about") {
-      page = this.routes.find((route) => route.path === this.currentPath);
-    } else {
-      page = this.routes.find((route) => route.path === "login");
-    }
+    const page = this.routes.find((route) => route.path === newPath);
 
-    if (page) {
-      page.callback();
-
-      let hash = "";
-      if (page.path === "chat")
-        hash = window.location.hash ? window.location.hash : "";
-
-      if (page.path !== window.history.state)
-        window.history.pushState(page.path, "", `/${page.path}${hash}`);
-    } else {
+    if (!page) {
       this.navigate("chat");
+      return;
     }
+    const view = page.getView();
+    document.body.append(view.component);
+
+    let hash = "";
+    if (page.path === "chat")
+      hash = window.location.hash ? window.location.hash : "";
+
+    if (page.path !== window.history.state)
+      window.history.pushState(page.path, "", `/${page.path}${hash}`);
+    this.currentPath = page.path;
   }
 }
 

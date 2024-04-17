@@ -18,6 +18,8 @@
       "node": true
   },
   "rules": {
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": "warn",
       "no-debugger": "off",
       "no-console": 0,
       "class-methods-use-this": "off",
