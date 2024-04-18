@@ -6,14 +6,30 @@ export default class Aside extends Component {
 
   private usersList: Component;
 
+  private search: Component;
+
   constructor() {
     super({ tag: "aside", className: "chat-aside aside" });
     this.users = [];
-    this.usersList = this.createContent();
-    this.append([this.usersList]);
+    this.usersList = this.createUserList();
+    this.search = this.createSearch();
+    this.append([this.search, this.usersList]);
   }
 
-  private createContent(): Component {
+  private createSearch(): Component {
+    const input = new Component<HTMLInputElement>({
+      tag: "input",
+      className: "aside-search",
+      type: "text",
+    });
+    input.component.oninput = () => {
+      this.updateUsers(this.users, input.component.value);
+    };
+
+    return input;
+  }
+
+  private createUserList(): Component {
     const ul = new Component<HTMLUListElement>({
       tag: "ul",
       className: "aside-list",
@@ -21,22 +37,20 @@ export default class Aside extends Component {
     return ul;
   }
 
-  private updateUsers(users: User[]) {
-    const { login } = JSON.parse(
-      sessionStorage.getItem("chat-user")!,
-    ) as SavedUser;
-    const userIndex = users.findIndex((el) => el.login === login);
-    const filteredUsers = [...users];
-    filteredUsers.splice(userIndex, 1);
-
-    this.users = filteredUsers;
+  updateUsers(users: User[], filter: string = "") {
+    this.users = JSON.parse(JSON.stringify(users));
+    const filteredUsers =
+      filter === ""
+        ? JSON.parse(JSON.stringify(users))
+        : (JSON.parse(JSON.stringify(users)) as User[]).filter((user) =>
+            user.login.startsWith(filter),
+          );
+    this.updateContent(filteredUsers);
   }
 
   updateContent(users: User[]) {
-    this.updateUsers(users);
-
     this.usersList.component.innerHTML = "";
-    this.users.forEach((user) => {
+    users.forEach((user) => {
       const userComponent = new Component<HTMLLIElement>({
         tag: "li",
         className: `aside-element user ${user.isLogined ? "logged" : ""}`,

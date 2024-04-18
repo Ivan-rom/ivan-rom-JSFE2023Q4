@@ -14,10 +14,13 @@ export default class ChatView extends View {
 
   private aside: Aside;
 
+  private user: string;
+
   constructor(router: Router, api: API) {
     super("chat");
     this.router = router;
     this.api = api;
+    this.user = "";
 
     this.aside = new Aside();
     const header = new Header(router, api);
@@ -26,14 +29,20 @@ export default class ChatView extends View {
     this.append([header, this.aside, footer]);
 
     api.socket.addEventListener("open", () => {
-      this.api.login(JSON.parse(sessionStorage.getItem("chat-user")!));
+      const userData = JSON.parse(
+        sessionStorage.getItem("chat-user")!,
+      ) as SavedUser;
+
+      this.user = userData.login;
+      this.api.login(userData);
     });
 
     api.socket.addEventListener("message", (e) => {
       const data = JSON.parse(e.data) as ServerMessage<{ user: SavedUser }>;
       if (data.type === ServerTypes.USER_LOGIN) {
+        this.user = data.payload.user.login;
         this.getUsers();
-        header.updateName(data.payload.user);
+        header.updateName(this.user);
       }
     });
 
@@ -43,7 +52,10 @@ export default class ChatView extends View {
   private getUsers() {
     this.getActiveUsers().then((activeUsers) => {
       this.getInactiveUsers().then((inactiveUsers) => {
-        this.aside.updateContent([...activeUsers, ...inactiveUsers]);
+        const users = [...activeUsers, ...inactiveUsers];
+        const userIndex = users.findIndex((el) => el.login === this.user);
+        users.splice(userIndex, 1);
+        this.aside.updateUsers(users);
       });
     });
   }

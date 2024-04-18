@@ -22,13 +22,13 @@ export default class Header extends Component {
     });
 
     const user = JSON.parse(sessionStorage.getItem("chat-user")!) as SavedUser;
-    this.updateName(user);
+    this.updateName(user.login);
 
     this.append([this.user, ...this.createContent()]);
   }
 
-  updateName(user: SavedUser) {
-    this.user.component.textContent = `Пользователь: ${user.login}`;
+  updateName(user: string) {
+    this.user.component.textContent = `Пользователь: ${user}`;
   }
 
   private createContent(): Component[] {
