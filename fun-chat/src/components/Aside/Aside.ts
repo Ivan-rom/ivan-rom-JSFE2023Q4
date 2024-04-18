@@ -1,4 +1,5 @@
 import { SavedUser, User } from "../../types";
+import Button from "../Button/Button";
 import Component from "../Component";
 
 export default class Aside extends Component {
@@ -56,6 +57,9 @@ export default class Aside extends Component {
         className: `aside-element user ${user.isLogined ? "logged" : ""}`,
         textContent: user.login,
       });
+      userComponent.component.onclick = () => {
+        window.location.hash = user.login;
+      };
       this.usersList.append([userComponent]);
     });
   }

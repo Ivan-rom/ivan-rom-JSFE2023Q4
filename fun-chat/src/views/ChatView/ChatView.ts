@@ -1,5 +1,6 @@
 import API from "../../API/API";
 import Aside from "../../components/Aside/Aside";
+import Chat from "../../components/Chat/Chat";
 import Component from "../../components/Component";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
@@ -14,6 +15,8 @@ export default class ChatView extends View {
 
   private aside: Aside;
 
+  private chat: Chat;
+
   private user: string;
 
   constructor(router: Router, api: API) {
@@ -21,12 +24,6 @@ export default class ChatView extends View {
     this.router = router;
     this.api = api;
     this.user = "";
-
-    this.aside = new Aside();
-    const header = new Header(router, api);
-    const footer = new Footer();
-
-    this.append([header, this.aside, footer]);
 
     api.socket.addEventListener("open", () => {
       const userData = JSON.parse(
@@ -37,14 +34,19 @@ export default class ChatView extends View {
       this.api.login(userData);
     });
 
-    api.socket.addEventListener("message", (e) => {
+    this.api.subscribe(ServerTypes.USER_LOGIN, (e: MessageEvent) => {
       const data = JSON.parse(e.data) as ServerMessage<{ user: SavedUser }>;
-      if (data.type === ServerTypes.USER_LOGIN) {
-        this.user = data.payload.user.login;
-        this.getUsers();
-        header.updateName(this.user);
-      }
+      this.user = data.payload.user.login;
+      this.getUsers();
+      header.updateName(this.user);
     });
+
+    this.aside = new Aside();
+    this.chat = new Chat(api);
+    const header = new Header(router, api);
+    const footer = new Footer();
+
+    this.append([header, this.aside, this.chat, footer]);
 
     if (api.socket.readyState === 1) this.getUsers();
   }
@@ -63,20 +65,18 @@ export default class ChatView extends View {
   getActiveUsers() {
     return new Promise<User[]>((res) => {
       this.api.getUsers(ServerTypes.USER_ACTIVE);
-      this.api.socket.addEventListener("message", (e: MessageEvent) => {
+      this.api.subscribe(ServerTypes.USER_ACTIVE, (e: MessageEvent) => {
         const data = JSON.parse(e.data) as ServerMessage<{ users: User[] }>;
-
-        if (data.type === ServerTypes.USER_ACTIVE) res(data.payload.users);
+        res(data.payload.users);
       });
     });
   }
   getInactiveUsers() {
     return new Promise<User[]>((res) => {
       this.api.getUsers(ServerTypes.USER_INACTIVE);
-      this.api.socket.addEventListener("message", (e: MessageEvent) => {
+      this.api.subscribe(ServerTypes.USER_INACTIVE, (e: MessageEvent) => {
         const data = JSON.parse(e.data) as ServerMessage<{ users: User[] }>;
-
-        if (data.type === ServerTypes.USER_INACTIVE) res(data.payload.users);
+        res(data.payload.users);
       });
     });
   }

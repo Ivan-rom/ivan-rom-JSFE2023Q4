@@ -17,9 +17,24 @@ export enum ServerTypes {
   USER_INACTIVE = "USER_INACTIVE",
   USER_LOGIN = "USER_LOGIN",
   USER_LOGOUT = "USER_LOGOUT",
+  MSG_FROM_USER = "MSG_FROM_USER",
+  MSG_SEND = "MSG_SEND",
 }
 
-export type ServerMessage<T> = {
+export type MessageType = {
+  id: string;
+  from: string;
+  tp: string;
+  text: string;
+  datetime: string;
+  status: {
+    isDelivered: boolean;
+    isReaded: boolean;
+    isEdited: boolean;
+  };
+};
+
+export type ServerMessage<T = null> = {
   id: string;
   type: ServerTypes;
   payload: T;
