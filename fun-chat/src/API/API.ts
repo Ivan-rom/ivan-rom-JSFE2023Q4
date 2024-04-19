@@ -62,4 +62,8 @@ export default class API {
   getMessages(login: string) {
     this.send("get_messages", ServerTypes.MSG_FROM_USER, { user: { login } });
   }
+
+  deleteMessage(id: string) {
+    this.send("delete_message", ServerTypes.MSG_DELETE, { message: { id } });
+  }
 }

@@ -11,3 +11,11 @@
     cursor: pointer;
   }
 }
+
+.message-modal {
+  position: absolute;
+  overflow: hidden;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}

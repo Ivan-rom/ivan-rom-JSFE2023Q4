@@ -5,12 +5,14 @@
 }
 
 .content-messages {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   padding: 5px 0;
   flex-grow: 0;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .content-user_info {

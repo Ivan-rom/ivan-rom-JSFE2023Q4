@@ -19,6 +19,7 @@ export enum ServerTypes {
   USER_LOGOUT = "USER_LOGOUT",
   MSG_FROM_USER = "MSG_FROM_USER",
   MSG_SEND = "MSG_SEND",
+  MSG_DELETE = "MSG_DELETE",
 }
 
 export type MessageType = {

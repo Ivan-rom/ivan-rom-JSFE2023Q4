@@ -13,18 +13,26 @@ export default class Chat extends Component {
 
   private messagesComponent: Component;
 
+  private messagesComponents: Message[];
+
   private messages: MessageType[];
+
+  private currentMessage?: MessageType;
 
   private form: Component<HTMLFormElement>;
 
   private user: Component;
+
+  private modal: Component;
 
   constructor(api: API) {
     super({ className: "chat-content content" });
     this.api = api;
 
     this.messages = [];
+    this.messagesComponents = [];
     this.login = window.location.hash.substring(1);
+    this.modal = this.createMessageModal();
 
     this.messagesComponent = this.createMessagesComponent();
     this.user = this.createUser();
@@ -34,6 +42,23 @@ export default class Chat extends Component {
     this.form = this.createMessageForm();
 
     api.subscribe(ServerTypes.USER_LOGIN, this.updateUser);
+    api.subscribe(ServerTypes.MSG_DELETE, (e: MessageEvent) => {
+      const data = JSON.parse(e.data) as ServerMessage<{
+        message: { id: string; status: { isDeleted: boolean } };
+      }>;
+
+      if (data.payload.message.status.isDeleted) {
+        const messageComponent = this.messagesComponents.find(
+          (msg) => msg.id === data.payload.message.id,
+        );
+        console.log(messageComponent);
+        const messageIndex = this.messages.findIndex(
+          (msg) => msg.id === data.payload.message.id,
+        );
+        messageComponent?.component.remove();
+        if (messageIndex !== -1) this.messages.slice(messageIndex, 1);
+      }
+    });
 
     this.updateUser();
 
@@ -46,10 +71,31 @@ export default class Chat extends Component {
       }
     });
 
+    window.addEventListener("click", this.modal.remove.bind(this.modal));
+
     this.api.socket.addEventListener("open", this.getMessages.bind(this));
     if (api.socket.readyState === 1) this.getMessages();
 
     this.append([userInfo, this.messagesComponent, this.form]);
+  }
+
+  private updateCurrentMessage(message: MessageType) {
+    this.currentMessage = message;
+  }
+
+  private createMessageModal(): Component {
+    const deleteHandler = () => {
+      this.api.deleteMessage(this.currentMessage!.id);
+    };
+    const modal = new Component({ className: "message-modal" });
+    const changeButton = new Button("message-change", "Изменить");
+    const deleteButton = new Button(
+      "message-delete",
+      "Удалить",
+      deleteHandler.bind(this),
+    );
+    modal.append([changeButton, deleteButton]);
+    return modal;
   }
 
   private updateUser() {
@@ -76,13 +122,23 @@ export default class Chat extends Component {
 
   updateMessagesContent(message?: MessageType) {
     if (message) {
-      const component = new Message(message);
+      const component = new Message(
+        message,
+        this.modal,
+        this.updateCurrentMessage.bind(this),
+      );
       this.messagesComponent.append([component]);
+      this.messagesComponents.push(component);
     } else {
       this.messagesComponent.component.innerHTML = "";
-      this.messages.forEach((msg) => {
-        const component = new Message(msg);
+      this.messagesComponents = this.messages.map((msg) => {
+        const component = new Message(
+          msg,
+          this.modal,
+          this.updateCurrentMessage.bind(this),
+        );
         this.messagesComponent.append([component]);
+        return component;
       });
     }
     this.messagesComponent.component.scrollTop = 99999;
