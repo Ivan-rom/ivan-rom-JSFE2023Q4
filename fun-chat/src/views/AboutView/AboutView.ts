@@ -3,6 +3,8 @@ import Component from "../../components/Component";
 import Router from "../../router/Router";
 import View from "../View";
 
+import "./aboutView.css";
+
 export default class AboutView extends View {
   private router: Router;
 
@@ -24,6 +26,7 @@ export default class AboutView extends View {
       tag: "a",
       className: "about-link",
       href: "https://github.com/Ivan-rom",
+      target: "_blank",
       textContent: "Иван Романенко",
     });
     const author = new Component<HTMLParagraphElement>(

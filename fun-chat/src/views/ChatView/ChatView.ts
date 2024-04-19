@@ -1,12 +1,13 @@
 import API from "../../API/API";
 import Aside from "../../components/Aside/Aside";
 import Chat from "../../components/Chat/Chat";
-import Component from "../../components/Component";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Router from "../../router/Router";
 import { SavedUser, ServerMessage, ServerTypes, User } from "../../types";
 import View from "../View";
+
+import "./chatView.css";
 
 export default class ChatView extends View {
   private router: Router;
@@ -33,6 +34,8 @@ export default class ChatView extends View {
       this.user = userData.login;
       this.api.login(userData);
     });
+    const header = new Header(router, api);
+    const footer = new Footer();
 
     this.api.subscribe(ServerTypes.USER_LOGIN, (e: MessageEvent) => {
       const data = JSON.parse(e.data) as ServerMessage<{ user: SavedUser }>;
@@ -43,8 +46,6 @@ export default class ChatView extends View {
 
     this.aside = new Aside();
     this.chat = new Chat(api);
-    const header = new Header(router, api);
-    const footer = new Footer();
 
     this.append([header, this.aside, this.chat, footer]);
 
@@ -71,6 +72,7 @@ export default class ChatView extends View {
       });
     });
   }
+
   getInactiveUsers() {
     return new Promise<User[]>((res) => {
       this.api.getUsers(ServerTypes.USER_INACTIVE);

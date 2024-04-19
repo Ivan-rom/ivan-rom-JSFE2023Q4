@@ -1,0 +1,26 @@
+.aside {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.aside-search {
+  height: 24px;
+  display: block;
+  width: 100%;
+}
+
+.aside-list {
+  margin-top: 5px;
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.aside-element {
+  padding: 2px 5px 2px 15px;
+  &:hover {
+    background-color: rgb(154, 154, 255);
+  }
+}

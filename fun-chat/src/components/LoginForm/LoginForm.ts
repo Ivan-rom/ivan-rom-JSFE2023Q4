@@ -1,6 +1,8 @@
 import Button from "../Button/Button";
 import Component from "../Component";
 
+import "./loginForm.css";
+
 export default class LoginForm extends Component<HTMLFormElement> {
   private errors: { name: boolean; password: boolean };
 
@@ -13,7 +15,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
   private password: string;
 
   constructor(handler: (name: string, password: string) => void) {
-    super({ className: "form-login", tag: "form" });
+    super({ className: "login-form", tag: "form" });
 
     this.errors = { name: true, password: true };
     this.name = "";
@@ -32,9 +34,16 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
   private createContent(): Component[] {
     const header = new Component({ tag: "h2", textContent: "Вход" });
-    const namePare = this.createInput("name");
-    const passwordPare = this.createInput("password");
-    return [header, ...namePare, ...passwordPare, this.submitButton];
+
+    const namePare = new Component(
+      { className: "input-wrapper" },
+      this.createInput("name"),
+    );
+    const passwordPare = new Component(
+      { className: "input-wrapper" },
+      this.createInput("password"),
+    );
+    return [header, namePare, passwordPare, this.submitButton];
   }
 
   private nameHandler(e: Event): string[] {
@@ -92,6 +101,7 @@ export default class LoginForm extends Component<HTMLFormElement> {
 
     const input = new Component<HTMLInputElement>({
       tag: "input",
+      className: `input input_${name}`,
       type: inputType,
       name,
       id: name,
@@ -99,11 +109,14 @@ export default class LoginForm extends Component<HTMLFormElement> {
       oninput: handler,
     });
 
-    const label = new Component<HTMLLabelElement>({
-      tag: "label",
-      textContent: text,
-    });
+    const label = new Component<HTMLLabelElement>(
+      {
+        tag: "label",
+        className: "label",
+      },
+      [new Component({ textContent: text, className: "label-text" }), input],
+    );
 
-    return [label, input, errorsComponent];
+    return [label, errorsComponent];
   }
 }

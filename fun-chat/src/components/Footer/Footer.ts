@@ -1,5 +1,7 @@
 import Component from "../Component";
 
+import "./footer.css";
+
 export default class Footer extends Component {
   constructor() {
     super({ className: "chat-footer footer" });
@@ -13,8 +15,10 @@ export default class Footer extends Component {
       textContent: "RS School",
       className: "footer-text copyright",
     });
-    const author = new Component({
-      tag: "p",
+    const author = new Component<HTMLLinkElement>({
+      tag: "a",
+      href: "https://github.com/Ivan-rom",
+      target: "_blank",
       textContent: "Иван Романенко",
       className: "footer-text author",
     });

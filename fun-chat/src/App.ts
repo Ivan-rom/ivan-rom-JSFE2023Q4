@@ -1,12 +1,13 @@
 import API from "./API/API";
 import Loading from "./components/Loading/Loading";
 import Router from "./router/Router";
-
 import { Route } from "./types";
 import AboutView from "./views/AboutView/AboutView";
 import ChatView from "./views/ChatView/ChatView";
 import LoginView from "./views/LoginView/LoginView";
 import View from "./views/View";
+
+import "./app.css";
 
 class App {
   routes: Route[];

@@ -1,5 +1,7 @@
 import Component from "../Component";
 
+import "./loading.css";
+
 export default class Loading extends Component {
   constructor(text: string) {
     super({ className: "loading" });

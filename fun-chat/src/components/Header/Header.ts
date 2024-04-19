@@ -4,6 +4,8 @@ import { SavedUser } from "../../types";
 import Button from "../Button/Button";
 import Component from "../Component";
 
+import "./header.css";
+
 export default class Header extends Component {
   private router: Router;
 
@@ -12,7 +14,7 @@ export default class Header extends Component {
   user: Component;
 
   constructor(router: Router, api: API) {
-    super({ className: "chat-header" });
+    super({ className: "chat-header header" });
     this.router = router;
     this.api = api;
 

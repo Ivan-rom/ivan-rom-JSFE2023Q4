@@ -7,6 +7,8 @@ import Router from "../../router/Router";
 import { SavedUser, ServerTypes } from "../../types";
 import View from "../View";
 
+import "./loginVew.css";
+
 export default class LoginView extends View {
   private router: Router;
 

@@ -1,6 +1,7 @@
-import { SavedUser, User } from "../../types";
-import Button from "../Button/Button";
+import { User } from "../../types";
 import Component from "../Component";
+
+import "./aside.css";
 
 export default class Aside extends Component {
   private users: User[];
@@ -22,6 +23,7 @@ export default class Aside extends Component {
       tag: "input",
       className: "aside-search",
       type: "text",
+      placeholder: "Поиск",
     });
     input.component.oninput = () => {
       this.updateUsers(this.users, input.component.value);

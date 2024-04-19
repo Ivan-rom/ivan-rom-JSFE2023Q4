@@ -46,7 +46,7 @@ export default class API {
   }
 
   logout(user: SavedUser) {
-    this.send<{ user: SavedUser }>("user_login", ServerTypes.USER_LOGOUT, {
+    this.send<{ user: SavedUser }>("user_logout", ServerTypes.USER_LOGOUT, {
       user,
     });
   }
@@ -60,6 +60,6 @@ export default class API {
   }
 
   getMessages(login: string) {
-    this.send("get_messages", ServerTypes.MSG_FROM_USER, { user: login });
+    this.send("get_messages", ServerTypes.MSG_FROM_USER, { user: { login } });
   }
 }

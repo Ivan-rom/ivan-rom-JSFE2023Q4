@@ -24,7 +24,7 @@ export enum ServerTypes {
 export type MessageType = {
   id: string;
   from: string;
-  tp: string;
+  to: string;
   text: string;
   datetime: string;
   status: {

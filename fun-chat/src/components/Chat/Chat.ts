@@ -4,6 +4,8 @@ import Button from "../Button/Button";
 import Component from "../Component";
 import Message from "../Message/Message";
 
+import "./chat.css";
+
 export default class Chat extends Component {
   api: API;
 
@@ -15,43 +17,54 @@ export default class Chat extends Component {
 
   private form: Component<HTMLFormElement>;
 
+  private user: Component;
+
   constructor(api: API) {
     super({ className: "chat-content content" });
     this.api = api;
 
-    this.messagesComponent = this.createMessagesComponent();
     this.messages = [];
+    this.login = window.location.hash.substring(1);
+
+    this.messagesComponent = this.createMessagesComponent();
+    this.user = this.createUser();
+    const userInfo = new Component({ className: "content-user_info" }, [
+      this.user,
+    ]);
     this.form = this.createMessageForm();
 
-    this.login = window.location.hash.substring(1);
+    api.subscribe(ServerTypes.USER_LOGIN, this.updateUser);
+
+    this.updateUser();
+
     window.addEventListener("hashchange", () => {
       this.messages = [];
       this.login = window.location.hash.substring(1);
+      this.updateUser();
       if (api.socket.readyState === 1) {
         this.getMessages();
       }
     });
+
     this.api.socket.addEventListener("open", this.getMessages.bind(this));
     if (api.socket.readyState === 1) this.getMessages();
 
-    this.append([this.messagesComponent, this.form]);
+    this.append([userInfo, this.messagesComponent, this.form]);
+  }
+
+  private updateUser() {
+    this.user.component.textContent = this.login;
+  }
+
+  private createUser(): Component {
+    const component = new Component({ className: "content-user" });
+    return component;
   }
 
   private getMessages() {
     if (this.login === "") return;
 
-    this.api.socket.send(
-      JSON.stringify({
-        id: "get_messages",
-        type: ServerTypes.MSG_FROM_USER,
-        payload: {
-          user: {
-            login: this.login,
-          },
-        },
-      }),
-    );
-
+    this.api.getMessages(this.login);
     this.api.subscribe(ServerTypes.MSG_FROM_USER, (e: MessageEvent) => {
       const data = JSON.parse(e.data) as ServerMessage<{
         messages: MessageType[];
@@ -62,7 +75,6 @@ export default class Chat extends Component {
   }
 
   updateMessagesContent(message?: MessageType) {
-    console.log(this.messages);
     if (message) {
       const component = new Message(message);
       this.messagesComponent.append([component]);
@@ -73,9 +85,10 @@ export default class Chat extends Component {
         this.messagesComponent.append([component]);
       });
     }
+    this.messagesComponent.component.scrollTop = 99999;
   }
 
-  createMessageForm(): Component<HTMLFormElement> {
+  private createMessageForm(): Component<HTMLFormElement> {
     const form = new Component<HTMLFormElement>({
       tag: "form",
       className: "chat-form",
@@ -89,27 +102,26 @@ export default class Chat extends Component {
     const submitHandler = (e: SubmitEvent) => {
       e.preventDefault();
       if (input.component.value === "") return;
-      this.api.socket.send(
-        JSON.stringify({
-          id: "send_message",
-          type: ServerTypes.MSG_SEND,
-          payload: {
-            message: {
-              to: this.login,
-              text: input.component.value,
-            },
-          },
-        }),
-      );
+      this.api.sendMessage({
+        to: this.login,
+        text: input.component.value,
+      });
+
+      input.component.value = "";
     };
 
-    this.api.socket.addEventListener("message", (e: MessageEvent) => {
+    this.api.subscribe(ServerTypes.MSG_SEND, (e: MessageEvent) => {
       const data = JSON.parse(e.data) as ServerMessage<{
         message: MessageType;
       }>;
-      if (data.type === ServerTypes.MSG_SEND)
+
+      if (
+        data.payload.message.from === this.login ||
+        data.payload.message.to === this.login
+      )
         this.updateMessagesContent(data.payload.message);
     });
+
     form.component.onsubmit = submitHandler;
     form.append([input, button]);
 
@@ -119,7 +131,7 @@ export default class Chat extends Component {
   createMessagesComponent() {
     const messagesComponent = new Component({
       tag: "ul",
-      className: "content messages",
+      className: "content-messages messages",
     });
     return messagesComponent;
   }
