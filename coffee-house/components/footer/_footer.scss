@@ -1,0 +1,102 @@
+.footer {
+  color: $text-light;
+  margin-bottom: 40px;
+
+  &__content {
+    background-color: $background-container;
+    border-radius: 40px;
+    padding: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 100px;
+  }
+}
+
+.media {
+  flex-basis: 530px;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  &__title {
+    @extend %heading-2;
+    margin-bottom: 40px;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__link {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $border-light;
+
+    transition: 0.2s;
+
+    svg path {
+      stroke: $border-light;
+      transition: 0.2s;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: $background-body;
+
+        svg path {
+          stroke: $text-dark;
+        }
+      }
+    }
+  }
+}
+
+.contact {
+  flex-basis: 530px;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  &__text {
+    @extend %heading-3;
+    margin-bottom: 40px;
+  }
+
+  &__element {
+    @extend %text-button;
+
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    &:last-child {
+      margin-bottom: 4px;
+    }
+
+    span {
+      display: flex;
+      align-items: start;
+      gap: 8px;
+    }
+  }
+
+  &__link {
+    @extend %link;
+
+    &::after {
+      background-color: $text-light;
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+  }
+}

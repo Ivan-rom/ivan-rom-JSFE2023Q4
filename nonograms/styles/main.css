@@ -1,0 +1,65 @@
+.home {
+  text-align: center;
+
+  .title {
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto 20px;
+
+    .records {
+      .record {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+        .title {
+          margin-right: auto;
+          margin-bottom: 0;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
+  .levels {
+    .groups {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .list {
+        list-style: none;
+
+        .level {
+          margin-bottom: 20px;
+
+          .link {
+            text-decoration: none;
+            color: var(--content-color);
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+
+  .image {
+    .row {
+      display: flex;
+
+      .pixel {
+        width: var(--pixel-mini);
+        height: var(--pixel-mini);
+      }
+    }
+  }
+}

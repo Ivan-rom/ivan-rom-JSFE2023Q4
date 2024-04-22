@@ -1,0 +1,32 @@
+.header {
+    padding: 10px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: 0.2s;
+    &.hidden {
+        transform: translateY(-100%);
+    }
+}
+
+.logo {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 800;
+    font-size: 30px;
+}
+
+.logout-button {
+    --button-bg-color: rgb(161, 43, 43);
+    --button-shadow-color: rgb(104, 28, 28);
+
+    padding: 10px;
+    color: white;
+    text-transform: uppercase;
+}

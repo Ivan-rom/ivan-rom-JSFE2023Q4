@@ -1,0 +1,10 @@
+.form {
+  margin-bottom: 10px;
+}
+
+.new-form,
+.update-form {
+  display: flex;
+
+  margin-bottom: 5px;
+}
