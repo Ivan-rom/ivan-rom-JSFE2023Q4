@@ -53,9 +53,8 @@
     border: 1px solid black;
     background-color: gray;
   }
-  &.logged {
-    &::after {
-      background-color: green;
-    }
+
+  &.active::after {
+    background-color: green;
   }
 }

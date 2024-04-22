@@ -1,6 +1,6 @@
 import API from "../../API/API";
 import Router from "../../router/Router";
-import { SavedUser } from "../../types";
+import { SavedUser, ServerMessage, ServerTypes } from "../../types";
 import Button from "../Button/Button";
 import Component from "../Component";
 
@@ -18,6 +18,11 @@ export default class Header extends Component {
     this.router = router;
     this.api = api;
 
+    this.api.subscribe(ServerTypes.USER_LOGIN, (e: MessageEvent) => {
+      const data = JSON.parse(e.data) as ServerMessage<{ user: SavedUser }>;
+      this.updateName(data.payload.user.login);
+    });
+
     this.user = new Component({
       tag: "p",
       className: "header-user",
@@ -29,8 +34,8 @@ export default class Header extends Component {
     this.append([this.user, ...this.createContent()]);
   }
 
-  updateName(user: string) {
-    this.user.component.textContent = `Пользователь: ${user}`;
+  updateName(login: string) {
+    this.user.component.textContent = `Пользователь: ${login}`;
   }
 
   private createContent(): Component[] {

@@ -26,44 +26,52 @@ export default class ChatView extends View {
     this.api = api;
     this.user = "";
 
+    this.aside = new Aside();
+    this.chat = new Chat(api);
+
+    const header = new Header(router, api);
+    const footer = new Footer();
+
+    if (api.socket.readyState === 1) this.getUsers();
+
     api.socket.addEventListener("open", () => {
       const userData = JSON.parse(
         sessionStorage.getItem("chat-user")!,
       ) as SavedUser;
-
       this.user = userData.login;
       this.api.login(userData);
     });
-    const header = new Header(router, api);
-    const footer = new Footer();
 
-    this.api.subscribe(ServerTypes.USER_LOGIN, (e: MessageEvent) => {
-      const data = JSON.parse(e.data) as ServerMessage<{ user: SavedUser }>;
-      this.user = data.payload.user.login;
-      this.getUsers();
-      header.updateName(this.user);
-    });
-
-    this.aside = new Aside();
-    this.chat = new Chat(api);
+    this.api.subscribe(ServerTypes.USER_LOGIN, this.getUsers.bind(this));
+    api.subscribe(
+      ServerTypes.USER_EXTERNAL_LOGIN,
+      this.aside.updateUser.bind(this.aside),
+    );
+    api.subscribe(
+      ServerTypes.USER_EXTERNAL_LOGOUT,
+      this.aside.updateUser.bind(this.aside),
+    );
 
     this.append([header, this.aside, this.chat, footer]);
-
-    if (api.socket.readyState === 1) this.getUsers();
   }
 
   private getUsers() {
-    this.getActiveUsers().then((activeUsers) => {
-      this.getInactiveUsers().then((inactiveUsers) => {
-        const users = [...activeUsers, ...inactiveUsers];
+    const userData = JSON.parse(
+      sessionStorage.getItem("chat-user")!,
+    ) as SavedUser;
+    this.user = userData.login;
+
+    Promise.all([this.getActiveUsers(), this.getInactiveUsers()]).then(
+      (data) => {
+        const users = data.flat();
         const userIndex = users.findIndex((el) => el.login === this.user);
         users.splice(userIndex, 1);
         this.aside.updateUsers(users);
-      });
-    });
+      },
+    );
   }
 
-  getActiveUsers() {
+  private getActiveUsers() {
     return new Promise<User[]>((res) => {
       this.api.getUsers(ServerTypes.USER_ACTIVE);
       this.api.subscribe(ServerTypes.USER_ACTIVE, (e: MessageEvent) => {
@@ -73,7 +81,7 @@ export default class ChatView extends View {
     });
   }
 
-  getInactiveUsers() {
+  private getInactiveUsers() {
     return new Promise<User[]>((res) => {
       this.api.getUsers(ServerTypes.USER_INACTIVE);
       this.api.subscribe(ServerTypes.USER_INACTIVE, (e: MessageEvent) => {

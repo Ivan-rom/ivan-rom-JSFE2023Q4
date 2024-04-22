@@ -41,24 +41,8 @@ export default class Chat extends Component {
     ]);
     this.form = this.createMessageForm();
 
-    api.subscribe(ServerTypes.USER_LOGIN, this.updateUser);
-    api.subscribe(ServerTypes.MSG_DELETE, (e: MessageEvent) => {
-      const data = JSON.parse(e.data) as ServerMessage<{
-        message: { id: string; status: { isDeleted: boolean } };
-      }>;
-
-      if (data.payload.message.status.isDeleted) {
-        const messageComponent = this.messagesComponents.find(
-          (msg) => msg.id === data.payload.message.id,
-        );
-        console.log(messageComponent);
-        const messageIndex = this.messages.findIndex(
-          (msg) => msg.id === data.payload.message.id,
-        );
-        messageComponent?.component.remove();
-        if (messageIndex !== -1) this.messages.slice(messageIndex, 1);
-      }
-    });
+    api.subscribe(ServerTypes.USER_LOGIN, this.updateUser.bind(this));
+    api.subscribe(ServerTypes.MSG_DELETE, this.messageDeleteHandler.bind(this));
 
     this.updateUser();
 
@@ -77,6 +61,23 @@ export default class Chat extends Component {
     if (api.socket.readyState === 1) this.getMessages();
 
     this.append([userInfo, this.messagesComponent, this.form]);
+  }
+
+  private messageDeleteHandler(e: MessageEvent) {
+    const data = JSON.parse(e.data) as ServerMessage<{
+      message: { id: string; status: { isDeleted: boolean } };
+    }>;
+
+    if (data.payload.message.status.isDeleted) {
+      const messageComponent = this.messagesComponents.find(
+        (msg) => msg.id === data.payload.message.id,
+      );
+      const messageIndex = this.messages.findIndex(
+        (msg) => msg.id === data.payload.message.id,
+      );
+      messageComponent?.component.remove();
+      if (messageIndex !== -1) this.messages.slice(messageIndex, 1);
+    }
   }
 
   private updateCurrentMessage(message: MessageType) {
