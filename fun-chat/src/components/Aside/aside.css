@@ -1,0 +1,28 @@
+.aside {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.aside-search {
+  height: 24px;
+  display: block;
+  width: 100%;
+}
+
+.users {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 5px 0;
+  flex-grow: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.aside-element {
+  &:hover {
+    background-color: rgb(154, 154, 255);
+  }
+}

@@ -1,0 +1,21 @@
+.message {
+  padding: 3px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  align-self: start;
+  margin-bottom: 5px;
+  word-break: break-all;
+  max-width: 90%;
+  &.from {
+    align-self: end;
+    cursor: pointer;
+  }
+}
+
+.message-modal {
+  position: absolute;
+  overflow: hidden;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}

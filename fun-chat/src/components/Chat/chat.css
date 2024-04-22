@@ -1,0 +1,47 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 0;
+}
+
+.content-messages {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 5px 0;
+  flex-grow: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  &:has(.empty-messages) {
+    justify-content: center;
+  }
+}
+
+.content-user_info {
+  height: 24px;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-user.user {
+  cursor: default;
+}
+
+.chat-form {
+  display: flex;
+  gap: 3px;
+
+  input {
+    display: block;
+    width: 100%;
+  }
+}
+
+.empty-user,
+.empty-messages {
+  align-self: center;
+}
