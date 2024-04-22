@@ -1,4 +1,4 @@
-import { ServerMessage, User } from "../../types";
+import { User } from "../../types";
 import Component from "../Component";
 
 import "./aside.css";
@@ -36,10 +36,8 @@ export default class Aside extends Component {
       placeholder: "Поиск",
     });
     input.component.oninput = () => {
-      console.log(this.filter);
-
       this.filter = input.component.value;
-      this.updateUsers();
+      this.filterUsers();
     };
 
     return input;
@@ -53,32 +51,18 @@ export default class Aside extends Component {
     return ul;
   }
 
-  updateUsers(users: User[] = this.users) {
+  filterUsers(users: User[] = this.users) {
     this.users = users;
-
     const copy = [...this.users];
-    copy.filter((user) => !this.filter && user.login.startsWith(this.filter));
-
-    this.updateContent(copy);
+    const filtered = copy.filter((user) => user.login.startsWith(this.filter));
+    this.updateContent(filtered);
   }
 
-  updateUser(e: MessageEvent) {
-    const data = JSON.parse(e.data) as ServerMessage<{ user: User }>;
-    const { user } = data.payload;
-
-    // const usersComponent = user.isLogined
-    //   ? this.inactiveUsersComponents.component
-    //   : this.activeUsersComponents.component;
-
-    // const userComp = Array.from(usersComponent.childNodes).find(
-    //   (child) => child.textContent === user.login,
-    // ) as HTMLElement;
-    // if (userComp) userComp.remove();
-
+  updateUser(user: User) {
     const foundIndex = this.users.findIndex((el) => el.login === user.login);
     if (foundIndex !== -1) this.users.splice(foundIndex, 1);
     this.users.push(user);
-    this.updateUsers();
+    this.filterUsers();
   }
 
   updateContent(users: User[]) {

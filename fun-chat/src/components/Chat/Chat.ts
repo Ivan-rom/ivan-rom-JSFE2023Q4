@@ -1,5 +1,5 @@
 import API from "../../API/API";
-import { MessageType, ServerMessage, ServerTypes } from "../../types";
+import { MessageType, ServerMessage, ServerTypes, User } from "../../types";
 import Button from "../Button/Button";
 import Component from "../Component";
 import Message from "../Message/Message";
@@ -23,6 +23,8 @@ export default class Chat extends Component {
 
   private user: Component;
 
+  private userComponent: Component;
+
   private modal: Component;
 
   constructor(api: API) {
@@ -33,34 +35,41 @@ export default class Chat extends Component {
     this.messagesComponents = [];
     this.login = window.location.hash.substring(1);
     this.modal = this.createMessageModal();
-
     this.messagesComponent = this.createMessagesComponent();
+    this.form = this.createMessageForm();
     this.user = this.createUser();
-    const userInfo = new Component({ className: "content-user_info" }, [
+    this.userComponent = new Component({ className: "content-user_info" }, [
       this.user,
     ]);
-    this.form = this.createMessageForm();
 
-    api.subscribe(ServerTypes.USER_LOGIN, this.updateUser.bind(this));
     api.subscribe(ServerTypes.MSG_DELETE, this.messageDeleteHandler.bind(this));
-
-    this.updateUser();
-
-    window.addEventListener("hashchange", () => {
-      this.messages = [];
-      this.login = window.location.hash.substring(1);
-      this.updateUser();
-      if (api.socket.readyState === 1) {
-        this.getMessages();
-      }
-    });
 
     window.addEventListener("click", this.modal.remove.bind(this.modal));
 
     this.api.socket.addEventListener("open", this.getMessages.bind(this));
     if (api.socket.readyState === 1) this.getMessages();
+  }
 
-    this.append([userInfo, this.messagesComponent, this.form]);
+  updateChat(user: User | undefined, messages: MessageType[]) {
+    if (user) {
+      this.login = user.login;
+      this.component.innerHTML = "";
+      this.append([this.userComponent, this.messagesComponent, this.form]);
+      if (this.api.socket.readyState === 1) {
+        this.getMessages();
+      }
+      this.updateUser(user);
+      this.messages = messages;
+    } else {
+      const empty = new Component({
+        className: "empty-user",
+        textContent: "Собеседник не выбран",
+      });
+      this.userComponent.remove();
+      this.messagesComponent.remove();
+      this.form.remove();
+      this.append([empty]);
+    }
   }
 
   private messageDeleteHandler(e: MessageEvent) {
@@ -76,7 +85,16 @@ export default class Chat extends Component {
         (msg) => msg.id === data.payload.message.id,
       );
       messageComponent?.component.remove();
-      if (messageIndex !== -1) this.messages.slice(messageIndex, 1);
+      if (messageIndex !== -1) this.messages.splice(messageIndex, 1);
+
+      if (this.messages.length === 0) {
+        this.messagesComponent.append([
+          new Component({
+            className: "empty-messages",
+            textContent: "В чате еще пусто",
+          }),
+        ]);
+      }
     }
   }
 
@@ -99,12 +117,13 @@ export default class Chat extends Component {
     return modal;
   }
 
-  private updateUser() {
-    this.user.component.textContent = this.login;
+  updateUser(user: User) {
+    this.user.component.textContent = user.login;
+    this.user.component.className = `content-user user ${user.isLogined ? "active" : ""}`;
   }
 
   private createUser(): Component {
-    const component = new Component({ className: "content-user" });
+    const component = new Component({ className: "content-user user" });
     return component;
   }
 
@@ -123,24 +142,33 @@ export default class Chat extends Component {
 
   updateMessagesContent(message?: MessageType) {
     if (message) {
+      if (this.messages.length === 0)
+        this.messagesComponent.component.innerHTML = "";
       const component = new Message(
         message,
         this.modal,
         this.updateCurrentMessage.bind(this),
       );
+      this.messages.push(message);
       this.messagesComponent.append([component]);
       this.messagesComponents.push(component);
     } else {
       this.messagesComponent.component.innerHTML = "";
-      this.messagesComponents = this.messages.map((msg) => {
-        const component = new Message(
-          msg,
-          this.modal,
-          this.updateCurrentMessage.bind(this),
-        );
-        this.messagesComponent.append([component]);
-        return component;
-      });
+      this.messagesComponents = this.messages.map(
+        (msg) =>
+          new Message(msg, this.modal, this.updateCurrentMessage.bind(this)),
+      );
+      if (this.messagesComponents.length === 0) {
+        this.messagesComponent.append([
+          new Component({
+            className: "empty-messages",
+            textContent: "В чате еще пусто",
+          }),
+        ]);
+      } else {
+        this.messagesComponent.component.innerHTML = "";
+        this.messagesComponent.append(this.messagesComponents);
+      }
     }
     this.messagesComponent.component.scrollTop = 99999;
   }

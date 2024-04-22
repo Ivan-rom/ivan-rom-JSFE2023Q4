@@ -20,11 +20,14 @@ export default class ChatView extends View {
 
   private user: string;
 
+  private users: User[];
+
   constructor(router: Router, api: API) {
     super("chat");
     this.router = router;
     this.api = api;
     this.user = "";
+    this.users = [];
 
     this.aside = new Aside();
     this.chat = new Chat(api);
@@ -42,17 +45,32 @@ export default class ChatView extends View {
       this.api.login(userData);
     });
 
+    window.addEventListener("hashchange", this.updateChat.bind(this));
+
     this.api.subscribe(ServerTypes.USER_LOGIN, this.getUsers.bind(this));
     api.subscribe(
       ServerTypes.USER_EXTERNAL_LOGIN,
-      this.aside.updateUser.bind(this.aside),
+      this.userUpdateHandler.bind(this),
     );
     api.subscribe(
       ServerTypes.USER_EXTERNAL_LOGOUT,
-      this.aside.updateUser.bind(this.aside),
+      this.userUpdateHandler.bind(this),
     );
 
     this.append([header, this.aside, this.chat, footer]);
+  }
+
+  userUpdateHandler(e: MessageEvent) {
+    const data = JSON.parse(e.data) as ServerMessage<{ user: User }>;
+    this.chat.updateUser(data.payload.user);
+    this.aside.updateUser(data.payload.user);
+  }
+
+  updateChat() {
+    const login = window.location.hash.substring(1);
+
+    const user = this.users.find((el) => el.login === login);
+    this.chat.updateChat(user, []);
   }
 
   private getUsers() {
@@ -63,12 +81,18 @@ export default class ChatView extends View {
 
     Promise.all([this.getActiveUsers(), this.getInactiveUsers()]).then(
       (data) => {
-        const users = data.flat();
-        const userIndex = users.findIndex((el) => el.login === this.user);
-        users.splice(userIndex, 1);
-        this.aside.updateUsers(users);
+        this.updateUsers(data);
+        this.updateChat();
       },
     );
+  }
+
+  updateUsers(data: User[][]) {
+    const users = data.flat();
+    const userIndex = users.findIndex((el) => el.login === this.user);
+    users.splice(userIndex, 1);
+    this.users = users;
+    this.aside.filterUsers(this.users);
   }
 
   private getActiveUsers() {
