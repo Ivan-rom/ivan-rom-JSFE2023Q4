@@ -5,8 +5,11 @@ class Router {
 
   private currentPath?: string;
 
+  private basePath: string;
+
   constructor(routes: Route[]) {
     this.routes = routes;
+    this.basePath = window.location.pathname;
     document.addEventListener("DOMContentLoaded", this.updateView.bind(this));
     document.addEventListener("popstate", this.updateView.bind(this));
   }
@@ -49,8 +52,13 @@ class Router {
     if (page.path === "chat")
       hash = window.location.hash ? window.location.hash : "";
 
-    if (page.path !== window.history.state)
-      window.history.pushState(page.path, "", `/${page.path}${hash}`);
+    if (page.path !== window.history.state) {
+      window.history.pushState(
+        `${this.basePath}${page.path}`,
+        "",
+        `${this.basePath}${page.path}${hash}`,
+      );
+    }
     this.currentPath = page.path;
   }
 }
