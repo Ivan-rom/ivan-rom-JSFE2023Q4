@@ -1,0 +1,27 @@
+.winners-table {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-collapse: collapse;
+  td {
+    padding: 5px 10px;
+  }
+}
+
+.sorting {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  &::after {
+    content: "";
+    border-bottom: 7px solid green;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+  }
+
+  &.DESC {
+    &::after {
+      rotate: 180deg;
+    }
+  }
+}

@@ -1,0 +1,117 @@
+.header {
+  z-index: 999;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  background-color: $background-body;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__home {
+    height: 60px;
+  }
+
+  &__nav {
+    @extend %text-button;
+
+    width: 100%;
+    display: flex;
+    background-color: $background-body;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+  }
+
+  &__link {
+    @extend %link;
+
+    @media (hover: none) {
+      display: inline;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  &__button {
+    @extend %link;
+
+    span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: start;
+    }
+
+    img {
+      margin-left: 8px;
+    }
+
+    @media (hover: none) {
+      display: inline;
+
+      &::after {
+        display: none;
+      }
+
+      &.active {
+        cursor: default;
+        pointer-events: all;
+
+        &::after {
+          display: block;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &__burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid $border-dark;
+    border-radius: 50%;
+    position: relative;
+
+    .bottom,
+    .top {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      transition: 0.2s;
+    }
+
+    .top {
+      top: 16px;
+    }
+
+    .bottom {
+      top: 24px;
+    }
+
+    &.active {
+      .bottom,
+      .top {
+        top: 50%;
+      }
+
+      .top {
+        transform: translate(-50%) rotate(45deg);
+      }
+
+      .bottom {
+        transform: translate(-50%) rotate(-45deg);
+      }
+    }
+  }
+}

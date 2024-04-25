@@ -1,0 +1,46 @@
+.game {
+    background-color: rgb(48, 16, 35);
+    padding: 10px;
+    border-radius: 10px 10px 10px 0;
+    width: 700px;
+    position: relative;
+    z-index: 2;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: 670px 284px;
+    background-position: center;
+}
+
+.data-source {
+    margin-top: 20px;
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(60, 18, 42);
+    min-height: 40px;
+}
+
+.buttons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    .hints-buttons {
+        margin-right: auto;
+    }
+}
+
+.info {
+    color: #fff;
+    opacity: 0;
+    transition: 0.2s;
+    &.reveal {
+        opacity: 1;
+    }
+}

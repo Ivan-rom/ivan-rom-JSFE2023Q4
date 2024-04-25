@@ -1,0 +1,24 @@
+.answer {
+    margin: 0 auto;
+    display: flex;
+    background-color: rgb(106, 32, 45);
+    transition: 0.2s;
+    &.disabled,
+    &.skipped {
+        pointer-events: none;
+    }
+    &.disabled {
+        .word {
+            outline: none;
+        }
+    }
+    &.completed {
+        opacity: 0;
+    }
+}
+
+.field {
+    box-shadow: 0 0 0 5px rgb(60, 18, 42) inset;
+    min-width: 30px;
+    min-height: 28px;
+}

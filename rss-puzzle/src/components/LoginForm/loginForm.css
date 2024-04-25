@@ -1,0 +1,38 @@
+.login-form {
+    background-color: rgb(48, 16, 35);
+    color: white;
+    padding: 10px 20px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.login-heading {
+    text-align: center;
+    font-size: 26px;
+    margin: 5px 0;
+}
+
+.login-input {
+    background-color: rgb(255, 222, 161);
+    padding: 3px;
+    border-radius: 3px;
+    color: rgb(48, 16, 35);
+    width: 100%;
+    outline: none;
+    border: none;
+}
+
+.error-list {
+    margin-bottom: 10px;
+}
+
+.error-item {
+    color: rgb(255, 251, 0);
+    padding: 0 5px;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.login-button {
+    margin: 20px auto 0;
+}
