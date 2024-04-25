@@ -9,7 +9,7 @@ class Router {
 
   constructor(routes: Route[]) {
     this.routes = routes;
-    this.basePath = window.location.pathname;
+    this.basePath = ""; // Past here path to index.js on the host (with /)
     document.addEventListener("DOMContentLoaded", this.updateView.bind(this));
     document.addEventListener("popstate", this.updateView.bind(this));
   }
@@ -56,7 +56,7 @@ class Router {
       window.history.pushState(
         `${this.basePath}${page.path}`,
         "",
-        `${this.basePath}${page.path}${hash}`,
+        `${this.basePath}/${page.path}${hash}`,
       );
     }
     this.currentPath = page.path;
